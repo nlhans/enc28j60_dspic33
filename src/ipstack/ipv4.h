@@ -17,7 +17,6 @@ extern "C" {
 
 #define IPV4_MAXIMUM_PROTOCOL_HANDLERS 3 // UDP, TCP, ICMP
 
-
 // http://en.wikipedia.org/wiki/List_of_IP_protocol_numbers
 typedef enum EthernetIpv4Protocol_e
 {

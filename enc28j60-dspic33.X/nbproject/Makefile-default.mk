@@ -45,11 +45,11 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1360937237/main.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o.d ${OBJECTDIR}/_ext/1639450193/spi.o.d ${OBJECTDIR}/_ext/1639450193/uart.o.d ${OBJECTDIR}/_ext/1733914311/arp.o.d ${OBJECTDIR}/_ext/1733914311/icmp.o.d ${OBJECTDIR}/_ext/1733914311/ipv4.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o.d ${OBJECTDIR}/_ext/1639450193/spi.o.d ${OBJECTDIR}/_ext/1639450193/uart.o.d ${OBJECTDIR}/_ext/1733914311/arp.o.d ${OBJECTDIR}/_ext/1733914311/icmp.o.d ${OBJECTDIR}/_ext/1733914311/ipv4.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d ${OBJECTDIR}/_ext/1733914311/ntp.o.d ${OBJECTDIR}/_ext/1733914311/udp.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1360937237/main.o
+OBJECTFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o
 
 
 CFLAGS=
@@ -115,6 +115,18 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/_ext/1733914311/ntp.o: ../src/ipstack/ntp.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
+	@${RM} ${OBJECTDIR}/_ext/1733914311/ntp.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ntp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1733914311/udp.o: ../src/ipstack/udp.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
+	@${RM} ${OBJECTDIR}/_ext/1733914311/udp.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/udp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/_ext/1278887395/enc28j60.o: ../src/devices/enc28j60.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
@@ -157,6 +169,18 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	@${RM} ${OBJECTDIR}/_ext/1360937237/main.o.d 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1733914311/ntp.o: ../src/ipstack/ntp.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
+	@${RM} ${OBJECTDIR}/_ext/1733914311/ntp.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ntp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1733914311/udp.o: ../src/ipstack/udp.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
+	@${RM} ${OBJECTDIR}/_ext/1733914311/udp.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/udp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif
 

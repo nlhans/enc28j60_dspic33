@@ -8,4 +8,7 @@ build/default/debug/_ext/1360937237/main.o:  \
 ../src/ipstack/arp.h  \
 ../src/ipstack/ipv4.h  \
  ../src/ipstack/icpm.h  \
-../src/ipstack/ipv4.h 
+../src/ipstack/ipv4.h  \
+../src/ipstack/udp.h  \
+ ../src/ipstack/ntp.h  \
+../src/ipstack/udp.h 

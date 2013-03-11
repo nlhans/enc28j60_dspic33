@@ -5,6 +5,8 @@
 #include "arp.h"
 #include "ipv4.h"
 #include "icpm.h"
+#include "udp.h"
+#include "ntp.h"
 #include <stdio.h>
 
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
@@ -56,6 +58,7 @@ _FICD(ICS_PGD2 & JTAGEN_OFF)
 UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
 UI08_t ip[4]            = {192, 168, 1, 123};
 UI08_t gateway[4]       = {192, 168, 1, 1};
+UI08_t pc[4]       = {192, 168, 1, 147};
 /*
  * 1 ms delay
  */
@@ -141,6 +144,9 @@ int main()
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
     icmpInit();
+    udpInit();
+    ntpInit();
+    ntpRequest(pc);
     
     while(1)
     {

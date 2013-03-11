@@ -142,17 +142,23 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, UI08_t *data, UI16_t size)
 {
     EthernetIpv4_t ipv4Packet;
 
+    memcpy(ipv4Packet.frame.dstMac, arpGetMac(dstIp), 6);
+    memcpy(ipv4Packet.frame.srcMac, thisMac, 6);
+    ipv4Packet.frame.type = htons(ProtocolIPv4);
+
     ipv4Packet.header.version = 4;
     ipv4Packet.header.ihl = 5;
     ipv4Packet.header.DSCP = 0;
-    ipv4Packet.header.length = size;
+    ipv4Packet.header.length = htons(size);
     ipv4Packet.header.ID = 0x1234;
     ipv4Packet.header.flags = 0;
     ipv4Packet.header.timeToLive = 0x80;
     ipv4Packet.header.protocol = protocol;
     ipv4Packet.header.crc = 0; // calculate?
+    ipv4Packet.header.crc = htons(ipv4Crc((UI08_t*)(&ipv4Packet.header), 4*ipv4Packet.header.ihl ) );
+    
     memcpy(ipv4Packet.header.destinationIp, dstIp, 4);
     memcpy(ipv4Packet.header.sourceIp, thisIp, 4);
 
-    //enc28j60TxFrame()
+    enc28j60TxFrame((EthernetFrame_t*) (&ipv4Packet), sizeof(EthernetIpv4Header_t) + size);
 }

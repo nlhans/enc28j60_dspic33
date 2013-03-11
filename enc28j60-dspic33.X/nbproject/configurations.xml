@@ -15,6 +15,8 @@
         <itemPath>../src/ipstack/arp.h</itemPath>
         <itemPath>../src/ipstack/icpm.h</itemPath>
         <itemPath>../src/ipstack/ipv4.h</itemPath>
+        <itemPath>../src/ipstack/ntp.h</itemPath>
+        <itemPath>../src/ipstack/udp.h</itemPath>
       </logicalFolder>
       <itemPath>../src/types.h</itemPath>
     </logicalFolder>
@@ -36,6 +38,8 @@
         <itemPath>../src/ipstack/arp.c</itemPath>
         <itemPath>../src/ipstack/icmp.c</itemPath>
         <itemPath>../src/ipstack/ipv4.c</itemPath>
+        <itemPath>../src/ipstack/ntp.c</itemPath>
+        <itemPath>../src/ipstack/udp.c</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
     </logicalFolder>
