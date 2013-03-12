@@ -132,3 +132,9 @@ void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled)
 
     }
 }
+
+UI08_t* arpResolve(UI08_t* ip)
+{
+    //
+    return (UI08_t*) &(onesMac[0]);
+}

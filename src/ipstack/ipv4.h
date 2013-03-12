@@ -56,7 +56,7 @@ void ipv4Init();
 void ipv4RegisterHandler(Ipv4PacketHandler_t myHandler);
 void ipv4UnregisterHandler(Ipv4PacketHandler_t myHandler);
 void ipvFireHandlers(EthernetIpv4_t* frame, UI08_t* data, UI16_t length);
-void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, UI08_t *data, UI16_t size);
+void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *data, UI16_t size);
 void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize);
 UI16_t ipv4Crc(UI08_t* data, UI16_t size);
 

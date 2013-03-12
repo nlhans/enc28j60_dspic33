@@ -22,12 +22,12 @@ typedef struct NTPPacketContent_s
     UI08_t precision;
     UI32_t rootdelay;
     UI32_t rootdispersion;
-    UI08_t id;
+    UI32_t id;
 
-    UI32_t stampRef;
-    UI32_t stampOrigin;
-    UI32_t stampReceive;
-    UI32_t stampTransmit;
+    UI32_t stampRef[2];
+    UI32_t stampOrigin[2];
+    UI32_t stampReceive[2];
+    UI32_t stampTransmit[2];
 
 } NTPPacketContent_t;
 

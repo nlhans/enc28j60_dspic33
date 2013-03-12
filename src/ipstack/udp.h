@@ -27,7 +27,7 @@ typedef struct UDPPacketHeader_s
 
 typedef struct UDPPacket_s
 {
-    Ipv4PacketHandler_t ipv4;
+    EthernetIpv4_t ipv4;
     UDPPacketHeader_t udp;
 } UDPPacket_t;
 

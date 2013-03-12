@@ -7,6 +7,7 @@
 #include "icpm.h"
 #include "udp.h"
 #include "ntp.h"
+#include "tcp.h"
 #include <stdio.h>
 
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
@@ -59,6 +60,7 @@ UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
 UI08_t ip[4]            = {192, 168, 1, 123};
 UI08_t gateway[4]       = {192, 168, 1, 1};
 UI08_t pc[4]       = {192, 168, 1, 147};
+UI08_t ntpServer[4] = {194, 171, 167, 130};
 /*
  * 1 ms delay
  */
@@ -98,6 +100,11 @@ unsigned short readReg(unsigned char addr)
  */
 UI08_t frameBf[1518];
 
+
+    typedef struct lolwut {
+        UDPPacket_t udp;
+        UI08_t data[64];
+    } lolwut_t;
 int main()
 {
     UI16_t i = 0;
@@ -146,37 +153,20 @@ int main()
     icmpInit();
     udpInit();
     ntpInit();
+    tcpInit();
     ntpRequest(pc);
+
     
     while(1)
     {
-        do
-        {
-        
-            SPI_SetDebug(0);
-            UI08_t packets = enc28j60GetPacketCount();
-            /*sprintf(debugBuffer, "Packets : %02X ESTAT: %02X ECON2: %02X ECON1: %02X EIE: %02X EIR: %02X\r\n",
-                    packets,
-                    enc28j60ReadRegisterUint8(ESTAT),
-                    enc28j60ReadRegisterUint8(ECON2),
-                    enc28j60ReadRegisterUint8(ECON1),
-                    enc28j60ReadRegisterUint8(EIE),
-                    enc28j60ReadRegisterUint8(EIR)
-                    );*/
-            //uartTxString(debugBuffer);
-            i++;
-            if(i%2 == 0)
-                LED_Low;
-            else
-                LED_High;
-            
-            while (!enc28j60PacketPending());
-            
-            enc28j60RxFrame(frameBf, 256);
+        if(i%2 == 0)
+            LED_Low;
+        else
+            LED_High;
+        while (!enc28j60PacketPending());
 
+        enc28j60RxFrame(frameBf, 256);
 
-        }
-        while(1);
 
     }
     while(1);

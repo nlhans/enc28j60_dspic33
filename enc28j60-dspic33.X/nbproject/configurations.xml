@@ -17,6 +17,7 @@
         <itemPath>../src/ipstack/ipv4.h</itemPath>
         <itemPath>../src/ipstack/ntp.h</itemPath>
         <itemPath>../src/ipstack/udp.h</itemPath>
+        <itemPath>../src/ipstack/tcp.h</itemPath>
       </logicalFolder>
       <itemPath>../src/types.h</itemPath>
     </logicalFolder>
@@ -40,6 +41,7 @@
         <itemPath>../src/ipstack/ipv4.c</itemPath>
         <itemPath>../src/ipstack/ntp.c</itemPath>
         <itemPath>../src/ipstack/udp.c</itemPath>
+        <itemPath>../src/ipstack/tcp.c</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
     </logicalFolder>

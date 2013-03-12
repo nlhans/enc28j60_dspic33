@@ -47,6 +47,7 @@ void udpRegisterHandler(UDPSocketHandler_t handler, UI16_t port)
         {
             handlers[i].port = port;
             handlers[i].handler = handler;
+            break;
         }
         i++;
     }
@@ -54,20 +55,32 @@ void udpRegisterHandler(UDPSocketHandler_t handler, UI16_t port)
 
 void udpHandlePacket (EthernetIpv4_t* ipv4, bool_t* handled)
 {
+    UDPPacket_t* packet = (UDPPacket_t*)ipv4;
+
     if (ipv4->header.protocol == Ipv4UDP)
     {
         *handled = TRUE;
 
-        uartTxString("UDP Packet");
+#ifdef DEBUG_CONSOLE
+        sprintf(debugBuffer, "[udp] RX packet @ port %d/%d, crc %04X length %02X\r\n", packet->udp.portSource, packet->udp.portDestination, packet->udp.crc, packet->udp.length);
+        uartTxString(debugBuffer);
+#endif
+        udpFirePacket(packet);
     }
     
 }
 void udpTxPacket(UDPPacket_t* packet, UI16_t size, UI08_t* ip, UI16_t port)
 {
-    packet->udp.length = size;
-    packet->udp.portDestination = port;
-    packet->udp.portSource = port;
+    size += sizeof(UDPPacketHeader_t);
+    
+    packet->udp.length = htons(size);
+    packet->udp.portDestination = htons( port );
+    packet->udp.portSource =  htons( port );
     packet->udp.crc = 0;
 
-    ipv4TxPacket(ip, Ipv4UDP, (UI08_t*)packet, size);
+#ifdef DEBUG_CONSOLE
+        sprintf(debugBuffer, "[udp] TX packet @ port %d/%d, crc %04X length %02X/%02X\r\n", packet->udp.portSource, packet->udp.portDestination, packet->udp.crc, packet->udp.length, size);
+        uartTxString(debugBuffer);
+#endif
+    ipv4TxPacket(ip, Ipv4UDP, packet, size);
 }

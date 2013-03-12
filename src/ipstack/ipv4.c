@@ -2,6 +2,7 @@
 #include "ipv4.h"
 #include "uart.h"
 #include "arp.h"
+#include "uart.h"
 
 typedef struct Ipv4PacketHandlerInfo_s
 {
@@ -15,7 +16,12 @@ void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled);
 
 void ipv4Init()
 {
+    UI08_t i = 0 ;
     enc28j60RegisterTxHandler(ipv4HandlePacket);
+    for (i = 0; i < IPV4_MAXIMUM_PROTOCOL_HANDLERS; i++)
+    {
+        Ipv4Handlers[i].used = FALSE;
+    }
 }
 
 void ipv4RegisterHandler(Ipv4PacketHandler_t myHandler)
@@ -28,9 +34,14 @@ void ipv4RegisterHandler(Ipv4PacketHandler_t myHandler)
         {
             Ipv4Handlers[i].used = TRUE;
             Ipv4Handlers[i].handler = myHandler;
+            break;
         }
         i++;
     }
+#ifdef DEBUG_CONSOLE
+    sprintf(debugBuffer, "[ipv4] Registering handler %d\r\n", i);
+    uartTxString(debugBuffer);
+#endif
 }
 
 void ipv4UnregisterHandler(Ipv4PacketHandler_t myHandler)
@@ -82,10 +93,14 @@ void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled)
         headerSize = 4 * ipv4Header->header.ihl;
 
 #ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[ipv4] RX Packet %d bytes, protocol %02X, length %02X sizeof: %d\r\n", headerSize, ipv4Header->header.protocol, ipv4Header->header.length, sizeof(EthernetIpv4_t));
+        sprintf(debugBuffer, "[ipv4] RX Packet %d bytes, protocol %02X, length %02X, CRC %04X, src %d.%d.%d.%d\r\n", headerSize,
+        ipv4Header->header.protocol,
+        ipv4Header->header.length,
+        ipv4Header->header.crc,
+        ipv4Header->header.sourceIp[0], ipv4Header->header.sourceIp[1], ipv4Header->header.sourceIp[2], ipv4Header->header.sourceIp[3]);
         uartTxString(debugBuffer);
 #endif
-                
+        
         ipv4FireHandlers(ipv4Header);
         
     }
@@ -131,34 +146,37 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
     ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
 
 #ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "[ipv4] TX Packet %d bytes, protocol %02X, length %02X CRC %04X\r\n", 4*ipv4Packet->header.ihl, ipv4Packet->header.protocol, htons(ipv4Packet->header.length), htons(ipv4Packet->header.crc));
+    sprintf(debugBuffer, "[ipv4] TX Packet %d bytes, protocol %02X, length %02X, CRC %04X, dst %d.%d.%d.%d\r\n", 4*ipv4Packet->header.ihl, ipv4Packet->header.protocol, htons(ipv4Packet->header.length), htons(ipv4Packet->header.crc),
+    ipv4Packet->header.destinationIp[0], ipv4Packet->header.destinationIp[1], ipv4Packet->header.destinationIp[2], ipv4Packet->header.destinationIp[3]);
     uartTxString(debugBuffer);
 #endif
     // Push 1 layer further down
     enc28j60TxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
 }
 
-void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, UI08_t *data, UI16_t size)
+UI08_t gw[6] = {0xB0, 0x48, 0x7A, 0xDB, 0x5B, 0xEB };
+void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI16_t size)
 {
-    EthernetIpv4_t ipv4Packet;
+    size += sizeof(EthernetIpv4Header_t);
 
-    memcpy(ipv4Packet.frame.dstMac, arpGetMac(dstIp), 6);
-    memcpy(ipv4Packet.frame.srcMac, thisMac, 6);
-    ipv4Packet.frame.type = htons(ProtocolIPv4);
+    //memcpy(ipv4Packet.frame.dstMac, arpResolve(dstIp), 6);
+    memcpy(ipv4Packet->frame.dstMac, gw, 6);
+    memcpy(ipv4Packet->frame.srcMac, thisMac, 6);
+    ipv4Packet->frame.type = htons(ProtocolIPv4);
 
-    ipv4Packet.header.version = 4;
-    ipv4Packet.header.ihl = 5;
-    ipv4Packet.header.DSCP = 0;
-    ipv4Packet.header.length = htons(size);
-    ipv4Packet.header.ID = 0x1234;
-    ipv4Packet.header.flags = 0;
-    ipv4Packet.header.timeToLive = 0x80;
-    ipv4Packet.header.protocol = protocol;
-    ipv4Packet.header.crc = 0; // calculate?
-    ipv4Packet.header.crc = htons(ipv4Crc((UI08_t*)(&ipv4Packet.header), 4*ipv4Packet.header.ihl ) );
+    ipv4Packet->header.version      = 4;
+    ipv4Packet->header.ihl          = 5;
+    ipv4Packet->header.DSCP         = 0;
+    ipv4Packet->header.length       = htons(size);
+    ipv4Packet->header.ID           = htons(0x1234);
+    ipv4Packet->header.flags        = 0;
+    ipv4Packet->header.timeToLive   = 0x80;
+    ipv4Packet->header.protocol     = protocol;
+    ipv4Packet->header.crc          = 0;
+    ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
     
-    memcpy(ipv4Packet.header.destinationIp, dstIp, 4);
-    memcpy(ipv4Packet.header.sourceIp, thisIp, 4);
+    memcpy(ipv4Packet->header.destinationIp, dstIp, 4);
+    memcpy(ipv4Packet->header.sourceIp, thisIp, 4);
 
-    enc28j60TxFrame((EthernetFrame_t*) (&ipv4Packet), sizeof(EthernetIpv4Header_t) + size);
+    enc28j60TxFrame((EthernetFrame_t*) ipv4Packet, sizeof(EthernetFrame_t) + size);
 }

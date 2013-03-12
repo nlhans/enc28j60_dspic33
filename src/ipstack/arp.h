@@ -33,8 +33,11 @@ typedef struct ArpPacket_s
 
 void arpAnnounce(UI08_t* myMac, UI08_t* myIp, UI08_t* gateway);
 void arpInit();
+UI08_t* arpResolve(UI08_t* ip);
 
 extern  UI08_t thisIp[4];
+extern  UI08_t thisMac[6];
+extern const UI08_t onesMac[6]; // broadcast mac
 
 #ifdef	__cplusplus
 }
