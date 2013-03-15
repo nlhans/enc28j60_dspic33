@@ -154,7 +154,7 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
     enc28j60TxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
 }
 
-UI08_t gw[6] = {0xB0, 0x48, 0x7A, 0xDB, 0x5B, 0xEB };
+UI08_t gw[6] = {0xB0, 0x48, 0x7A, 0xDB, 0x5B, 0xEA };
 void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI16_t size)
 {
     size += sizeof(EthernetIpv4Header_t);
@@ -163,6 +163,9 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI
     memcpy(ipv4Packet->frame.dstMac, gw, 6);
     memcpy(ipv4Packet->frame.srcMac, thisMac, 6);
     ipv4Packet->frame.type = htons(ProtocolIPv4);
+
+    memcpy(ipv4Packet->header.destinationIp,    dstIp,  4);
+    memcpy(ipv4Packet->header.sourceIp,         thisIp, 4);
 
     ipv4Packet->header.version      = 4;
     ipv4Packet->header.ihl          = 5;
@@ -174,9 +177,12 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI
     ipv4Packet->header.protocol     = protocol;
     ipv4Packet->header.crc          = 0;
     ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
-    
-    memcpy(ipv4Packet->header.destinationIp, dstIp, 4);
-    memcpy(ipv4Packet->header.sourceIp, thisIp, 4);
+
+#ifdef DEBUG_CONSOLE
+    sprintf(debugBuffer, "[ipv4] TX Packet %d bytes, protocol %02X, length %02X, CRC %04X, dst %d.%d.%d.%d\r\n", 4*ipv4Packet->header.ihl, ipv4Packet->header.protocol, htons(ipv4Packet->header.length), htons(ipv4Packet->header.crc),
+    ipv4Packet->header.destinationIp[0], ipv4Packet->header.destinationIp[1], ipv4Packet->header.destinationIp[2], ipv4Packet->header.destinationIp[3]);
+    uartTxString(debugBuffer);
+#endif
 
     enc28j60TxFrame((EthernetFrame_t*) ipv4Packet, sizeof(EthernetFrame_t) + size);
 }

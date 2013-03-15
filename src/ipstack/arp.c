@@ -45,7 +45,7 @@ void arpBuildPacket(UI08_t* senderMac, UI08_t* senderIp, UI08_t* targetMac, UI08
 
 void arpAnnounce(UI08_t* myMac, UI08_t* myIp, UI08_t* gateway)
 {
-    memcpy(thisIp,  myIp, 4);
+    memcpy(thisIp,  myIp,  4);
     memcpy(thisMac, myMac, 6);
 
     arpBuildPacket(myMac, myIp, (UI08_t*)zerosMac, gateway, FALSE);
