@@ -15,7 +15,7 @@ extern "C" {
 #include "types.h"
 #include "spi.h"
 
-#define DEBUG_CONSOLE
+//#define DEBUG_CONSOLE
 
 typedef union enc28j60Register_u
 {
@@ -203,6 +203,7 @@ typedef enum EthernetProtocol_e
 
 typedef void (*EthernetPacketHandler_t) (EthernetFrame_t* frame, bool_t* handled);
 
+#define htonl(x) ( ((x & 0xFF000000) >> 24) | ((x & 0x00FF0000) >> 8) | ((x & 0x0000FF00) << 8) | ((x & 0x000000FF) << 24) )
 #define htons(x) ( (( x & 0xFF00) >> 8) | ((x & 0xFF) << 8))
 
 // ESTAT mask definitions

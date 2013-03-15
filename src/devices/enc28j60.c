@@ -75,7 +75,7 @@ UI08_t enc28j60ReadUint8(UI08_t reg)
     UI08_t d;
     ENC28J60_CS_LOW;
     enc28j60_spi_transfer(RCR | (reg & 0x1F));
-    d = enc28j60_spi_transfer(0x00);
+    d = enc28j60_spi_read();
     ENC28J60_CS_HIGH;
 
     return d;

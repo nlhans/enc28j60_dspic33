@@ -20,36 +20,6 @@ _FPOR(FPWRT_PWR1 & ALTI2C_OFF)
 _FICD(ICS_PGD2 & JTAGEN_OFF)
         
 
-/*
- *  ENC SPI commands
- */
-#define RCRCMD  0b00000000      // read control register
-#define WCRCMD  0b01000000      // write control register
-#define BFCCMD  0b10100000      // bit field clear
-#define BFSCMD  0b10000000      // bit field set
-#define BFCCMD  0b10100000      // bit field clear
-
-/*
- * ENC SFR
- */
-#define MIREGADR        0x14
-#define ECON1           0x1f
-
-#define PHLCON          0x14
-#define MIWRL           0x16
-
-/*
- * ENC PHY register
- */
-#define MIWRH   0x17
-
-/*
- * ENC CS control
- */
-#define Select()       PORTC &= ~(1<<6)
-#define Deselect()     PORTC |= 1<<6
-
-
 #define LED_High  PORTB |= 1<<8
 #define LED_Low   PORTB &= ~(1<<8)
 
@@ -61,9 +31,7 @@ UI08_t ip[4]            = {192, 168, 1, 123};
 UI08_t gateway[4]       = {192, 168, 1, 1};
 UI08_t pc[4]       = {192, 168, 1, 147};
 UI08_t ntpServer[4] = {194, 171, 167, 130};
-/*
- * 1 ms delay
- */
+
 void    delay1ms()
 {
     volatile UI08_t i = 0;
@@ -73,45 +41,12 @@ void    delay1ms()
         for(j=0;j<100;j++);
 }
 
-
-/*
- * writes byte v in ENC register addr of the current bank
- */
-void    writeReg(unsigned char addr, unsigned short v)
-{
-    Select() ;
-    SPI_Write(WCRCMD | addr) ;
-    SPI_Write(v) ;
-    Deselect() ;
-}
-unsigned short readReg(unsigned char addr)
-{
-    unsigned short v;
-    Select() ;
-    SPI_Write(RCRCMD | addr) ;
-    v= SPI_Write(0) ;
-    Deselect() ;
-
-    return v;
-}
-
-/*
- * main entry
- */
 UI08_t frameBf[1518];
 
-
-    typedef struct lolwut {
-        UDPPacket_t udp;
-        UI08_t data[64];
-    } lolwut_t;
 int main()
 {
-    UI16_t i = 0;
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);   // blinky;
-    
-    Deselect() ;                    // don't talk to ENC
 
     SPI_Init();
     SPI_SetDebug(0);
@@ -119,27 +54,6 @@ int main()
     uartTxString("*********************\r\n");
     uartTxString("* * ENC28J60 demo * *\r\n");
     uartTxString("*********************\r\n");
-    /*
-    RST_High;
-    delay1ms();
-    RST_Low;
-    delay1ms();
-    RST_High;
-    delay1ms();
-    
-    Select() ;
-    SPI_Write(BFCCMD | ECON1) ;
-    SPI_Write(0b00000001) ;
-    Deselect() ;
-
-    Select() ;
-    SPI_Write(BFSCMD | ECON1) ;
-    SPI_Write(0b00000010) ;
-    Deselect() ;
-
-    writeReg(MIREGADR, PHLCON) ;
-    writeReg(MIWRL, 0b10100010) ;
-    writeReg(MIWRH, 0b00001010) ;*/
 
     LED_Low;
     SPI_SetDebug(0);
@@ -154,19 +68,12 @@ int main()
     udpInit();
     ntpInit();
     tcpInit();
-    ntpRequest(pc);
+    ntpRequest(ntpServer);
 
-    
     while(1)
     {
-        if(i%2 == 0)
-            LED_Low;
-        else
-            LED_High;
         while (!enc28j60PacketPending());
-
-        enc28j60RxFrame(frameBf, 256);
-
+        enc28j60RxFrame(frameBf, sizeof(frameBf));
 
     }
     while(1);
