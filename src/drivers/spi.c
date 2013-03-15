@@ -150,10 +150,18 @@ void enc28j60_spi_transferBytes(UI08_t* bfrTx, UI08_t* bfrRx, UI16_t length)
 }
 UI08_t enc28j60_spi_read(void)
 {
-    return SPI_ReadWrite(0);
-    //spiReadByteAsm();
-    //return spiReadByte;
+    spiReadByteAsm();
+    return spiReadByte;
+    //return SPI_ReadWrite(0);
+
+}
+void enc28j60_spi_write(UI08_t w)
+{
+    spiWriteByte = w & 0xFF;
+    spiWriteByteAsm();
     
+    //SPI_ReadWrite(w);
+
 }
 UI08_t enc28j60_spi_transfer(UI08_t data)
 {

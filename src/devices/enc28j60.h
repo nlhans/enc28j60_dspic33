@@ -209,13 +209,16 @@ typedef void (*EthernetPacketHandler_t) (EthernetFrame_t* frame, bool_t* handled
 // ESTAT mask definitions
 #define ESTAT_CLKRDY            0x01
 
-#define ENC28J60_CS_LOW         PORTC &= ~(1<<6)
-#define ENC28J60_CS_HIGH        PORTC |= 1<<6
+#define ENC28J60_CS_HIGH asm volatile("bset PORTC, #6\n");
+#define ENC28J60_CS_LOW asm volatile("bclr PORTC, #6\n");
+
+//#define ENC28J60_CS_LOW         PORTC &= ~(1<<6)
+//#define ENC28J60_CS_HIGH        PORTC |= 1<<6
 
 #define ENC28J60_RST_LOW        PORTB &= ~(1<<9)
 #define ENC28J60_RST_HIGH       PORTB |= 1<<9
 
-#define ENC28J60_DelayShort()     do { volatile UI08_t i = 0; while (i++ < 25); } while(0);
+#define ENC28J60_DelayShort()    do {} while(0);// do { volatile UI08_t i = 0; while (i++ < 25); } while(0);
 
 #define ENC28J60_RXBUF_START    0
 #define ENC28J60_RXBUF_END      2047

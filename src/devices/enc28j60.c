@@ -42,31 +42,31 @@ static EthernetPacketHandlerInfo_t handlers[ETHERNET_HANDLERS_COUNT];
 void enc28j60WriteUint8(UI08_t reg, UI08_t value)
 {
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(WCR | (reg & 0x1F));
-    enc28j60_spi_transfer(value);
+    enc28j60_spi_write(WCR | (reg & 0x1F));
+    enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
 }
 void enc28j60BitSetUint8(UI08_t reg, UI08_t value)
 {
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(BFS | (reg & 0x1F));
-    enc28j60_spi_transfer(value);
+    enc28j60_spi_write(BFS | (reg & 0x1F));
+    enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
 }
 void enc28j60BitClrUint8(UI08_t reg, UI08_t value)
 {
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(BFC | (reg & 0x1F));
-    enc28j60_spi_transfer(value);
+    enc28j60_spi_write(BFC | (reg & 0x1F));
+    enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
 }
 
 void enc28j60WriteUint16(UI08_t reg, UI16_t value)
 {
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(WCR | (reg & 0x1F));
-    enc28j60_spi_transfer(value & 0x00FF);
-    enc28j60_spi_transfer((value & 0xFF00) >> 8);
+    enc28j60_spi_write(WCR | (reg & 0x1F));
+    enc28j60_spi_write(value & 0x00FF);
+    enc28j60_spi_write((value & 0xFF00) >> 8);
     ENC28J60_CS_HIGH;
 }
 
@@ -74,7 +74,7 @@ UI08_t enc28j60ReadUint8(UI08_t reg)
 {
     UI08_t d;
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(RCR | (reg & 0x1F));
+    enc28j60_spi_write(RCR | (reg & 0x1F));
     d = enc28j60_spi_read();
     ENC28J60_CS_HIGH;
 
@@ -85,9 +85,9 @@ UI08_t enc28j60ReadMacUint8(UI08_t reg)
 {
     UI08_t d;
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(RCR | (reg & 0x1F));
-    enc28j60_spi_transfer(0x00); // dummy
-    d = enc28j60_spi_transfer(0x00);
+    enc28j60_spi_write(RCR | (reg & 0x1F));
+    enc28j60_spi_write(0x00); // dummy
+    d = enc28j60_spi_read();
     ENC28J60_CS_HIGH;
 
     return d;
@@ -109,16 +109,16 @@ void enc28j60SetBank(enc28j60Register_t reg)
     if (currentBank == 3)
     {
         ENC28J60_CS_LOW;
-        enc28j60_spi_transfer(BFS | (ECON1 & 0x1F));
-        enc28j60_spi_transfer(0b11);
+        enc28j60_spi_write(BFS | (ECON1 & 0x1F));
+        enc28j60_spi_write(0b11);
         ENC28J60_CS_HIGH;
 
         return;
     }
     
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(BFC | (ECON1 & 0x1F));
-    enc28j60_spi_transfer(0b00000011);
+    enc28j60_spi_write(BFC | (ECON1 & 0x1F));
+    enc28j60_spi_write(0b00000011);
     ENC28J60_CS_HIGH;
     
     ENC28J60_DelayShort();
@@ -126,8 +126,8 @@ void enc28j60SetBank(enc28j60Register_t reg)
     if (currentBank > 0)
     {
         ENC28J60_CS_LOW;
-        enc28j60_spi_transfer(BFS | (ECON1 & 0x1F));
-        enc28j60_spi_transfer(currentBank);
+        enc28j60_spi_write(BFS | (ECON1 & 0x1F));
+        enc28j60_spi_write(currentBank);
         ENC28J60_CS_HIGH;
     }
 
@@ -138,7 +138,7 @@ void enc28j60WriteData(UI16_t memAddress, UI08_t* bf, UI16_t size)
     enc28j60WriteRegisterUint16(EWRPTL, memAddress);
 
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(WBM | 0x1A);
+    enc28j60_spi_write(WBM | 0x1A);
     enc28j60_spi_transferBytes(bf, NULL, size);
     ENC28J60_CS_HIGH;
 
@@ -149,7 +149,7 @@ void enc28j60ReadData(UI16_t memAddress, UI08_t* bf, UI16_t size)
     enc28j60WriteRegisterUint16(ERDPTL, memAddress);
 
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(RBM | 0x1A);
+    enc28j60_spi_write(RBM | 0x1A);
     enc28j60_spi_transferBytes(NULL, bf, size);
     ENC28J60_CS_HIGH;
 
@@ -260,18 +260,18 @@ UI16_t enc28j60ReadPhyRegisterUint16(UI08_t address)
     enc28j60BitClrRegisterUint8(MICMD, 0x01); // MIRD
 
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(RCR | (MIRDL & 0x1F));
-    enc28j60_spi_transfer(0);
-    temp = enc28j60_spi_transfer(0);
+    enc28j60_spi_write(RCR | (MIRDL & 0x1F));
+    enc28j60_spi_write(0);
+    temp = enc28j60_spi_read();
     
     ENC28J60_CS_HIGH;
 
     ENC28J60_DelayShort();
 
     ENC28J60_CS_LOW;
-    enc28j60_spi_transfer(RCR | ((MIRDL+1) & 0x1F));
-    enc28j60_spi_transfer(0);
-    temp |= enc28j60_spi_transfer(0) << 8;
+    enc28j60_spi_write(RCR | ((MIRDL+1) & 0x1F));
+    enc28j60_spi_write(0);
+    temp |= enc28j60_spi_read() << 8;
     ENC28J60_CS_HIGH;
     // write MIWR
     return temp;
