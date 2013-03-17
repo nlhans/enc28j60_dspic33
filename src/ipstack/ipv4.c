@@ -12,8 +12,6 @@ typedef struct Ipv4PacketHandlerInfo_s
 
 Ipv4PacketHandlerInfo_t Ipv4Handlers[IPV4_MAXIMUM_PROTOCOL_HANDLERS];
 
-void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled);
-
 void ipv4Init()
 {
     UI08_t i = 0 ;
@@ -76,8 +74,9 @@ void ipv4FireHandlers(EthernetIpv4_t* frame)
 
 void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled)
 {
-    EthernetIpv4_t* ipv4Header;
-    UI08_t headerSize = 0;
+    EthernetIpv4_t*         ipv4Header;
+    UI08_t                  headerSize;
+    
     if (frame->type == 0x0800)
     {
         // mark as 'done'

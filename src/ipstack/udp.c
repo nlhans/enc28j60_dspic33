@@ -28,6 +28,9 @@ void udpFirePacket(UDPPacket_t* packet)
 {
     UI08_t i =0 ;
     bool_t done= FALSE;
+#ifndef DEBUG_CONSOLE
+    uartTxByte('.');
+#endif
     while (i < UDP_MAX_HANDLERS && !done)
     {
         if(handlers[i].port == packet->udp.portDestination) // it matches our port

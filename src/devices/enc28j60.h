@@ -15,7 +15,7 @@ extern "C" {
 #include "types.h"
 #include "spi.h"
 
-//#define DEBUG_CONSOLE
+#define DEBUG_CONSOLE
 
 typedef union enc28j60Register_u
 {
@@ -221,9 +221,9 @@ typedef void (*EthernetPacketHandler_t) (EthernetFrame_t* frame, bool_t* handled
 #define ENC28J60_DelayShort()    do {} while(0);// do { volatile UI08_t i = 0; while (i++ < 25); } while(0);
 
 #define ENC28J60_RXBUF_START    0
-#define ENC28J60_RXBUF_END      2047
-#define ENC28J60_TXBUF_START    2048
-#define ENC28J60_TXBUF_END      4095
+#define ENC28J60_RXBUF_END      4095
+#define ENC28J60_TXBUF_START    4096
+#define ENC28J60_TXBUF_END      8191
 
 void enc28j60Initialize(UI08_t* mac);
 void enc28j60Reset(void);

@@ -2,6 +2,7 @@
 #include "spi.h"
 #include "uart.h"
 #include "enc28j60.h"
+#include "udp.h"
 
 #define ETHERNET_HANDLERS_COUNT 2
 
@@ -104,24 +105,14 @@ UI16_t enc28j60ReadUint16(UI08_t reg)
 
 void enc28j60SetBank(enc28j60Register_t reg)
 {
-    currentBank = reg.registerObj.bank & 0x3;
-
-    if (currentBank == 3)
+    if (currentBank > 0)
     {
         ENC28J60_CS_LOW;
-        enc28j60_spi_write(BFS | (ECON1 & 0x1F));
-        enc28j60_spi_write(0b11);
+        enc28j60_spi_write(BFC | (ECON1 & 0x1F));
+        enc28j60_spi_write(0b00000011);
         ENC28J60_CS_HIGH;
-
-        return;
     }
-    
-    ENC28J60_CS_LOW;
-    enc28j60_spi_write(BFC | (ECON1 & 0x1F));
-    enc28j60_spi_write(0b00000011);
-    ENC28J60_CS_HIGH;
-    
-    ENC28J60_DelayShort();
+    currentBank = reg.registerObj.bank & 0x3;
 
     if (currentBank > 0)
     {
@@ -135,7 +126,7 @@ void enc28j60SetBank(enc28j60Register_t reg)
 
 void enc28j60WriteData(UI16_t memAddress, UI08_t* bf, UI16_t size)
 {
-    enc28j60WriteRegisterUint16(EWRPTL, memAddress);
+    //enc28j60WriteRegisterUint16(EWRPTL, memAddress);
 
     ENC28J60_CS_LOW;
     enc28j60_spi_write(WBM | 0x1A);
@@ -418,10 +409,11 @@ void enc28j60RxFrame(UI08_t* packet, UI16_t length)
     UI08_t              packetHeader[6];
     EthernetFrame_t*    frame;
     UI08_t*             data;
+    bool_t              dummy = TRUE;
 
     while(packetCount > 0)
     {
-        memset(packet, 0, length); // 2 status bytes?
+        //memset(packet, 0, length); // 2 status bytes?
 
         // Move data ptr to start of packet
         enc28j60WriteRegisterUint16(ERDPTL, dataPtr);
@@ -433,6 +425,7 @@ void enc28j60RxFrame(UI08_t* packet, UI16_t length)
         UI16_t  packetSize          = packetHeader[2] | (packetHeader[3] << 8);
         UI16_t  receiveStatus       = packetHeader[4] | (packetHeader[5] << 8);
 
+        /*
         if (nextPacketOffset == 0xFFFF && packetSize > 1518)
         {
             dataPtr = ENC28J60_RXBUF_START;
@@ -443,21 +436,28 @@ void enc28j60RxFrame(UI08_t* packet, UI16_t length)
             }
             break;
         }
-
+        */
         if (((receiveStatus >> 4) & 0x1) == 0)
         {
             // CRC error
 
+            //if(packetSize>sizeof(UDPPacket_t)+32)
+            //    packetSize=sizeof(UDPPacket_t)+32;
             // Receive packet itself
-            SPI_SetDebug(1);
             enc28j60ReadData(dataPtr + 4, packet, packetSize+2-4); // -4 for CRC, +2 for some status bytes or something?
-            SPI_SetDebug(0);
 
             frame = (EthernetFrame_t*) (packet+2);
             frame-> type = htons(frame->type); // reverse byte order
             data = (UI08_t*) (packet + 2+sizeof(EthernetFrame_t));
 
-            enc28j60FireTxHandlers(frame);
+            dummy = FALSE;
+            ipv4HandlePacket(frame, &dummy);
+
+            if (dummy==FALSE)
+            {
+                arpProcessPacket(frame, &dummy);
+            }
+            //enc28j60FireTxHandlers(frame);
 
         }
         

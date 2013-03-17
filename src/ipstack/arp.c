@@ -10,7 +10,6 @@ UI08_t thisMac[6];
 UI08_t gatewayMac[6];
 
 void arpBuildPacket(UI08_t* senderMac, UI08_t* senderIp, UI08_t* targetMac, UI08_t* targetIp, bool_t reply);
-void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled);
 
 void arpInit()
 {

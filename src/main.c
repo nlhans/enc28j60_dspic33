@@ -10,8 +10,8 @@
 #include "tcp.h"
 #include <stdio.h>
 
-_FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
-_FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
+//_FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
+//_FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
 _FGS(GWRP_OFF & GCP_OFF)
 _FOSCSEL(FNOSC_FRCPLL & IESO_OFF)
 _FOSC(POSCMD_NONE & OSCIOFNC_ON & IOL1WAY_OFF & FCKSM_CSECME)
@@ -41,13 +41,12 @@ void    delay1ms()
         for(j=0;j<100;j++);
 }
 
-UI08_t frameBf[1518];
+UI08_t frameBf[1024];
 
 int main()
 {
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);   // blinky;
-
     SPI_Init();
     SPI_SetDebug(0);
     uartInit();
@@ -64,17 +63,22 @@ int main()
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
-    icmpInit();
     udpInit();
-    ntpInit();
     tcpInit();
+    icmpInit();
+    ntpInit();
     ntpRequest(ntpServer);
 
     while(1)
     {
         while (!enc28j60PacketPending());
+        enc28j60_reset_stat();
         enc28j60RxFrame(frameBf, sizeof(frameBf));
-
+        
+#ifdef DEBUG_CONSOLE
+        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
+        uartTxString(debugBuffer);
+#endif
     }
     while(1);
     return 0;

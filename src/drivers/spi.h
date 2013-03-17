@@ -24,6 +24,15 @@ UI08_t SPI_ReadWrite(UI08_t dat);
 void SPI_SetDebug(UI08_t on);
 void SPI_Init();
 
+UI08_t SPI_hw_Read();
+void SPI_hw_Write(UI08_t d);
+
+
+void enc28j60_reset_stat();
+UI16_t enc28j60_get_statRx();
+UI16_t enc28j60_get_statTx();
+
+#define SOFT_SPI
 
 extern UI16_t volatile spiReadByte;
 extern UI16_t volatile spiWriteByte;
@@ -32,8 +41,13 @@ extern UI16_t volatile spiWriteByte;
 //extern void spiWriteByteAsm(void);
 //#define spiReadByteAsm() spiReadByte = SPI_ReadWrite(0);
 //#define spiWriteByteAsm() SPI_ReadWrite(spiWriteByte);
+#ifdef SOFT_SPI
 #define spiReadByteAsm() asm volatile(" CALL spiReadByteS\n");
 #define spiWriteByteAsm() asm volatile(" CALL spiWriteByteS\n");
+#else
+#define spiReadByteAsm() spiReadByte = SPI_hw_Read();
+#define spiWriteByteAsm() SPI_hw_Write(spiWriteByte);
+#endif
 
 #ifdef	__cplusplus
 }
