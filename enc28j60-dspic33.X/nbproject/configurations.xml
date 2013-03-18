@@ -35,6 +35,7 @@
         <itemPath>../src/drivers/spi.c</itemPath>
         <itemPath>../src/drivers/uart.c</itemPath>
         <itemPath>spiAsm.s</itemPath>
+        <itemPath>addrErrLoc.s.s</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="ipstack" projectFiles="true">
         <itemPath>../src/ipstack/arp.c</itemPath>

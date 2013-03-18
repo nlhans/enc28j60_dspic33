@@ -10,15 +10,107 @@
 #include "tcp.h"
 #include <stdio.h>
 
-//_FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
-//_FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
+_FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
+_FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
 _FGS(GWRP_OFF & GCP_OFF)
 _FOSCSEL(FNOSC_FRCPLL & IESO_OFF)
 _FOSC(POSCMD_NONE & OSCIOFNC_ON & IOL1WAY_OFF & FCKSM_CSECME)
 _FWDT(WDTPOST_PS128 & WDTPRE_PR128 & WINDIS_OFF & FWDTEN_OFF)
 _FPOR(FPWRT_PWR1 & ALTI2C_OFF)
 _FICD(ICS_PGD2 & JTAGEN_OFF)
+
+UI16_t errStkLoc = 0;
+UI16_t errPrgLoc = 0;
+
+extern UI16_t getErrLoc(void);
+extern UI32_t MemReadLatch(UI08_t psvPag, UI16_t addr);
+
+typedef enum instPtrMode
+{
+    PtrMode_DirectAccess, // W
+    PtrMode_Ptr, // [W]
+    PtrMode_PtrPP, // [W++]
+    PtrMode_PtrMM, // [W--]
+    PtrMode_MMPtr, // [--W]
+    PtrMode_PPPtr, // [++W]
+    PtrMode_PtrW, // [W+W_secondary] (offset)
+} instPtrMode_t;
+
+bool_t wasWrite = FALSE;
+
+UI32_t instData;
+UI08_t i;
+
+UI08_t id;
+UI08_t srcAddr;
+instPtrMode_t srcAddrMode;
+UI08_t dstAddr;
+instPtrMode_t dstAddrMode;
+
+void __attribute__((__interrupt__)) _AddressError(void);
+void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
+{
+        errStkLoc   = (UI16_t)getErrLoc();
+        if(errStkLoc > 0x4000) asm volatile("reset");
+        errPrgLoc   = * ((UI16_t*)errStkLoc) ;
+
+
+        instData = MemReadLatch(0, errPrgLoc - 2);
         
+        sprintf(debugBuffer, "%lu\r\n", instData);
+        uartTxString(debugBuffer);
+
+        // parse the instruction, so that we know *what* register was used
+        // to read/write this.
+        id = instData >> 19;
+        if(id == 0b01111)
+        {
+            // 0111 1www wBhh hddd dggg ssss
+            // 0111 1000 0100 1000 1000 0000
+            // id
+            // w=offset work register, if required
+            // b=byte/word
+            // h=dst addr mode
+            // d=dst addr
+            // g=src addr mode
+            // s=src addr
+            srcAddrMode = (instPtrMode_t) ( (instData >> 4) & 0x7 );
+            dstAddrMode = (instPtrMode_t) ( (instData >> 11) & 0x7 );
+            srcAddr  = instData & 0xF;
+            dstAddr = (instData >> 7) & 0xF;
+
+            if (srcAddr != PtrMode_DirectAccess && dstAddr != PtrMode_DirectAccess)
+            {
+                // inconclusive
+                while(1);
+            }
+
+            if (srcAddr == PtrMode_DirectAccess && dstAddr != PtrMode_DirectAccess)
+            {
+                // We are writing to a pointer, which failed to access.
+                // Put back stack so after this , it's reexecuted.
+                *((UI16_t*)errStkLoc) = errPrgLoc-2;
+            }
+
+            if (dstAddr == 8)
+            {
+                // It's beyond normal XC16 stack
+                asm volatile("mov _normalRegAddr, W8");
+            }
+
+            uartTxString("MOV INS");
+            
+        }
+
+        sprintf(debugBuffer, "\r\nerr @ id %02X prg%04X @ stk %04X\r\n\r\n\r\n", id, errPrgLoc, errStkLoc);
+        uartTxString(debugBuffer);
+        
+        INTCON1bits.ADDRERR = 0;        //Clear the trap flag
+ //       while (1);
+}
+
+UI16_t normalReg;
+UI16_t normalRegAddr;
 
 #define LED_High  PORTB |= 1<<8
 #define LED_Low   PORTB &= ~(1<<8)
@@ -45,6 +137,8 @@ UI08_t frameBf[1024];
 
 int main()
 {
+    normalRegAddr = (UI16_t) (& normalReg);
+
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);   // blinky;
     SPI_Init();
@@ -69,6 +163,11 @@ int main()
     ntpInit();
     ntpRequest(ntpServer);
 
+    volatile UI08_t* nonexistingLocation = ((UI08_t*) 0xFFFF);
+    *nonexistingLocation = 12;
+    sprintf(debugBuffer, "%d", normalReg);
+    uartTxString(debugBuffer);
+    
     while(1)
     {
         while (!enc28j60PacketPending());
@@ -79,6 +178,10 @@ int main()
         sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
         uartTxString(debugBuffer);
 #endif
+        *nonexistingLocation = 1230;
+        sprintf(debugBuffer, "%d", normalReg);
+        uartTxString(debugBuffer);
+
     }
     while(1);
     return 0;

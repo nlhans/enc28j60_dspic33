@@ -349,9 +349,6 @@ void enc28j60Initialize(UI08_t* mac)
 
 void enc28j60TxFrame(EthernetFrame_t* packet, UI16_t length)
 {
-#ifdef DEBUG_CONSOLE
-    uartTxString("**** TX packet ****\r\n");
-#endif
     UI08_t controlByte = 0x00;
 
     // clear status/error flags
