@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include "23lc1024.h"
 
+#include "sram_defs.h"
+
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
 _FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
 _FGS(GWRP_OFF & GCP_OFF)
@@ -25,10 +27,6 @@ UI16_t errPrgLoc = 0;
 
 extern UI16_t getErrLoc(void);
 extern UI32_t MemReadLatch(UI08_t psvPag, UI16_t addr);
-
-volatile UI16_t normalReg;
-volatile UI16_t normalRegAddr;
-volatile UI16_t* nonexistingLocation = ((UI16_t*) 0xFFFF);
 
 #define LED_High  PORTB |= 1<<8
 #define LED_Low   PORTB &= ~(1<<8)
@@ -57,6 +55,7 @@ typedef enum instPtrMode
 bool_t wasWrite = FALSE;
 
 UI32_t instData;
+UI16_t normalRegAddr;
 UI08_t i;
 
 UI08_t id;
@@ -64,6 +63,9 @@ UI08_t srcAddr;
 instPtrMode_t srcAddrMode;
 UI08_t dstAddr;
 instPtrMode_t dstAddrMode;
+
+UI16_t resolvedSrcAddr;
+UI16_t resolvedDstAddr;
 
 void __attribute__((__interrupt__)) _AddressError(void);
 void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
@@ -74,7 +76,9 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
         errPrgLoc   = * ((UI16_t*)errStkLoc) ;
         
         instData = MemReadLatch(0, errPrgLoc - 2);
-        
+
+        normalRegAddr = sram_fault(0xFFFF);
+
         sprintf(debugBuffer, "%lu\r\n", instData);
         uartTxString(debugBuffer);
 
@@ -110,6 +114,33 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
                 *((UI16_t*)errStkLoc) = errPrgLoc-2;
             }
 
+            if (srcAddrMode == PtrMode_DirectAccess)
+            {
+                // 7-14 is beyond normal XC16 stack
+                if (dstAddr < 7)
+                {
+                    // prgStk + 0x06 -> W0?
+                    // prgLoc = 0x1010
+                    // W0 = 0x1016
+                    // W1 = 0x1018 etc
+                    //0-7, is in stack
+                    resolvedSrcAddr = *((UI16_t*)(errStkLoc + 0x06 + srcAddr*0x2));
+                }
+                else
+                {
+                    //
+                }
+                
+            }
+
+            sprintf(debugBuffer, "MOV W%d, [W%d]  (MOV {%d}, {%d}) || %04X\r\n", srcAddr, dstAddr, srcAddrMode, dstAddrMode, resolvedSrcAddr);
+            uartTxString(debugBuffer);
+            
+        }
+
+        // read/modify etc.
+        if (wasWrite)
+        {
             // 7-14 is beyond normal XC16 stack
             if (dstAddr < 7)
             {
@@ -152,10 +183,6 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             {
                 asm volatile("mov _normalRegAddr, W14");
             }
-
-            sprintf(debugBuffer, "MOV W%d, [W%d]  (MOV {%d}, {%d})\r\n", srcAddr, dstAddr, srcAddrMode, dstAddrMode);
-            uartTxString(debugBuffer);
-            
         }
 
         sprintf(debugBuffer, "\r\nerr @ id %02X prg%04X @ stk %04X\r\n\r\n\r\n", id, errPrgLoc, errStkLoc);
@@ -181,7 +208,6 @@ UI08_t sramBf[64];
 int main()
 {
     UI08_t i,j;
-    normalRegAddr = (UI16_t) (& normalReg);
 
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);   // blinky;
@@ -199,14 +225,14 @@ int main()
     LED_High;
 
     sram_23lc1024_init();
-    arpInit();
+    /*arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
     udpInit();
     tcpInit();
     icmpInit();
     ntpInit();
-    ntpRequest(ntpServer);
+    ntpRequest(ntpServer);*/
 
     sram_23lc1024_read(0,0, sramBf, 64);
     j=0;
@@ -234,16 +260,11 @@ int main()
         }
     }
 
-    normalReg = 0;
-    *nonexistingLocation = 12;
-    
-    sprintf(debugBuffer, "0x%04X!!\r\n", normalReg);
-    uartTxString(debugBuffer);
+    *myVariable = 1024;
+    myLarge->d = 123456;
+    myLarge->data[0] = 0;
+    while(1);
 
-    *nonexistingLocation = 1230;
-
-    sprintf(debugBuffer, "0x%04X!!\r\n", normalReg);
-    uartTxString(debugBuffer);
     while(1)
     {
 
@@ -252,7 +273,7 @@ int main()
         enc28j60RxFrame(frameBf, sizeof(frameBf));
         
 #ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d, normal reg %04X\r\n", enc28j60_get_statRx(), enc28j60_get_statTx(), normalReg);
+        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
         uartTxString(debugBuffer);
 #endif
         

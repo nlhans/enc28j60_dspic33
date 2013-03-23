@@ -1,7 +1,7 @@
-build/default/production/_ext/1360937237/main.o:  \
+build/default/debug/_ext/1360937237/main.o:  \
 ../src/main.c  \
- ../src/types.h  \
-../src/drivers/spi.h  \
+../src/types.h  \
+ ../src/drivers/spi.h  \
 ../src/types.h  \
 ../src/drivers/uart.h  \
  ../src/devices/enc28j60.h  \

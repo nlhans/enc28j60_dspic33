@@ -17,8 +17,8 @@ extern "C" {
 
 typedef struct memMngEntry_s
 {
+    UI16_t size;
     UI08_t isArray;
-    UI16_t size:15;
 } memMngEntry_t;
 
 #define cPreProcConcat(a,b) a##b
@@ -26,9 +26,13 @@ typedef struct memMngEntry_s
 #define SRAM_MEM_COUNT_VARIABLE(t,n) cPreProcConcat(memMngVar, n)   ,
 #define SRAM_MEM_COUNT_ARRAY(t,n,c) cPreProcConcat(memMngArr, n)    ,
 
-#define SRAM_MEM_CREATE(t,n) t* n = (t*) (0xFFFF-__COUNTER__);
+#define SRAM_MEM_CREATE(t,n) t* n = (t*) (0xAFFF-__COUNTER__);
 #define SRAM_MEM_CREATE_VARIABLE(t,n) SRAM_MEM_CREATE(t,n)
 #define SRAM_MEM_CREATE_ARRAY(t,n,c) SRAM_MEM_CREATE(t*,n)
+
+#define SRAM_MEM_EXT_CREATE(t,n) extern t* n;
+#define SRAM_MEM_EXT_CREATE_VARIABLE(t,n) SRAM_MEM_EXT_CREATE(t,n)
+#define SRAM_MEM_EXT_CREATE_ARRAY(t,n,c) SRAM_MEM_EXT_CREATE(t*,n)
 
 #define SRAM_MEM_TABLE_VARIABLE(t,n)    { sizeof(t), 0},
 #define SRAM_MEM_TABLE_ARRAY(t,n,c)     { sizeof(t)*c, 1},
@@ -39,13 +43,11 @@ enum
     MEM_MNG_ENTRIES
 };
 
-SRAM_TABLE(SRAM_MEM_CREATE_VARIABLE, SRAM_MEM_CREATE_ARRAY)
+SRAM_TABLE(SRAM_MEM_EXT_CREATE_VARIABLE, SRAM_MEM_EXT_CREATE_ARRAY)
 
-const static memMngEntry_t memMngEntries[MEM_MNG_ENTRIES] = {
-    SRAM_TABLE(SRAM_MEM_TABLE_VARIABLE, SRAM_MEM_TABLE_ARRAY)
-};
+const extern memMngEntry_t memMngEntries[MEM_MNG_ENTRIES];
 
-volatile UI16_t memMngOffsets[MEM_MNG_ENTRIES];
+UI08_t* sram_fault(UI16_t addr);
 
 #ifdef	__cplusplus
 }
