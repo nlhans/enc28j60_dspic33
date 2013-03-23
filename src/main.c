@@ -9,6 +9,7 @@
 #include "ntp.h"
 #include "tcp.h"
 #include <stdio.h>
+#include "23lc1024.h"
 
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
 _FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
@@ -24,6 +25,23 @@ UI16_t errPrgLoc = 0;
 
 extern UI16_t getErrLoc(void);
 extern UI32_t MemReadLatch(UI08_t psvPag, UI16_t addr);
+
+volatile UI16_t normalReg;
+volatile UI16_t normalRegAddr;
+volatile UI16_t* nonexistingLocation = ((UI16_t*) 0xFFFF);
+
+#define LED_High  PORTB |= 1<<8
+#define LED_Low   PORTB &= ~(1<<8)
+
+#define RST_High  PORTB |= 1<<9
+#define RST_Low   PORTB &= ~(1<<9)
+
+UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
+UI08_t ip[4]            = {192, 168, 1, 123};
+UI08_t gateway[4]       = {192, 168, 1, 1};
+UI08_t pc[4]       = {192, 168, 1, 147};
+UI08_t ntpServer[4] = {194, 171, 167, 130};
+
 
 typedef enum instPtrMode
 {
@@ -100,6 +118,7 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
                 // W0 = 0x1016
                 // W1 = 0x1018 etc
                 //0-7, is in stack
+                *((UI16_t*)(errStkLoc + 0x06 + dstAddr*0x2)) = normalRegAddr;
             }
             else if (dstAddr == 7)
             {
@@ -146,21 +165,6 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
  //       while (1);
 }
 
-volatile UI16_t normalReg;
-volatile UI16_t normalRegAddr;
-
-#define LED_High  PORTB |= 1<<8
-#define LED_Low   PORTB &= ~(1<<8)
-
-#define RST_High  PORTB |= 1<<9
-#define RST_Low   PORTB &= ~(1<<9)
-
-UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
-UI08_t ip[4]            = {192, 168, 1, 123};
-UI08_t gateway[4]       = {192, 168, 1, 1};
-UI08_t pc[4]       = {192, 168, 1, 147};
-UI08_t ntpServer[4] = {194, 171, 167, 130};
-
 void    delay1ms()
 {
     volatile UI08_t i = 0;
@@ -172,8 +176,11 @@ void    delay1ms()
 
 UI08_t frameBf[1024];
 
+UI08_t sramBf[64];
+
 int main()
 {
+    UI08_t i,j;
     normalRegAddr = (UI16_t) (& normalReg);
 
     AD1PCFGL = 0xFFFF;
@@ -191,6 +198,7 @@ int main()
     SPI_SetDebug(0);
     LED_High;
 
+    sram_23lc1024_init();
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
@@ -200,8 +208,33 @@ int main()
     ntpInit();
     ntpRequest(ntpServer);
 
+    sram_23lc1024_read(0,0, sramBf, 64);
+    j=0;
+    for (i=0;i < 64; i++)
+    {
+        if (sramBf[i] != 0xAA-i)
+            j=1;
+    }
+    if(j==0)
+        uartTxString("Warm boot\r\n");
+    else
+        uartTxString("Cold boot\r\n");
+
+    for (i = 0; i < 64; i++)
+        sramBf[i] = 0xAA-i;
+    sram_23lc1024_write(0, 0, sramBf, 64);
+    memset(sramBf,0,64);
+    sram_23lc1024_read(0,0, sramBf, 64);
+
+    for (i=0;i < 64; i++)
+    {
+        if(sramBf[i] != 0xAA-i)
+        {
+            uartTxString("err\r\n");
+        }
+    }
+
     normalReg = 0;
-    volatile UI08_t* nonexistingLocation = ((UI08_t*) 0xFFFF);
     *nonexistingLocation = 12;
     
     sprintf(debugBuffer, "0x%04X!!\r\n", normalReg);
@@ -219,7 +252,7 @@ int main()
         enc28j60RxFrame(frameBf, sizeof(frameBf));
         
 #ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d, normal reg %d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx(), normalReg);
+        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d, normal reg %04X\r\n", enc28j60_get_statRx(), enc28j60_get_statTx(), normalReg);
         uartTxString(debugBuffer);
 #endif
         

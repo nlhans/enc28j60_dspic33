@@ -45,11 +45,11 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/spiAsm.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o ${OBJECTDIR}/_ext/1733914311/tcp.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/addrErrLoc.s.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o.d ${OBJECTDIR}/_ext/1639450193/spi.o.d ${OBJECTDIR}/_ext/1639450193/uart.o.d ${OBJECTDIR}/spiAsm.o.d ${OBJECTDIR}/_ext/1733914311/arp.o.d ${OBJECTDIR}/_ext/1733914311/icmp.o.d ${OBJECTDIR}/_ext/1733914311/ipv4.o.d ${OBJECTDIR}/_ext/1733914311/ntp.o.d ${OBJECTDIR}/_ext/1733914311/udp.o.d ${OBJECTDIR}/_ext/1733914311/tcp.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d ${OBJECTDIR}/addrErrLoc.s.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o ${OBJECTDIR}/_ext/1733914311/tcp.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1278887395/23lc1024.o ${OBJECTDIR}/_ext/1639450193/spiAsm.o ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o ${OBJECTDIR}/_ext/1639450193/sram.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o.d ${OBJECTDIR}/_ext/1639450193/spi.o.d ${OBJECTDIR}/_ext/1639450193/uart.o.d ${OBJECTDIR}/_ext/1733914311/arp.o.d ${OBJECTDIR}/_ext/1733914311/icmp.o.d ${OBJECTDIR}/_ext/1733914311/ipv4.o.d ${OBJECTDIR}/_ext/1733914311/ntp.o.d ${OBJECTDIR}/_ext/1733914311/udp.o.d ${OBJECTDIR}/_ext/1733914311/tcp.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d ${OBJECTDIR}/_ext/1278887395/23lc1024.o.d ${OBJECTDIR}/_ext/1639450193/spiAsm.o.d ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d ${OBJECTDIR}/_ext/1639450193/sram.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/spiAsm.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o ${OBJECTDIR}/_ext/1733914311/tcp.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/addrErrLoc.s.o
+OBJECTFILES=${OBJECTDIR}/_ext/1278887395/enc28j60.o ${OBJECTDIR}/_ext/1639450193/spi.o ${OBJECTDIR}/_ext/1639450193/uart.o ${OBJECTDIR}/_ext/1733914311/arp.o ${OBJECTDIR}/_ext/1733914311/icmp.o ${OBJECTDIR}/_ext/1733914311/ipv4.o ${OBJECTDIR}/_ext/1733914311/ntp.o ${OBJECTDIR}/_ext/1733914311/udp.o ${OBJECTDIR}/_ext/1733914311/tcp.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1278887395/23lc1024.o ${OBJECTDIR}/_ext/1639450193/spiAsm.o ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o ${OBJECTDIR}/_ext/1639450193/sram.o
 
 
 CFLAGS=
@@ -133,6 +133,18 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/_ext/1278887395/23lc1024.o: ../src/devices/23lc1024.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
+	@${RM} ${OBJECTDIR}/_ext/1278887395/23lc1024.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1639450193/sram.o: ../src/drivers/sram.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
+	@${RM} ${OBJECTDIR}/_ext/1639450193/sram.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/sram.c  -o ${OBJECTDIR}/_ext/1639450193/sram.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/sram.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/sram.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 else
 ${OBJECTDIR}/_ext/1278887395/enc28j60.o: ../src/devices/enc28j60.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
@@ -194,35 +206,47 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
+${OBJECTDIR}/_ext/1278887395/23lc1024.o: ../src/devices/23lc1024.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
+	@${RM} ${OBJECTDIR}/_ext/1278887395/23lc1024.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
+${OBJECTDIR}/_ext/1639450193/sram.o: ../src/drivers/sram.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
+	@${RM} ${OBJECTDIR}/_ext/1639450193/sram.o.d 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/sram.c  -o ${OBJECTDIR}/_ext/1639450193/sram.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/sram.o.d"        -g -omf=elf -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -msmart-io=1 -Wall -msfr-warn=off
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/sram.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
+	
 endif
 
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/spiAsm.o: spiAsm.s  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
-	@${RM} ${OBJECTDIR}/spiAsm.o.d 
-	${MP_CC} $(MP_EXTRA_AS_PRE)  spiAsm.s  -o ${OBJECTDIR}/spiAsm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -Wa,-MD,"${OBJECTDIR}/spiAsm.o.d",--defsym=__MPLAB_BUILD=1,--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PICKIT2=1,-g,--no-relax$(MP_EXTRA_AS_POST)
-	@${FIXDEPS} "${OBJECTDIR}/spiAsm.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1639450193/spiAsm.o: ../src/drivers/spiAsm.s  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
+	@${RM} ${OBJECTDIR}/_ext/1639450193/spiAsm.o.d 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  ../src/drivers/spiAsm.s  -o ${OBJECTDIR}/_ext/1639450193/spiAsm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -Wa,-MD,"${OBJECTDIR}/_ext/1639450193/spiAsm.o.d",--defsym=__MPLAB_BUILD=1,--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PICKIT2=1,-g,--no-relax$(MP_EXTRA_AS_POST)
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/spiAsm.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/addrErrLoc.s.o: addrErrLoc.s.s  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
-	@${RM} ${OBJECTDIR}/addrErrLoc.s.o.d 
-	${MP_CC} $(MP_EXTRA_AS_PRE)  addrErrLoc.s.s  -o ${OBJECTDIR}/addrErrLoc.s.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -Wa,-MD,"${OBJECTDIR}/addrErrLoc.s.o.d",--defsym=__MPLAB_BUILD=1,--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PICKIT2=1,-g,--no-relax$(MP_EXTRA_AS_POST)
-	@${FIXDEPS} "${OBJECTDIR}/addrErrLoc.s.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o: ../src/addrErrLoc.s.s  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1360937237 
+	@${RM} ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  ../src/addrErrLoc.s.s  -o ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -Wa,-MD,"${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d",--defsym=__MPLAB_BUILD=1,--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_PICKIT2=1,-g,--no-relax$(MP_EXTRA_AS_POST)
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
 	
 else
-${OBJECTDIR}/spiAsm.o: spiAsm.s  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
-	@${RM} ${OBJECTDIR}/spiAsm.o.d 
-	${MP_CC} $(MP_EXTRA_AS_PRE)  spiAsm.s  -o ${OBJECTDIR}/spiAsm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -omf=elf -Wa,-MD,"${OBJECTDIR}/spiAsm.o.d",--defsym=__MPLAB_BUILD=1,-g,--no-relax$(MP_EXTRA_AS_POST)
-	@${FIXDEPS} "${OBJECTDIR}/spiAsm.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1639450193/spiAsm.o: ../src/drivers/spiAsm.s  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
+	@${RM} ${OBJECTDIR}/_ext/1639450193/spiAsm.o.d 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  ../src/drivers/spiAsm.s  -o ${OBJECTDIR}/_ext/1639450193/spiAsm.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -omf=elf -Wa,-MD,"${OBJECTDIR}/_ext/1639450193/spiAsm.o.d",--defsym=__MPLAB_BUILD=1,-g,--no-relax$(MP_EXTRA_AS_POST)
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/spiAsm.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/addrErrLoc.s.o: addrErrLoc.s.s  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} ${OBJECTDIR} 
-	@${RM} ${OBJECTDIR}/addrErrLoc.s.o.d 
-	${MP_CC} $(MP_EXTRA_AS_PRE)  addrErrLoc.s.s  -o ${OBJECTDIR}/addrErrLoc.s.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -omf=elf -Wa,-MD,"${OBJECTDIR}/addrErrLoc.s.o.d",--defsym=__MPLAB_BUILD=1,-g,--no-relax$(MP_EXTRA_AS_POST)
-	@${FIXDEPS} "${OBJECTDIR}/addrErrLoc.s.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
+${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o: ../src/addrErrLoc.s.s  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} ${OBJECTDIR}/_ext/1360937237 
+	@${RM} ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  ../src/addrErrLoc.s.s  -o ${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -omf=elf -Wa,-MD,"${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d",--defsym=__MPLAB_BUILD=1,-g,--no-relax$(MP_EXTRA_AS_POST)
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/addrErrLoc.s.o.d"  $(SILENT)  -rsi ${MP_CC_DIR}../  
 	
 endif
 

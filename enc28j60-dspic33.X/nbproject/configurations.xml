@@ -6,9 +6,11 @@
                    projectFiles="true">
       <logicalFolder name="f3" displayName="devices" projectFiles="true">
         <itemPath>../src/devices/enc28j60.h</itemPath>
+        <itemPath>../src/devices/23lc1024.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="drivers" projectFiles="true">
         <itemPath>../src/drivers/spi.h</itemPath>
+        <itemPath>../src/drivers/sram.h</itemPath>
         <itemPath>../src/drivers/uart.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="ipstack" projectFiles="true">
@@ -20,6 +22,7 @@
         <itemPath>../src/ipstack/tcp.h</itemPath>
       </logicalFolder>
       <itemPath>../src/types.h</itemPath>
+      <itemPath>../src/sram_defs.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -30,12 +33,13 @@
                    projectFiles="true">
       <logicalFolder name="f3" displayName="devices" projectFiles="true">
         <itemPath>../src/devices/enc28j60.c</itemPath>
+        <itemPath>../src/devices/23lc1024.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="drivers" projectFiles="true">
         <itemPath>../src/drivers/spi.c</itemPath>
         <itemPath>../src/drivers/uart.c</itemPath>
-        <itemPath>spiAsm.s</itemPath>
-        <itemPath>addrErrLoc.s.s</itemPath>
+        <itemPath>../src/drivers/spiAsm.s</itemPath>
+        <itemPath>../src/drivers/sram.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="ipstack" projectFiles="true">
         <itemPath>../src/ipstack/arp.c</itemPath>
@@ -46,6 +50,7 @@
         <itemPath>../src/ipstack/tcp.c</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
+      <itemPath>../src/addrErrLoc.s.s</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

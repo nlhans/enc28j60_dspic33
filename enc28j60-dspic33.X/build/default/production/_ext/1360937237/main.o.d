@@ -12,4 +12,5 @@ build/default/production/_ext/1360937237/main.o:  \
 ../src/ipstack/udp.h  \
  ../src/ipstack/ntp.h  \
 ../src/ipstack/udp.h  \
-../src/ipstack/tcp.h 
+../src/ipstack/tcp.h  \
+ ../src/devices/23lc1024.h 
