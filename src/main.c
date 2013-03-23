@@ -51,10 +51,10 @@ void __attribute__((__interrupt__)) _AddressError(void);
 void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
 {
         errStkLoc   = (UI16_t)getErrLoc();
-        if(errStkLoc > 0x4000) asm volatile("reset");
+        if(errStkLoc > 0x4000) //16kiB of RAM
+            asm volatile("reset");
         errPrgLoc   = * ((UI16_t*)errStkLoc) ;
-
-
+        
         instData = MemReadLatch(0, errPrgLoc - 2);
         
         sprintf(debugBuffer, "%lu\r\n", instData);
@@ -63,7 +63,7 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
         // parse the instruction, so that we know *what* register was used
         // to read/write this.
         id = instData >> 19;
-        if(id == 0b01111)
+        if (id == 0b01111)
         {
             // 0111 1www wBhh hddd dggg ssss
             // 0111 1000 0100 1000 1000 0000
@@ -74,31 +74,68 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             // d=dst addr
             // g=src addr mode
             // s=src addr
-            srcAddrMode = (instPtrMode_t) ( (instData >> 4) & 0x7 );
+            srcAddrMode = (instPtrMode_t) ( (instData >> 4)  & 0x7 );
             dstAddrMode = (instPtrMode_t) ( (instData >> 11) & 0x7 );
             srcAddr  = instData & 0xF;
             dstAddr = (instData >> 7) & 0xF;
 
-            if (srcAddr != PtrMode_DirectAccess && dstAddr != PtrMode_DirectAccess)
+            if (srcAddrMode != PtrMode_DirectAccess && dstAddrMode != PtrMode_DirectAccess)
             {
                 // inconclusive
                 while(1);
             }
 
-            if (srcAddr == PtrMode_DirectAccess && dstAddr != PtrMode_DirectAccess)
+            if (srcAddrMode == PtrMode_DirectAccess && dstAddrMode != PtrMode_DirectAccess)
             {
                 // We are writing to a pointer, which failed to access.
                 // Put back stack so after this , it's reexecuted.
                 *((UI16_t*)errStkLoc) = errPrgLoc-2;
             }
 
-            if (dstAddr == 8)
+            // 7-14 is beyond normal XC16 stack
+            if (dstAddr < 7)
             {
-                // It's beyond normal XC16 stack
+                // prgStk + 0x06 -> W0?
+                // prgLoc = 0x1010
+                // W0 = 0x1016
+                // W1 = 0x1018 etc
+                //0-7, is in stack
+            }
+            else if (dstAddr == 7)
+            {
+                asm volatile("mov _normalRegAddr, W7");
+            }
+            else if (dstAddr == 8)
+            {
                 asm volatile("mov _normalRegAddr, W8");
             }
+            else if (dstAddr == 9)
+            {
+                asm volatile("mov _normalRegAddr, W9");
+            }
+            else if (dstAddr == 10)
+            {
+                asm volatile("mov _normalRegAddr, W10");
+            }
+            else if (dstAddr == 11)
+            {
+                asm volatile("mov _normalRegAddr, W11");
+            }
+            else if (dstAddr == 12)
+            {
+                asm volatile("mov _normalRegAddr, W12");
+            }
+            else if (dstAddr == 13)
+            {
+                asm volatile("mov _normalRegAddr, W13");
+            }
+            else if (dstAddr == 14)
+            {
+                asm volatile("mov _normalRegAddr, W14");
+            }
 
-            uartTxString("MOV INS");
+            sprintf(debugBuffer, "MOV W%d, [W%d]  (MOV {%d}, {%d})\r\n", srcAddr, dstAddr, srcAddrMode, dstAddrMode);
+            uartTxString(debugBuffer);
             
         }
 
@@ -109,8 +146,8 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
  //       while (1);
 }
 
-UI16_t normalReg;
-UI16_t normalRegAddr;
+volatile UI16_t normalReg;
+volatile UI16_t normalRegAddr;
 
 #define LED_High  PORTB |= 1<<8
 #define LED_Low   PORTB &= ~(1<<8)
@@ -163,24 +200,29 @@ int main()
     ntpInit();
     ntpRequest(ntpServer);
 
+    normalReg = 0;
     volatile UI08_t* nonexistingLocation = ((UI08_t*) 0xFFFF);
     *nonexistingLocation = 12;
-    sprintf(debugBuffer, "%d", normalReg);
-    uartTxString(debugBuffer);
     
+    sprintf(debugBuffer, "0x%04X!!\r\n", normalReg);
+    uartTxString(debugBuffer);
+
+    *nonexistingLocation = 1230;
+
+    sprintf(debugBuffer, "0x%04X!!\r\n", normalReg);
+    uartTxString(debugBuffer);
     while(1)
     {
+
         while (!enc28j60PacketPending());
         enc28j60_reset_stat();
         enc28j60RxFrame(frameBf, sizeof(frameBf));
         
 #ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
+        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d, normal reg %d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx(), normalReg);
         uartTxString(debugBuffer);
 #endif
-        *nonexistingLocation = 1230;
-        sprintf(debugBuffer, "%d", normalReg);
-        uartTxString(debugBuffer);
+        
 
     }
     while(1);
