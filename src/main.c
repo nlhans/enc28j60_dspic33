@@ -58,7 +58,16 @@ UI32_t instData;
 UI16_t normalRegAddr;
 UI08_t i;
 
-UI08_t id;
+UI08_t id4;
+UI08_t id5;
+UI08_t id6;
+UI08_t id6;
+UI08_t id7;
+UI08_t id8;
+UI16_t id9;
+UI16_t id10;
+UI16_t id11;
+UI16_t id12;
 UI08_t srcAddr;
 instPtrMode_t srcAddrMode;
 UI08_t dstAddr;
@@ -77,15 +86,47 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
         
         instData = MemReadLatch(0, errPrgLoc - 2);
 
-        normalRegAddr = sram_fault(0xFFFF);
-
-        sprintf(debugBuffer, "%lu\r\n", instData);
-        uartTxString(debugBuffer);
-
         // parse the instruction, so that we know *what* register was used
         // to read/write this.
-        id = instData >> 19;
-        if (id == 0b01111)
+        id12 = instData >> 12;
+        id11 = id12 >> 1;
+        id10 = id11 >> 1;
+        id9 = id10 >> 1;
+        id8 = id9 >> 1;
+        id7 = id8 >> 1;
+        id6 = id7 >> 1;
+        id5 = id6 >> 1;
+        id4 = id5 >> 1;
+        //id5 = instData >> 19;
+
+        srcAddrMode = (instPtrMode_t) ( (instData >> 4)  & 0x7 );
+        dstAddrMode = (instPtrMode_t) ( (instData >> 11) & 0x7 );
+        srcAddr  = instData & 0xF;
+        dstAddr = (instData >> 7) & 0xF;
+        
+        if (id12 == 0b101111100000) // mov.d
+        {
+            dstAddrMode = PtrMode_DirectAccess;
+            uartTxString("MOV.D [W], W\r\n");
+        }
+        if (id10 == 0b1011111010) // mov.d
+        {
+            srcAddrMode = PtrMode_DirectAccess;
+            uartTxString("MOV.D W, [W]\r\n");
+        }
+        if (id5 == 0b10011) // MOV W, [W+slit10]
+        {
+            srcAddrMode = PtrMode_DirectAccess;
+            dstAddrMode = PtrMode_PtrW;
+            uartTxString("MOV W, [W+0xSS]\r\n");
+        }
+        if (id9 == 0b111010110) // CLR W
+        {
+            srcAddr = 0;
+            srcAddrMode = PtrMode_DirectAccess;
+            uartTxString("CLR [W]\r\n");
+        }
+        if (id5 == 0b01111)
         {
             // 0111 1www wBhh hddd dggg ssss
             // 0111 1000 0100 1000 1000 0000
@@ -96,47 +137,102 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             // d=dst addr
             // g=src addr mode
             // s=src addr
-            srcAddrMode = (instPtrMode_t) ( (instData >> 4)  & 0x7 );
-            dstAddrMode = (instPtrMode_t) ( (instData >> 11) & 0x7 );
-            srcAddr  = instData & 0xF;
-            dstAddr = (instData >> 7) & 0xF;
-
-            if (srcAddrMode != PtrMode_DirectAccess && dstAddrMode != PtrMode_DirectAccess)
-            {
-                // inconclusive
-                while(1);
-            }
-
-            if (srcAddrMode == PtrMode_DirectAccess && dstAddrMode != PtrMode_DirectAccess)
-            {
-                // We are writing to a pointer, which failed to access.
-                // Put back stack so after this , it's reexecuted.
-                *((UI16_t*)errStkLoc) = errPrgLoc-2;
-            }
-
-            if (srcAddrMode == PtrMode_DirectAccess)
-            {
-                // 7-14 is beyond normal XC16 stack
-                if (dstAddr < 7)
-                {
-                    // prgStk + 0x06 -> W0?
-                    // prgLoc = 0x1010
-                    // W0 = 0x1016
-                    // W1 = 0x1018 etc
-                    //0-7, is in stack
-                    resolvedSrcAddr = *((UI16_t*)(errStkLoc + 0x06 + srcAddr*0x2));
-                }
-                else
-                {
-                    //
-                }
-                
-            }
-
-            sprintf(debugBuffer, "MOV W%d, [W%d]  (MOV {%d}, {%d}) || %04X\r\n", srcAddr, dstAddr, srcAddrMode, dstAddrMode, resolvedSrcAddr);
-            uartTxString(debugBuffer);
+            uartTxString("MOV W, [W+]\r\n");
             
         }
+        sprintf(debugBuffer, "INST SRC %d, DST %d || (MOV {%d}, {%d})\r\n", srcAddr, dstAddr, srcAddrMode, dstAddrMode);
+        uartTxString(debugBuffer);
+
+
+        // Is it write?
+        if (srcAddrMode == PtrMode_DirectAccess && dstAddrMode != PtrMode_DirectAccess)
+        {
+            wasWrite=TRUE;
+            // We are writing to a pointer, which failed to access.
+            // Put back stack so after this , it's reexecuted.
+            *((UI16_t*)errStkLoc) = errPrgLoc-2;
+        }
+        else
+        {
+            wasWrite=FALSE;
+            // we don't have to adjust the ptr, because reads are reexecuted
+        }
+
+        // resolve src
+        if (srcAddrMode == PtrMode_DirectAccess)
+        {
+            // 7-14 is beyond normal XC16 stack
+            if (srcAddr < 7)
+            {
+                // prgStk + 0x06 -> W0?
+                // prgLoc = 0x1010
+                // W0 = 0x1016
+                // W1 = 0x1018 etc
+                //0-7, is in stack
+                resolvedSrcAddr = *((UI16_t*)(errStkLoc + 0x06 + srcAddr*0x2));
+            }
+            else
+            {
+                //
+            }
+
+        }
+
+        // resolve src
+        if (dstAddrMode != PtrMode_DirectAccess)
+        {
+            // 7-14 is beyond normal XC16 stack
+            if (dstAddr < 7)
+            {
+                // prgStk + 0x06 -> W0?
+                // prgLoc = 0x1010
+                // W0 = 0x1016
+                // W1 = 0x1018 etc
+                //0-7, is in stack
+                resolvedDstAddr = *((UI16_t*)(errStkLoc + 0x06 + dstAddr*0x2));
+            }
+            else if (dstAddr == 7)
+            {
+                asm volatile("mov W7, _resolvedDstAddr");
+            }
+            else if (dstAddr == 8)
+            {
+                asm volatile("mov W8, _resolvedDstAddr");
+            }
+            else if (dstAddr == 9)
+            {
+                asm volatile("mov W9, _resolvedDstAddr");
+            }
+            else if (dstAddr == 10)
+            {
+                asm volatile("mov W10, _resolvedDstAddr");
+            }
+            else if (dstAddr == 11)
+            {
+                asm volatile("mov W11, _resolvedDstAddr");
+            }
+            else if (dstAddr == 12)
+            {
+                asm volatile("mov W12, _resolvedDstAddr");
+            }
+            else if (dstAddr == 13)
+            {
+                asm volatile("mov W13, _resolvedDstAddr");
+            }
+            else if (dstAddr == 14)
+            {
+                asm volatile("mov W14, _resolvedDstAddr");
+            }
+
+        }
+
+        if (wasWrite)
+            normalRegAddr = sram_fault(resolvedDstAddr);
+        else
+            normalRegAddr = sram_fault(resolvedSrcAddr);
+
+        sprintf(debugBuffer, "%lu, WR %d, SRC %04X, DST %04X\r\n", instData, wasWrite, resolvedSrcAddr, resolvedDstAddr);
+        uartTxString(debugBuffer);
 
         // read/modify etc.
         if (wasWrite)
@@ -183,9 +279,16 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             {
                 asm volatile("mov _normalRegAddr, W14");
             }
+            sprintf(debugBuffer, "WRITE %04X from %02d\r\n", normalRegAddr, dstAddr);
+            uartTxString(debugBuffer);
+        }
+        else
+        {
+            sprintf(debugBuffer, "READ %04X from %02d\r\n", normalRegAddr, srcAddr);
+            uartTxString(debugBuffer);
         }
 
-        sprintf(debugBuffer, "\r\nerr @ id %02X prg%04X @ stk %04X\r\n\r\n\r\n", id, errPrgLoc, errStkLoc);
+        sprintf(debugBuffer, "\r\nerr @ id %02X prg%04X @ stk %04X\r\n\r\n\r\n", id8, errPrgLoc, errStkLoc);
         uartTxString(debugBuffer);
         
         INTCON1bits.ADDRERR = 0;        //Clear the trap flag
@@ -207,7 +310,7 @@ UI08_t sramBf[64];
 
 int main()
 {
-    UI08_t i,j;
+    volatile UI08_t i,j;
 
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);   // blinky;
@@ -225,6 +328,7 @@ int main()
     LED_High;
 
     sram_23lc1024_init();
+    sram_init();
     /*arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
@@ -261,9 +365,14 @@ int main()
     }
 
     *myVariable = 1024;
-    myLarge->d = 123456;
+    myLarge->d = 1234;
     myLarge->data[0] = 0;
-    while(1);
+    while(1)
+    {
+        i++;
+        j++;
+        i=j-i;
+    }
 
     while(1)
     {

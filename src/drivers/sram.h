@@ -47,6 +47,7 @@ SRAM_TABLE(SRAM_MEM_EXT_CREATE_VARIABLE, SRAM_MEM_EXT_CREATE_ARRAY)
 
 const extern memMngEntry_t memMngEntries[MEM_MNG_ENTRIES];
 
+void sram_init();
 UI08_t* sram_fault(UI16_t addr);
 
 #ifdef	__cplusplus

@@ -32,7 +32,9 @@ sramHeapHeader_t* sramHeap;
 
 UI08_t* sram_fault(UI16_t addr)
 {
-    UI16_t id = (0xFFFF-addr) & 0x3FF; // 1024 entries
+    if (addr >= 0xB000) return NULL;
+    
+    UI16_t id = (0xAFFF-addr) & 0x3FF; // 1024 entries
     bool_t isVariable = (addr & 0x0400) != 0;
     memMngEntry_t* entry;
 #ifdef DEBUG_CONSOLE
@@ -81,52 +83,63 @@ UI08_t* sram_fault(UI16_t addr)
     }
 }
 
+void sram_init()
+{
+    sramHeap=heap;
+
+    memset(heap, 0, sizeof(heap));
+}
+
 bool_t sram_tryAlloc(UI16_t id, UI16_t size)
 {
     sramHeapHeader_t* heapPtr;
     sramHeapHeader_t* newHeapPtr;
     UI16_t free;
     //
-    sramHeap = heap;
     if (sramHeap == NULL) return NULL;
 
     for (heapPtr = sramHeap; heapPtr->ptr != NULL; heapPtr = heapPtr->ptr)
     {
         // next pos - my pos - my size - headerSize
         // e.g. 2048 - 1024 - 512 -8= 508 free.
-        free = heapPtr->ptr->ptr - heapPtr->ptr - heapPtr->size - sizeof(sramHeapHeader_t);
+        free = ((UI08_t)heapPtr->ptr) - ((UI08_t)heapPtr) - heapPtr->size - sizeof(sramHeapHeader_t);
+#ifdef DEBUG_CONSOLE
+        sprintf(debugBuffer, "@ %04X, free %04X, next %04X\r\n", heapPtr, free, heapPtr->ptr);
+        uartTxString(debugBuffer);
+#endif
+        if (free > sizeof(heap)) return FALSE;
         if(free >= size)
         {
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Allocating memory A @ %04X for %02X bytes\r\n", newHeapPtr, size);
-    uartTxString(debugBuffer);
-#endif
-            newHeapPtr = (sramHeapHeader_t*) (heapPtr->ptr + heapPtr->size + sizeof(sramHeapHeader_t));
+            newHeapPtr = (sramHeapHeader_t*) (((UI08_t)heapPtr) + heapPtr->size + sizeof(sramHeapHeader_t));
             newHeapPtr->ptr = heapPtr->ptr;
             newHeapPtr->size = size;
             heapPtr->ptr = newHeapPtr;
 
             memMngOffsets[id].heapPtr = newHeapPtr + sizeof(sramHeapHeader_t);
 
+#ifdef DEBUG_CONSOLE
+    sprintf(debugBuffer, "Allocating memory A @ %04X for %02X bytes\r\n", newHeapPtr, size);
+    uartTxString(debugBuffer);
+#endif
             return TRUE;
         }
     }
 
     if (heapPtr->ptr == NULL &&
-            sramHeap + sizeof(heap) - heapPtr->ptr > size)
+            sramHeap + sizeof(heap) - heapPtr > size)
     {
+        // There is still enough left!
+        newHeapPtr = (sramHeapHeader_t*) (((UI08_t*)heapPtr) + size + sizeof(sramHeapHeader_t));
+        newHeapPtr->ptr = 0;
+        heapPtr->ptr = newHeapPtr;
+        heapPtr->size = size;
+
+        memMngOffsets[id].heapPtr = heapPtr + sizeof(sramHeapHeader_t);
+
 #ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Allocating memory B @ %04X for %02X bytes\r\n", newHeapPtr, size);
+    sprintf(debugBuffer, "Allocating memory B @ %04X for %02X bytes, total %02X, next %04X\r\n", heapPtr, size, (sizeof(sramHeapHeader_t)+size), newHeapPtr);
     uartTxString(debugBuffer);
 #endif
-        // There is still enough left!
-        newHeapPtr = (sramHeapHeader_t*) (heapPtr + size + sizeof(sramHeapHeader_t));
-        newHeapPtr->ptr = 0;
-        newHeapPtr->size = size;
-        heapPtr->ptr = newHeapPtr;
-
-        memMngOffsets[id].heapPtr = newHeapPtr + sizeof(sramHeapHeader_t);
-
         return TRUE;
     }
 

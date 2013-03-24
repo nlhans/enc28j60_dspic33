@@ -17,7 +17,7 @@ extern "C" {
     typedef struct meIsLarge_s
     {
         UI08_t data[80];
-        UI32_t d ;
+        UI16_t d ;
     } meIsLarge_t;
 
 #define SRAM_TABLE(SRAM_MEM_VARIABLE, SRAM_MEM_ARRAY) \
