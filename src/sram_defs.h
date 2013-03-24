@@ -23,6 +23,7 @@ extern "C" {
 #define SRAM_TABLE(SRAM_MEM_VARIABLE, SRAM_MEM_ARRAY) \
     SRAM_MEM_VARIABLE   (UI32_t, myVariable) \
     SRAM_MEM_VARIABLE(meIsLarge_t, myLarge) \
+    SRAM_MEM_VARIABLE(meIsLarge_t, myLarge2) \
     SRAM_MEM_ARRAY      (UI32_t, myArray, 128) \
 
 #include "sram.h"

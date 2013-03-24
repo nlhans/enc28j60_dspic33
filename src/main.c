@@ -126,6 +126,18 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             srcAddrMode = PtrMode_DirectAccess;
             uartTxString("CLR [W]\r\n");
         }
+        if(id5 == 0b01010) // SUB Wb, #lit5, [Wd]
+        {
+            // 0101 0www wBqq qddd d11k kkkk
+            // w=base
+            // B=word/byte
+            // q=dst adr mode
+            // d=dst
+            // k=lit5
+            srcAddrMode = PtrMode_DirectAccess;
+            srcAddr = (instData >> 14) & 0xF;
+            uartTxString("SUB Wb, #lit5, [Wd]\r\n");
+        }
         if (id5 == 0b01111)
         {
             // 0111 1www wBhh hddd dggg ssss
@@ -159,21 +171,49 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
         }
 
         // resolve src
-        if (srcAddrMode == PtrMode_DirectAccess)
+        if (1 || srcAddrMode != PtrMode_DirectAccess)
         {
             // 7-14 is beyond normal XC16 stack
             if (srcAddr < 7)
             {
                 // prgStk + 0x06 -> W0?
-                // prgLoc = 0x1010
+                // e.g. prgStk = 0x1010
                 // W0 = 0x1016
                 // W1 = 0x1018 etc
-                //0-7, is in stack
+                //0-7, is in stack, 8-15 are not pushed
                 resolvedSrcAddr = *((UI16_t*)(errStkLoc + 0x06 + srcAddr*0x2));
             }
-            else
+            else if (srcAddr == 7)
             {
-                //
+                asm volatile("mov W7, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 8)
+            {
+                asm volatile("mov W8, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 9)
+            {
+                asm volatile("mov W9, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 10)
+            {
+                asm volatile("mov W10, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 11)
+            {
+                asm volatile("mov W11, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 12)
+            {
+                asm volatile("mov W12, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 13)
+            {
+                asm volatile("mov W13, _resolvedSrcAddr");
+            }
+            else if (srcAddr == 14)
+            {
+                asm volatile("mov W14, _resolvedSrcAddr");
             }
 
         }
@@ -185,10 +225,10 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             if (dstAddr < 7)
             {
                 // prgStk + 0x06 -> W0?
-                // prgLoc = 0x1010
+                // e.g. prgStk = 0x1010
                 // W0 = 0x1016
                 // W1 = 0x1018 etc
-                //0-7, is in stack
+                //0-7, is in stack, 8-15 are not pushed
                 resolvedDstAddr = *((UI16_t*)(errStkLoc + 0x06 + dstAddr*0x2));
             }
             else if (dstAddr == 7)
@@ -235,7 +275,7 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
         uartTxString(debugBuffer);
 
         // read/modify etc.
-        if (wasWrite)
+        if (wasWrite || 1)
         {
             // 7-14 is beyond normal XC16 stack
             if (dstAddr < 7)
@@ -288,7 +328,7 @@ void __attribute__((interrupt, no_auto_psv)) _AddressError(void)
             uartTxString(debugBuffer);
         }
 
-        sprintf(debugBuffer, "\r\nerr @ id %02X prg%04X @ stk %04X\r\n\r\n\r\n", id8, errPrgLoc, errStkLoc);
+        sprintf(debugBuffer, "err @ id %02X prg%04X @ stk %04X\r\n*********************\r\n", id8, errPrgLoc, errStkLoc);
         uartTxString(debugBuffer);
         
         INTCON1bits.ADDRERR = 0;        //Clear the trap flag
@@ -366,7 +406,16 @@ int main()
 
     *myVariable = 1024;
     myLarge->d = 1234;
-    myLarge->data[0] = 0;
+    //myLarge->data[0] = 0;
+    for (i=0;i <80; i++)
+    {
+        uartTxByte('.');
+    sprintf(debugBuffer, "%04X\r\n", myLarge->d);
+    uartTxString(debugBuffer);
+        myLarge->d  = myLarge->d + 123;
+        myLarge->data[i] = 0xAA - i;
+    }
+    myLarge2->d = 4321;
     while(1)
     {
         i++;
