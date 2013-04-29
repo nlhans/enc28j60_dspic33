@@ -50,11 +50,13 @@ CCADMIN=CCadmin
 RANLIB=ranlib
 
 
+
 # build
 build: .build-post
 
 .build-pre:
-# Add your pre 'build' code here...
+	"C:/Users/Hans/Documents/Toolz/CodeInsight/CodeInsight/makefile_number/bin/Debug/makefile_number.exe"
+
 
 .build-post: .build-impl
 # Add your post 'build' code here...

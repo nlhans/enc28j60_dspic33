@@ -12,10 +12,10 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 #include "spi.h"
 
-#define DEBUG_CONSOLE
+//#define DEBUG_CONSOLE
 
 typedef union enc28j60Register_u
 {

@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 #include "enc28j60.h"
 
 #pragma pack(1)

@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 #include "ipv4.h"
 
 typedef struct ICMPacketHeader_s

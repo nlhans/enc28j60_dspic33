@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 
 #define CS_23LC1024_HIGH        asm volatile("bset PORTA, #10\n");
 #define CS_23LC1024_LOW         asm volatile("bclr PORTA, #10\n");

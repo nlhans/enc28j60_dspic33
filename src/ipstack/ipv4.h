@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 #include "enc28j60.h"
 
 #define IPV4_MAXIMUM_PROTOCOL_HANDLERS 3 // UDP, TCP, ICMP

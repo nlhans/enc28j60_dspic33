@@ -12,6 +12,7 @@
 extern "C" {
 #endif
 
+#include "stddefs.h"
 #include "ipv4.h"
 
 #define UDP_MAX_HANDLERS 8

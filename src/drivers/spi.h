@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 
 
 UI08_t enc28j60_spi_transfer(UI08_t dataOut);

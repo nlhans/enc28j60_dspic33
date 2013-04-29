@@ -21,8 +21,8 @@
         <itemPath>../src/ipstack/udp.h</itemPath>
         <itemPath>../src/ipstack/tcp.h</itemPath>
       </logicalFolder>
-      <itemPath>../src/types.h</itemPath>
       <itemPath>../src/sram_defs.h</itemPath>
+      <itemPath>../src/stddefs.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +34,7 @@
       <logicalFolder name="f3" displayName="devices" projectFiles="true">
         <itemPath>../src/devices/enc28j60.c</itemPath>
         <itemPath>../src/devices/23lc1024.c</itemPath>
+        <itemPath>../src/devices/enc624j600.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="drivers" projectFiles="true">
         <itemPath>../src/drivers/spi.c</itemPath>
@@ -48,6 +49,12 @@
         <itemPath>../src/ipstack/ntp.c</itemPath>
         <itemPath>../src/ipstack/udp.c</itemPath>
         <itemPath>../src/ipstack/tcp.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="utils" projectFiles="true">
+        <itemPath>../src/utils/insight.c</itemPath>
+        <itemPath>../src/utils/insight.h</itemPath>
+        <itemPath>../src/utils/circularBuffer.c</itemPath>
+        <itemPath>../src/utils/circularBuffer.h</itemPath>
       </logicalFolder>
       <itemPath>../src/main.c</itemPath>
       <itemPath>../src/addrErrLoc.s.s</itemPath>
@@ -105,7 +112,7 @@
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="extra-include-directories"
-                  value="..\src;..\src\devices;..\src\drivers;..\src\ipstack"/>
+                  value="..\src;..\src\devices;..\src\drivers;..\src\ipstack;C:\Users\Hans\Documents\GitHub\enc28j60-dspic33\src\utils"/>
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="false"/>
@@ -192,7 +199,11 @@
         <property key="output-file-format" value="elf"/>
       </C30Global>
       <PICkit2PlatformTool>
+        <property key="pk2settings.3state" value="false"/>
+        <property key="pk2settings.preserveee" value="false"/>
         <property key="pk2settings.setvddvoltage" value="3.25"/>
+        <property key="pk2settings.userpgmexec" value="true"/>
+        <property key="pk2settings.usetargetpower" value="true"/>
       </PICkit2PlatformTool>
     </conf>
   </confs>

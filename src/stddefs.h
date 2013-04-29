@@ -1,12 +1,5 @@
-/* 
- * File:   types.h
- * Author: Hans
- *
- * Created on March 9, 2013, 1:32 PM
- */
-
-#ifndef TYPES_H
-#define	TYPES_H
+#ifndef STDDEFS_H
+#define STDDEFS_H
 
 #ifdef	__cplusplus
 extern "C" {
@@ -16,7 +9,7 @@ extern "C" {
 
 #include <stdio.h>
 #include <string.h>
-    
+
 typedef unsigned char UI08_t;
 typedef unsigned int UI16_t;
 typedef unsigned long UI32_t;
@@ -41,5 +34,4 @@ typedef unsigned char bool_t;
 }
 #endif
 
-#endif	/* TYPES_H */
-
+#endif

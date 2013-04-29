@@ -9,7 +9,7 @@ void uartInit()
 
     //U1BRG = 40000000/2/(16*115200)-1;
     //U1BRG = 11; // 7372800/(16*9600)-1;   19k2
-    U1BRG = 12; // 115k2 @ FRCPLL stock
+    U1BRG = 12/3; // 115k2 @ FRCPLL stock
 
     PORTB &= ~(1<<7);
     // 00011 source

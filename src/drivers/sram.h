@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-#include "types.h"
+#include "stddefs.h"
 #include "sram_defs.h"
 
 typedef struct memMngEntry_s
@@ -35,8 +35,8 @@ typedef struct memMngEntry_s
 #define SRAM_MEM_EXT_CREATE_VARIABLE(t,n) SRAM_MEM_EXT_CREATE(t,n)
 #define SRAM_MEM_EXT_CREATE_ARRAY(t,n,c) SRAM_MEM_EXT_CREATE(t*,n)
 
-#define SRAM_MEM_TABLE_VARIABLE(t,n)    { &n, sizeof(t), 0},
-#define SRAM_MEM_TABLE_ARRAY(t,n,c)     { &n, sizeof(t)*c, 1},
+#define SRAM_MEM_TABLE_VARIABLE(t,n)   { &n, sizeof(t), 0},
+#define SRAM_MEM_TABLE_ARRAY(t,n,c)    { &n, sizeof(t)*c, 1},
 
 enum
 {

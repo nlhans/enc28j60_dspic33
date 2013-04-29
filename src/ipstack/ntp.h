@@ -8,10 +8,7 @@
 #ifndef NTP_H
 #define	NTP_H
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
+#include "stddefs.h"
 #include "udp.h"
 
 typedef struct NTPPacketContent_s
@@ -42,10 +39,6 @@ extern UI32_t ntpTimestamp;
 void ntpInit();
 void ntpRequest(UI08_t* ip);
 void ntpHandle (UDPPacket_t* packet);
-
-#ifdef	__cplusplus
-}
-#endif
 
 #endif	/* NTP_H */
 

@@ -1,5 +1,7 @@
+#include "stddefs.h"
 #include "23lc1024.h"
 #include "spi.h"
+#include "insight.h"
 
 typedef enum sram23lc1024Modes_e
 {
@@ -17,6 +19,8 @@ void sram_23lc1024_init()
     // I use PORTA #10
     TRISA &= ~(1<<10);
     CS_23LC1024_HIGH;
+
+    INSIGHT(23LC1024_INIT);
 }
 
 void sram_23lc1024_read(UI08_t bank, UI16_t address, UI08_t* bf,  UI16_t size)
@@ -36,6 +40,8 @@ void sram_23lc1024_read(UI08_t bank, UI16_t address, UI08_t* bf,  UI16_t size)
     enc28j60_spi_transferBytes(NULL, bf, size);
 
     CS_23LC1024_HIGH;
+
+    INSIGHT(23LC1024_READ, address, size);
 
 }
 
@@ -57,4 +63,7 @@ void sram_23lc1024_write(UI08_t bank, UI16_t address, UI08_t* bf,  UI16_t size)
 
     CS_23LC1024_HIGH;
 
+    INSIGHT(23LC1024_WRITE, address, size);
+
 }
+ 

@@ -1,9 +1,10 @@
 build/default/production/_ext/1360937237/main.o:  \
 ../src/main.c  \
- ../src/types.h  \
+ ../src/stddefs.h  \
 ../src/drivers/spi.h  \
-../src/types.h  \
-../src/drivers/uart.h  \
+../src/stddefs.h  \
+ ../src/drivers/uart.h  \
+../src/devices/enc624j600.h  \
  ../src/devices/enc28j60.h  \
 ../src/ipstack/arp.h  \
 ../src/ipstack/ipv4.h  \
@@ -14,6 +15,7 @@ build/default/production/_ext/1360937237/main.o:  \
 ../src/ipstack/udp.h  \
 ../src/ipstack/tcp.h  \
  ../src/devices/23lc1024.h  \
-../src/sram_defs.h  \
+ C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h  \
+ ../src/sram_defs.h  \
 ../src/drivers/sram.h  \
- ../src/sram_defs.h 
+../src/sram_defs.h 

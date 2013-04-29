@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "enc28j60.h"
 #include "udp.h"
+#include "insight.h"
 
 #define ETHERNET_HANDLERS_COUNT 2
 
@@ -46,6 +47,8 @@ void enc28j60WriteUint8(UI08_t reg, UI08_t value)
     enc28j60_spi_write(WCR | (reg & 0x1F));
     enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
+    
+    INSIGHT(ENC28J60_WRITE_REG, reg, value);
 }
 void enc28j60BitSetUint8(UI08_t reg, UI08_t value)
 {
@@ -53,6 +56,8 @@ void enc28j60BitSetUint8(UI08_t reg, UI08_t value)
     enc28j60_spi_write(BFS | (reg & 0x1F));
     enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
+
+    INSIGHT(ENC28J60_BITSET_REG, reg, value);
 }
 void enc28j60BitClrUint8(UI08_t reg, UI08_t value)
 {
@@ -60,6 +65,8 @@ void enc28j60BitClrUint8(UI08_t reg, UI08_t value)
     enc28j60_spi_write(BFC | (reg & 0x1F));
     enc28j60_spi_write(value);
     ENC28J60_CS_HIGH;
+
+    INSIGHT(ENC28J60_BITCLR_REG, reg, value);
 }
 
 void enc28j60WriteUint16(UI08_t reg, UI16_t value)
@@ -69,6 +76,8 @@ void enc28j60WriteUint16(UI08_t reg, UI16_t value)
     enc28j60_spi_write(value & 0x00FF);
     enc28j60_spi_write((value & 0xFF00) >> 8);
     ENC28J60_CS_HIGH;
+
+    INSIGHT(ENC28J60_WRITE_REG, reg, value);
 }
 
 UI08_t enc28j60ReadUint8(UI08_t reg)
@@ -78,6 +87,9 @@ UI08_t enc28j60ReadUint8(UI08_t reg)
     enc28j60_spi_write(RCR | (reg & 0x1F));
     d = enc28j60_spi_read();
     ENC28J60_CS_HIGH;
+
+    if (reg != EIR)
+    INSIGHT(ENC28J60_READ_REG, reg, d);
 
     return d;
 }
@@ -90,6 +102,8 @@ UI08_t enc28j60ReadMacUint8(UI08_t reg)
     enc28j60_spi_write(0x00); // dummy
     d = enc28j60_spi_read();
     ENC28J60_CS_HIGH;
+
+    INSIGHT(ENC28J60_READ_REG, reg, d);
 
     return d;
 }
@@ -382,6 +396,7 @@ void enc28j60TxFrame(EthernetFrame_t* packet, UI16_t length)
 
     // Todo: check interruption flags
     // Todo: report status
+    INSIGHT(ENC28J60_TX, length, packet->dstMac[0], packet->dstMac[1], packet->dstMac[2], packet->dstMac[3], packet->dstMac[4], packet->dstMac[5]);
     
     return;
 }
@@ -446,6 +461,8 @@ void enc28j60RxFrame(UI08_t* packet, UI16_t length)
             frame = (EthernetFrame_t*) (packet+2);
             frame-> type = htons(frame->type); // reverse byte order
             data = (UI08_t*) (packet + 2+sizeof(EthernetFrame_t));
+
+            INSIGHT(ENC28J60_RX, packetSize+2-4, frame->srcMac[0], frame->srcMac[1], frame->srcMac[2], frame->srcMac[3], frame->srcMac[4], frame->srcMac[5]);
 
             dummy = FALSE;
             ipv4HandlePacket(frame, &dummy);
