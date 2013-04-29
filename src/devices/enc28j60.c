@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "enc28j60.h"
 #include "udp.h"
+#include "arp.h"
 #include "insight.h"
 
 #define ETHERNET_HANDLERS_COUNT 2

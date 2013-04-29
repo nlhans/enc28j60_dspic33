@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 14 // 0 = nothing
+#define INSIGHT_LEVEL 16 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -18,6 +18,7 @@
     MSG(ENC28J60_BITCLR_REG, 15, "[enc28j60] Bitclr {0:X} (mask: {1:X})", 2, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(ENC28J60_RX, 13, "[enc28j60] RX packet size {0:X} from {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC28J60_TX, 13, "[enc28j60] TX packet size {0:X} to {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_SPI, 15, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

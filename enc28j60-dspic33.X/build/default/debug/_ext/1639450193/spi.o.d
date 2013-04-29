@@ -1,4 +1,4 @@
-build/default/production/_ext/1639450193/spi.o:  \
+build/default/debug/_ext/1639450193/spi.o:  \
 ../src/drivers/spi.c  \
  ../src/drivers/spi.h  \
 ../src/stddefs.h  \

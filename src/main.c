@@ -4,7 +4,7 @@
 #include "spi.h"
 #include "uart.h"
 #include "enc624j600.h"
-#include "enc28j60.h"
+//#include "enc28j60.h"
 #include "arp.h"
 #include "ipv4.h"
 #include "icpm.h"
@@ -61,29 +61,55 @@ void dl()
     }
 }
 
-int main_o()
+#ifdef ENC624J600_H
+int main()
 {
-
     AD1PCFGL = 0xFFFF;
-    
-    TRISB &= ~(1<<8);   // blinky;
+    TRISB &= ~(1<<8);
+
     SPI_Init();
     SPI_SetDebug(0);
     uartInit();
     insight_init();
 
+    LED_Low;
+    SPI_SetDebug(0);
+    enc624j600Initialize(mac);
+    SPI_SetDebug(0);
+    LED_High;
+
     sram_23lc1024_init();
-    sram_23lc1024_read(0,0, sramBf, 64);
-    sram_23lc1024_write(0, 0, sramBf, 64);
-    sram_23lc1024_read(0,0, sramBf, 64);
+    sram_init();
+    arpInit();
+    arpAnnounce(mac, ip, gateway);
+    ipv4Init();
+    udpInit();
+    tcpInit();
+    icmpInit();
+    ntpInit();
+    ntpRequest(ntpServer);
 
-    //enc624j600_init();
+    while(1)
+    {
+        while (!enc624j600PacketPending());
+        enc624j600RxFrame(frameBf, sizeof(frameBf));
+
+#ifdef DEBUG_CONSOLE
+        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
+        uartTxString(debugBuffer);
+#endif
+    }
+    while(1);
+    return 0;
 }
+#endif
 
+#ifdef ENC28J60_H
 int main()
 {
     AD1PCFGL = 0xFFFF;
     TRISB &= ~(1<<8);
+    
     SPI_Init();
     SPI_SetDebug(0);
     uartInit();
@@ -120,3 +146,4 @@ int main()
     while(1);
     return 0;
 }
+#endif

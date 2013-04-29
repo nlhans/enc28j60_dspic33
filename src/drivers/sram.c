@@ -100,6 +100,7 @@ UI08_t* sram_fault(UI16_t addr)
         * ((UI16_t**)entry->id) = memMngOffsets[id].heapPtr;
         return (UI08_t*) memMngOffsets[id].heapPtr;
     }
+    return NULL;
 }
 
 sramHeapHeader_t* sram_findBestFit(UI16_t size)
@@ -170,7 +171,7 @@ UI16_t sram_tryFree(UI16_t size, UI16_t lastBlock)
 
 void sram_free(UI16_t ptr)
 {
-    sramHeapHeader_t* header = (sramHeapHeader_t*) (ptr - sizeof(sramHeapHeader_t));
+    //sramHeapHeader_t* header = (sramHeapHeader_t*) (ptr - sizeof(sramHeapHeader_t));
     
 }
 

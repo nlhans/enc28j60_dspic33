@@ -1,4 +1,4 @@
-build/default/production/_ext/1733914311/arp.o:  \
+build/default/debug/_ext/1733914311/arp.o:  \
 ../src/ipstack/arp.c  \
  ../src/ipstack/arp.h  \
 ../src/stddefs.h  \

@@ -1,4 +1,4 @@
-build/default/production/_ext/1733914311/udp.o:  \
+build/default/debug/_ext/1733914311/udp.o:  \
 ../src/ipstack/udp.c  \
  ../src/ipstack/udp.h  \
 ../src/stddefs.h  \

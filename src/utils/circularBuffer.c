@@ -54,7 +54,7 @@ void circularBufferWriteString(circularBuffer_t* bf, char* st)
         length++;
     }
     circularBufferWriteInt16(bf, length);
-    circularBufferWriteBytes(bf, st, length);
+    circularBufferWriteBytes(bf, (UI08_t*)st, length);
 }
 
 UI08_t circularBufferRead(circularBuffer_t* bf)

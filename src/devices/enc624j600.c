@@ -1,6 +1,7 @@
 
 #include "enc624j600.h"
 #include "uart.h"
+#include "insight.h"
 
 /*
 rc1	=	sck
@@ -8,6 +9,8 @@ rc0	=	mosi
 rb3	=	miso
 rb2	=	cs
  */
+
+static UI08_t currentBank = 0;
 
 #define ENC624_MOSI_HighASM asm volatile("bset PORTC, #0\n");
 #define ENC624_MOSI_LowASM asm volatile("bclr PORTC, #0\n");
@@ -20,6 +23,12 @@ rb2	=	cs
 #define ENC624_CS_HighASM asm volatile("bset PORTB, #2\n");
 #define ENC624_CS_LowASM asm volatile("bclr PORTB, #2\n");
 
+
+/******************************************************************************/
+/****                                                                      ****/
+/****                   ENC28J60 SPI Command functions                     ****/
+/****                                                                      ****/
+/******************************************************************************/
 UI08_t enc624j600_spi_write(UI08_t dat)
 {
     UI08_t dat_ret = 0;
@@ -44,6 +53,7 @@ UI08_t enc624j600_spi_write(UI08_t dat)
         ENC624_SCK_HighASM;
         ENC624_SCK_LowASM;
     }
+    INSIGHT(ENC624J600_SPI, dat, dat_ret);
     return dat_ret;
 
 }
@@ -61,6 +71,11 @@ void enc624j600_delay(UI08_t d)
     }
 }
 
+/******************************************************************************/
+/****                                                                      ****/
+/****               ENC28J60 Register Command functions                    ****/
+/****                                                                      ****/
+/******************************************************************************/
 UI16_t enc624j600_readRegister(UI08_t addr)
 {
     //
@@ -84,33 +99,87 @@ void enc624j600_writeRegister(UI16_t addr, UI16_t v)
     ENC624_CS_HighASM;
 }
 
-UI16_t enc624j600_readRegisterU(UI08_t addr)
+//////// READ
+UI16_t enc624j600SpiReadRegister16(UI08_t addr)
 {
-    UI16_t dat = 0;
-    //
+    UI16_t dat = enc624j600SpiReadRegister8(addr)
+              | (enc624j600SpiReadRegister8(addr+1) << 8);
+    
+    return dat;
+}
+
+UI08_t enc624j600SpiReadRegister8(UI08_t addr)
+{
+    UI08_t dat = 0;
+
+    if ((addr & regGlobal) == 0)
+    {
+        enc624j600_setBank(addr >> 5);
+    }
+    
     ENC624_CS_LowASM;
-
-    enc624j600_spi_write(0x20); // read unbanked
-    enc624j600_spi_write(addr); // address
-
+    enc624j600_spi_write((addr & 0b11111)); // 000a aaaa
     dat = enc624j600_spi_write(0x00);
-    ENC624_CS_HighASM;
-
-    ENC624_CS_LowASM;
-    enc624j600_spi_write(0x20); // read unbanked
-    enc624j600_spi_write(addr+1); // address
-
-    dat |= (enc624j600_spi_write(0x00) << 8);
     ENC624_CS_HighASM;
 
     return dat;
 }
 
+//////// WRITE
+void enc624j600SpiWriteRegister8(UI08_t addr, UI08_t value)
+{
+    if ((addr & regGlobal) == 0)
+    {
+        enc624j600_setBank(addr >> 5);
+    }
+
+    ENC624_CS_LowASM;
+    enc624j600_spi_write((1<<6) | (addr & 0b11111)); // 010a aaaa
+    enc624j600_spi_write(value);
+    ENC624_CS_HighASM;
+}
+
+void enc624j600SpiWriteRegister16(UI08_t addr, UI16_t value)
+{
+    enc624j600SpiWriteRegister8(addr, value & 0xFF);
+    enc624j600SpiWriteRegister8(addr+1, value >> 8);
+}
+
+//////// BSET
+void enc624j600SpiBSetRegister8(UI08_t addr, UI08_t value)
+{
+    if ((addr & regGlobal) == 0)
+    {
+        enc624j600_setBank(addr >> 5);
+    }
+
+    ENC624_CS_LowASM;
+    enc624j600_spi_write((1<<7) | (addr & 0b11111)); // 100a aaaa
+    enc624j600_spi_write(value);
+    ENC624_CS_HighASM;
+}
+
+void enc624j600SpiBSetRegister16(UI08_t addr, UI16_t value)
+{
+    enc624j600SpiBSetRegister8(addr, value & 0xFF);
+    enc624j600SpiBSetRegister8(addr+1, value >> 8);
+}
+
+void enc624j600_resetBank()
+{
+    currentBank = 0xFF; // doesn't exist, always set bank at next try!
+}
+
 void enc624j600_setBank(UI08_t bank)
 {
-    ENC624_CS_LowASM;
-    enc624j600_spi_write(0b11000000 | (bank<<1));
-    ENC624_CS_HighASM;
+    if (bank != currentBank)
+    {
+        ENC624_CS_LowASM;
+        enc624j600_spi_write(0b11000000 | (bank<<1));
+        ENC624_CS_HighASM;
+              
+        currentBank = bank;
+    }
 }
 
 char bf[64];
@@ -118,31 +187,56 @@ char bf[64];
 #define ENC624_EIDLED 0x14
 #define ENC624_EIR 0x1C
 
-void enc624j600_init()
+/******************************************************************************/
+/****                                                                      ****/
+/****               ENC28J60 User Commands functions                       ****/
+/****                                                                      ****/
+/******************************************************************************/
+bool_t enc624j600PacketPending()
+{
+    return ((enc624j600ReadRegister8(ESTAT, L) == 0) ? FALSE : TRUE);
+}
+
+bool_t enc624j600GetLinkStatus()
+{
+    return ((enc624j600ReadRegister8(ESTAT, H) & 0x1 != 0) ? TRUE:FALSE);
+}
+
+void enc624j600RxFrame(UI08_t* packet, UI16_t length)
+{
+    //
+}
+
+void enc624j600Initialize()
 {
     UI08_t i, b;
     TRISB &= ~(1<<2); // cs     OUT
-    //TRISB |= (1<<2);
     TRISB |=  (1<<3); // miso   IN
     TRISC &= ~(1<<0); // mosi   OUT
     TRISC &= ~(1<<1); // sck    OUT
 
-    // internal pull-up MISO
-    //CNPU1bits.CN7PUE = 1;
-    
     ENC624_CS_HighASM;
     ENC624_MOSI_HighASM;
     ENC624_SCK_HighASM;
 
-    //while(1);
+    // Write EUDAST to 1234h and verify  ->> com's working
+    // TODO: Should have time-out.
+    // Then reset and check for 0 on same register
+    do
+    {
+        do
+        {
+            enc624j600WriteRegister16(EUDAST, 0x1234);
+        }
+        while (enc624j600ReadRegister16(EUDAST) != 0x1234); // verify comms functions.
+        while (enc624j600ReadRegister8(ESTAT, H) & (1<<4) == 0); // ESTAT.CLKRDY
+        enc624j600BitSetRegister8(ECON2, L, (1<<4)); // set bit 4
+        enc624j600_resetBank();
+        enc624j600_delay(100); // wait 25us, but this ain't 25us though.
+    }
+    while (enc624j600ReadRegister16(EUDAST) != 0x0000);  // succesful reset.
 
-    sprintf(bf, "TRISB: %04X, TRISC: %04X\r\n", TRISB, TRISC);
-    uartTxString(bf);
-
-    enc624j600_setBank(3);
-
-    // Write LED thing
-    enc624j600_writeRegister(ENC624_EIDLED, 0b0010011000000000);
+    enc624j600WriteRegister16(EIDLED, 0x2600);
 
     while(1)
     {
@@ -160,23 +254,12 @@ void enc624j600_init()
                     uartTxString("\r\n");
                 }
                 
-                sprintf(bf, "%02X: %04X | ", i, enc624j600_readRegister(i));
+                sprintf(bf, "%02X: %04X | ", i, enc624j600SpiReadRegister16(i));
                 uartTxString(bf);
             }
             uartTxString("\r\n");
             uartTxString("\r\n");
         }
-
-        /*for (i = 0; i < 0x9F; i+=2)
-        {
-            if (i % 16 == 0)
-            {
-                uartTxString("\r\n");
-            }
-
-            sprintf(bf, "%02X: %04X | ", i, enc624j600_readRegister(i));
-            uartTxString(bf);
-        }*/
 
         uartTxString("\r\n");
         uartTxString("\r\n");
@@ -184,6 +267,17 @@ void enc624j600_init()
 
         sprintf(bf, "Reg: %04X, EIR: %04X\r\n", enc624j600_readRegister(ENC624_EIDLED), enc624j600_readRegister(ENC624_EIR));
         uartTxString(bf);
+
+        sprintf(bf, "ESTAT H: %02X ESTAT L: %02X\r\n", enc624j600ReadRegister8(ESTAT, H), enc624j600ReadRegister8(ESTAT, L));
+        uartTxString(bf);
+
+        sprintf(bf, "Packets pending: %d\r\nLink Status: ", enc624j600PacketPending());
+        uartTxString(bf);
+
+        if (enc624j600GetLinkStatus())
+            uartTxString(" ACTIVE\r\n");
+        else
+            uartTxString(" inactive\r\n");
     }
 
 }

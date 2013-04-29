@@ -13,9 +13,8 @@ extern "C" {
 #endif
 
 #include "stddefs.h"
-#include "enc28j60.h"
+#include "ethdefs.h"
 
-#pragma pack(1)
 typedef struct ArpPacket_s
 {
     EthernetFrame_t frame;
