@@ -18,7 +18,10 @@
     MSG(ENC28J60_BITCLR_REG, 15, "[enc28j60] Bitclr {0:X} (mask: {1:X})", 2, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(ENC28J60_RX, 13, "[enc28j60] RX packet size {0:X} from {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC28J60_TX, 13, "[enc28j60] TX packet size {0:X} to {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(ENC624J600_SPI, 15, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(ENC624J600_SPI, 17, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_REG, 16, "[enc624j600] SPI REG {0:X} = {1:X}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
+    MSG(ENC624J600_MAC, 6, "[enc624j600] MAC is {0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5:X}", 6, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_PACKETS, 7, "[enc624j600] {0} packets in queue ", 2, MSG_ARG(UI08_t)) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

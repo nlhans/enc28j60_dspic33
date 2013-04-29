@@ -228,56 +228,47 @@ void enc624j600Initialize()
         {
             enc624j600WriteRegister16(EUDAST, 0x1234);
         }
-        while (enc624j600ReadRegister16(EUDAST) != 0x1234); // verify comms functions.
+        while (enc624j600ReadRegister16(EUDAST) != 0x1234); // verify comms
         while (enc624j600ReadRegister8(ESTAT, H) & (1<<4) == 0); // ESTAT.CLKRDY
         enc624j600BitSetRegister8(ECON2, L, (1<<4)); // set bit 4
         enc624j600_resetBank();
         enc624j600_delay(100); // wait 25us, but this ain't 25us though.
     }
-    while (enc624j600ReadRegister16(EUDAST) != 0x0000);  // succesful reset.
+    while (enc624j600ReadRegister16(EUDAST) != 0x0000);  // succesful reset?
+    enc624j600_delay(100); // 256us should be waited before Phy.
 
+    // Turn on RX/link status LED's.
     enc624j600WriteRegister16(EIDLED, 0x2600);
+
+    // Set-up RX/TX buffers start points.
+    enc624j600WriteRegister16(ETXST, 0x0);
+    enc624j600WriteRegister16(ERXST, 0x3000); // 50/50 split
+
+    // Receive filters.
+    // Enable reception of multicast and unicast
+    enc624j600WriteRegister16(ERXFCON, 0b0000000000001001);
+
+    // MAC initialization
+    enc624j600BitSetRegister8(ECON1, L, 1); // ECON1.RXEN
+
+    // Report MAC over debug port.
+    INSIGHT(ENC624J600_MAC, enc624j600ReadRegister8(MADDR1, L), enc624j600ReadRegister8(MADDR1, H)
+            , enc624j600ReadRegister8(MADDR2, L), enc624j600ReadRegister8(MADDR2, H)
+            , enc624j600ReadRegister8(MADDR3, L), enc624j600ReadRegister8(MADDR3, H))
 
     while(1)
     {
-        enc624j600_delay(100);
-        for(b = 0; b < 4; b++)
+        enc624j600_delay(200);
+        /*for(b = 0; b < 4; b++)
         {
             enc624j600_setBank(b);
-            sprintf(bf,"-------\r\nBANK %d\r\n-------", b);
-            uartTxString(bf);
-            
             for ( i = 0; i < 0x20; i+= 2)
             {
-                if (i % 16 == 0)
-                {
-                    uartTxString("\r\n");
-                }
-                
-                sprintf(bf, "%02X: %04X | ", i, enc624j600SpiReadRegister16(i));
-                uartTxString(bf);
+                INSIGHT(ENC624J600_REG, (b*0x20 + i), enc624j600SpiReadRegister16(i));
             }
-            uartTxString("\r\n");
-            uartTxString("\r\n");
-        }
+        }*/
 
-        uartTxString("\r\n");
-        uartTxString("\r\n");
-
-
-        sprintf(bf, "Reg: %04X, EIR: %04X\r\n", enc624j600_readRegister(ENC624_EIDLED), enc624j600_readRegister(ENC624_EIR));
-        uartTxString(bf);
-
-        sprintf(bf, "ESTAT H: %02X ESTAT L: %02X\r\n", enc624j600ReadRegister8(ESTAT, H), enc624j600ReadRegister8(ESTAT, L));
-        uartTxString(bf);
-
-        sprintf(bf, "Packets pending: %d\r\nLink Status: ", enc624j600PacketPending());
-        uartTxString(bf);
-
-        if (enc624j600GetLinkStatus())
-            uartTxString(" ACTIVE\r\n");
-        else
-            uartTxString(" inactive\r\n");
+        INSIGHT(ENC624J600_PACKETS, enc624j600ReadRegister8(ESTAT, L));
     }
 
 }
