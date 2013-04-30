@@ -1,6 +1,7 @@
 #include "arp.h"
 #include "uart.h"
-#include "enc28j60.h"
+#include "ethdefs.h"
+#include "insight.h"
 
 const UI08_t onesMac[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 const UI08_t zerosMac[6] = {0, 0, 0, 0, 0, 0};
@@ -14,10 +15,10 @@ void arpBuildPacket(UI08_t* senderMac, UI08_t* senderIp, UI08_t* targetMac, UI08
 void arpInit()
 {
     // Register my handler
-    if (! enc28j60RegisterTxHandler(arpProcessPacket))
+    /*if (! enc28j60RegisterTxHandler(arpProcessPacket))
     {
         uartTxString("Couldn't register ARP handler");
-    }
+    }*/
 }
 
 void arpBuildPacket(UI08_t* senderMac, UI08_t* senderIp, UI08_t* targetMac, UI08_t* targetIp, bool_t reply)
@@ -39,7 +40,7 @@ void arpBuildPacket(UI08_t* senderMac, UI08_t* senderIp, UI08_t* targetMac, UI08
     memcpy(arp.frame.srcMac, thisMac, 6);
     arp.frame.type = htons(ProtocolARP);
 
-    enc28j60TxFrame((EthernetFrame_t*) &arp, sizeof(ArpPacket_t));
+    macTxFrame((EthernetFrame_t*) &arp, sizeof(ArpPacket_t));
 }
 
 void arpAnnounce(UI08_t* myMac, UI08_t* myIp, UI08_t* gateway)
@@ -48,6 +49,8 @@ void arpAnnounce(UI08_t* myMac, UI08_t* myIp, UI08_t* gateway)
     memcpy(thisMac, myMac, 6);
 
     arpBuildPacket(myMac, myIp, (UI08_t*)zerosMac, gateway, FALSE);
+
+    INSIGHT(ARP_ANNOUNCE, myIp[0], myIp[1], myIp[2], myIp[3]);
 }
 
 void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled)
@@ -108,6 +111,8 @@ void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled)
 
             }
 #endif
+            INSIGHT(ARP_WHOHAS, arp->tpa[0],arp->tpa[1],arp->tpa[2],arp->tpa[3], (memcmp(arp->tpa, thisIp, 4) == 0)?1:0,
+                                arp->spa[0],arp->spa[1],arp->spa[2],arp->spa[3])
 
             if (memcmp(arp->tpa, thisIp, 4) == 0)
             {

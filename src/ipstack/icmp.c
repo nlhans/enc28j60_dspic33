@@ -2,7 +2,7 @@
 #include "ipv4.h"
 #include "spi.h"
 #include "uart.h"
-#include "enc28j60.h"
+#include "ethdefs.h"
 
 // ICPM is for relaying and ping commands
 void icmpHandlePacket (EthernetIpv4_t* header, bool_t* handled);

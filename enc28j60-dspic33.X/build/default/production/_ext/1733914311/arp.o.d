@@ -4,6 +4,4 @@ build/default/production/_ext/1733914311/arp.o:  \
 ../src/stddefs.h  \
 ../src/ipstack/ethdefs.h  \
  ../src/drivers/uart.h  \
-../src/devices/enc28j60.h  \
-../src/ipstack/ethdefs.h  \
- ../src/drivers/spi.h 
+ C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h 

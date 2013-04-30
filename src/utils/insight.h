@@ -21,7 +21,13 @@
     MSG(ENC624J600_SPI, 17, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_REG, 16, "[enc624j600] SPI REG {0:X} = {1:X}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
     MSG(ENC624J600_MAC, 6, "[enc624j600] MAC is {0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5:X}", 6, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(ENC624J600_PACKETS, 7, "[enc624j600] {0} packets in queue ", 2, MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_PACKETS, 7, "[enc624j600] {0} packets in queue; link status: {1}", 2, MSG_ARG(UI08_t) MSG_ARG(bool_t)) \
+    MSG(ENC624J600_RX, 13, "[enc624j600] RX packet size {0:X} from {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_RX_PKT, 15, "[enc624j600] RX packet @ {0:X} size {1:X} flags {2:X} | {3:X} | {4:X} | {5:X} | {6:X} | {7:X} | {8:X} | {9:X} ", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(ENC624J600_TX, 13, "[enc624j600] TX packet size {0:X} to {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_TX_PKT, 15, "[enc624j600] TX packet @ {0:X} size {1:X}", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(ARP_WHOHAS, 6, "[arp] Who has IP {0}.{1}.{2}.{3} asks {5}.{6}.{7}.{8}? {4}", 9, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(bool_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ARP_ANNOUNCE, 6, "[arp] Broadcast me with IP {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),
@@ -35,7 +41,11 @@
 #define INSIGHT_DICT_POINTER(a) INSIGHT_DICT_POINTER_WORD | sizeof(UI08_t*),
 #define INSIGHT_DICT_STRING(a) 0, // INSIGHT_DICT_POINTER_WORD,
 
+#if INSIGHT_LEVEL == 0
+#define INSIGHT(code, ...)
+#else
 #define INSIGHT(code, ...) insight_msg(strConcat(INSIGHT_, code), F_NUM, __LINE__, ##__VA_ARGS__);
+#endif
 
 typedef enum insightMessages_e
 {

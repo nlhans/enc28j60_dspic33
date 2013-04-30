@@ -2,6 +2,9 @@
 #include "enc624j600.h"
 #include "uart.h"
 #include "insight.h"
+#include "ipv4.h"
+#include "arp.h"
+
 
 /*
 rc1	=	sck
@@ -26,7 +29,7 @@ static UI08_t currentBank = 0;
 
 /******************************************************************************/
 /****                                                                      ****/
-/****                   ENC28J60 SPI Command functions                     ****/
+/****                   ENC624J600 SPI Command functions                     ****/
 /****                                                                      ****/
 /******************************************************************************/
 UI08_t enc624j600_spi_write(UI08_t dat)
@@ -71,11 +74,49 @@ void enc624j600_delay(UI08_t d)
     }
 }
 
+void enc624j600SpiCommand(UI08_t cmd, UI08_t* bf, UI08_t size)
+{
+    UI08_t tmp;
+    //
+    ENC624_CS_LowASM;
+    enc624j600_spi_write(cmd);
+    
+    while(size > 0)
+    {
+        tmp = enc624j600_spi_write(*bf);
+        *bf = tmp;
+        bf++;
+        size--;
+    }
+    ENC624_CS_HighASM;
+    
+}
+
+void enc624j600SpiReadRxData(UI16_t ptr, UI08_t* bf, UI16_t size)
+{
+    enc624j600Command(WRXRDPT, (UI08_t*)&ptr, sizeof(UI16_t));
+    enc624j600Command(RRXDATA, bf, size);
+}
+
+
+void enc624j600SpiReadData(UI16_t ptr, UI08_t* bf, UI16_t size)
+{
+    enc624j600Command(WGPRDPT, (UI08_t*)&ptr, sizeof(UI16_t));
+    enc624j600Command(RGPDATA, bf, size);
+}
+
+void enc624j600SpiWriteData(UI16_t ptr, UI08_t* bf, UI16_t size)
+{
+    enc624j600Command(WGPWRPT, (UI08_t*)&ptr, sizeof(UI16_t));
+    enc624j600Command(WGPDATA, bf, size);
+}
+
 /******************************************************************************/
 /****                                                                      ****/
-/****               ENC28J60 Register Command functions                    ****/
+/****               ENC624J060 Register Command functions                    ****/
 /****                                                                      ****/
 /******************************************************************************/
+
 UI16_t enc624j600_readRegister(UI08_t addr)
 {
     //
@@ -189,27 +230,157 @@ char bf[64];
 
 /******************************************************************************/
 /****                                                                      ****/
-/****               ENC28J60 User Commands functions                       ****/
+/****               ENC624J600 User Commands functions                       ****/
 /****                                                                      ****/
 /******************************************************************************/
 bool_t enc624j600PacketPending()
 {
-    return ((enc624j600ReadRegister8(ESTAT, L) == 0) ? FALSE : TRUE);
+    return ((enc624j600GetPacketCount() == 0) ? FALSE : TRUE);
+}
+UI08_t enc624j600GetPacketCount()
+{
+    return enc624j600ReadRegister8(ESTAT, L);
 }
 
 bool_t enc624j600GetLinkStatus()
 {
-    return ((enc624j600ReadRegister8(ESTAT, H) & 0x1 != 0) ? TRUE:FALSE);
+    return (((enc624j600ReadRegister8(ESTAT, H) & 0x1) != 0) ? TRUE:FALSE);
+}
+
+bool_t enc624j600GetTxBusyStatus()
+{
+    return (((enc624j600ReadRegister8(ECON1, L) & 0x2) != 0) ? TRUE:FALSE);
+    // ECON1.TXRTS <1>
+}
+
+void enc624j600TxFrame(EthernetFrame_t* packet, UI16_t length)
+{
+    UI16_t txPtr = 0;
+    bool_t waitForTxToComplete = FALSE;
+
+    // Is the mac still busy sending a previous packet?
+    // Try to sneak the SPI data into the transmit buffer if it fits.
+    if (enc624j600GetTxBusyStatus())
+    {
+        // then we find a free spot in SRAM for this packet, preferably after
+        // the current transmitting (last write pointer).
+        // If not, we see if it fits at 0x0000
+        // If not, we wait till transmit is done and place it at 0x0000
+        txPtr = enc624j600ReadRegister16(ETXST) + enc624j600ReadRegister16(ETXLEN);
+        waitForTxToComplete = FALSE;
+        
+        if (ENC624J600_RXBUF_START - txPtr <= length)
+        {
+            // it doesn't fit after current packet.. try at start of buffer
+            // note: no buffer wrapping implemented!
+            txPtr = 0;
+
+            // doesn't fit? -> wait for TX to complete
+            if (enc624j600ReadRegister16(ETXST) >= length)
+            {
+                waitForTxToComplete = TRUE;
+            }
+        }
+    }
+    if(waitForTxToComplete)
+    {
+        while(enc624j600GetTxBusyStatus());
+    }
+
+    // Write data
+    enc624j600WriteGpData(txPtr, (UI08_t*) packet, length);
+
+    // Now we do have to always wait for TX to complete, so we can change ptrs
+    // and issue the next command
+    while(enc624j600GetTxBusyStatus());
+
+    // Set ETXST/ETXLEN
+    enc624j600WriteRegister16(ETXST, txPtr);
+    enc624j600WriteRegister16(ETXLEN, length);
+
+    // Issue TX command
+    enc624j600Command(SETTXRTS, NULL, 0);
+
+    INSIGHT(ENC624J600_TX, length, packet->dstMac[0], packet->dstMac[1], packet->dstMac[2], packet->dstMac[3], packet->dstMac[4], packet->dstMac[5]);
+    INSIGHT(ENC624J600_TX_PKT, length, txPtr, length);
+    
+}
+void enc624j600TxReplyFrame(EthernetFrame_t* frame, UI16_t length)
+{
+    UI08_t tmpMac[6];
+    
+    // Swap MAC addresses.
+    memcpy(tmpMac,          frame->dstMac   , 6);
+    memcpy(frame->dstMac,   frame->srcMac   , 6);
+    memcpy(frame->srcMac,   tmpMac          , 6);
+
+    // TX frame, MAC & protocol are already done.
+    enc624j600TxFrame(frame, sizeof(EthernetFrame_t) + length);
 }
 
 void enc624j600RxFrame(UI08_t* packet, UI16_t length)
 {
-    //
+    UI08_t              packetCount         = enc624j600GetPacketCount();
+    static UI16_t       dataPtr             = ENC624J600_RXBUF_START;
+    UI08_t              packetHeader[8];
+    EthernetFrame_t*    frame;
+    UI08_t*             data;
+    bool_t              dummy = TRUE;
+    UI16_t              tailPtr;
+
+    while(packetCount > 0)
+    {
+        // Move data ptr to start of packet
+        enc624j600ReadRxData(dataPtr, packetHeader, 8);
+
+        UI16_t nextPacketOffset    = packetHeader[0] | (packetHeader[1] << 8);
+        UI16_t packetSize = packetHeader[2] | ( packetHeader[3] << 8);
+
+        INSIGHT(ENC624J600_RX_PKT, dataPtr, packetSize,
+                packetHeader[0], packetHeader[1], packetHeader[2], packetHeader[3],
+                packetHeader[4], packetHeader[5], packetHeader[6], packetHeader[7]);
+        //if(nextPacketOffset > dataPtr)
+        //    packetSize = nextPacketOffset - dataPtr;
+        //else
+        //    packetSize = (0x5FFF - nextPacketOffset) - (dataPtr - ENC624J600_RXBUF_START);
+
+        if ((packetHeader[2+2] & (1<<4)) == 0) // no CRC error
+        {
+            // Receive packet itself
+            enc624j600ReadRxData(dataPtr + 6, packet, packetSize+2-4); // -4 for CRC, +2 for some status bytes or something?
+
+            frame = (EthernetFrame_t*) (packet+2);
+            frame-> type = htons(frame->type); // reverse byte order
+            data = (UI08_t*) (packet + 2+sizeof(EthernetFrame_t));
+
+            INSIGHT(ENC624J600_RX, packetSize+2-4, frame->srcMac[0], frame->srcMac[1], frame->srcMac[2], frame->srcMac[3], frame->srcMac[4], frame->srcMac[5]);
+
+            dummy = FALSE;
+            ipv4HandlePacket(frame, &dummy);
+
+            if (dummy==FALSE)
+            {
+                arpProcessPacket(frame, &dummy);
+            }
+
+        }
+
+        if(dataPtr == ENC624J600_RXBUF_START)
+            tailPtr = 0x5FFE; // put back to end of buffer, -2 bytes!
+        else
+            tailPtr = dataPtr - 2;
+        enc624j600WriteRegister16(ERXTAIL, tailPtr);
+        
+        dataPtr = nextPacketOffset;
+        enc624j600Command(SETPKTDEC, NULL, 0); // decrease packet counter
+        packetCount = enc624j600GetPacketCount();
+    }
+
+    return;
 }
 
 void enc624j600Initialize()
 {
-    UI08_t i, b;
     TRISB &= ~(1<<2); // cs     OUT
     TRISB |=  (1<<3); // miso   IN
     TRISC &= ~(1<<0); // mosi   OUT
@@ -242,7 +413,7 @@ void enc624j600Initialize()
 
     // Set-up RX/TX buffers start points.
     enc624j600WriteRegister16(ETXST, 0x0);
-    enc624j600WriteRegister16(ERXST, 0x3000); // 50/50 split
+    enc624j600WriteRegister16(ERXST, ENC624J600_RXBUF_START); // 50/50 split
 
     // Receive filters.
     // Enable reception of multicast and unicast
@@ -255,20 +426,5 @@ void enc624j600Initialize()
     INSIGHT(ENC624J600_MAC, enc624j600ReadRegister8(MADDR1, L), enc624j600ReadRegister8(MADDR1, H)
             , enc624j600ReadRegister8(MADDR2, L), enc624j600ReadRegister8(MADDR2, H)
             , enc624j600ReadRegister8(MADDR3, L), enc624j600ReadRegister8(MADDR3, H))
-
-    while(1)
-    {
-        enc624j600_delay(200);
-        /*for(b = 0; b < 4; b++)
-        {
-            enc624j600_setBank(b);
-            for ( i = 0; i < 0x20; i+= 2)
-            {
-                INSIGHT(ENC624J600_REG, (b*0x20 + i), enc624j600SpiReadRegister16(i));
-            }
-        }*/
-
-        INSIGHT(ENC624J600_PACKETS, enc624j600ReadRegister8(ESTAT, L));
-    }
 
 }

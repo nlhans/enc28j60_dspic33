@@ -18,6 +18,19 @@
 #include "sram_defs.h"
 #include "enc624j600.h"
 
+void macRxFrame(UI08_t* packet, UI16_t length)
+{ 
+    enc624j600RxFrame(packet, length);
+}
+void macTxFrame(EthernetFrame_t* packet, UI16_t length)
+{
+    enc624j600TxFrame(packet, length);
+}
+void macTxReplyFrame(EthernetFrame_t* packet, UI16_t length)
+{
+    enc624j600TxReplyFrame(packet, length);
+}
+
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
 _FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
 _FGS(GWRP_OFF & GCP_OFF)
@@ -33,7 +46,8 @@ _FICD(ICS_PGD2 & JTAGEN_OFF)
 #define RST_High  PORTB |= 1<<9
 #define RST_Low   PORTB &= ~(1<<9)
 
-UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
+//UI08_t mac[6]           = {0x00, 0x04, 0xA3, 0x12, 0x34, 0x56};
+UI08_t mac[6] = {0,4,0xA3, 0x50, 0x20, 0xF6}; // fixed by enc624j600
 UI08_t ip[4]            = {192, 168, 1, 123};
 UI08_t gateway[4]       = {192, 168, 1, 1};
 UI08_t pc[4]       = {192, 168, 1, 147};
@@ -91,13 +105,14 @@ int main()
 
     while(1)
     {
-        while (!enc624j600PacketPending());
-        enc624j600RxFrame(frameBf, sizeof(frameBf));
+        enc624j600_delay(20);
 
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
-        uartTxString(debugBuffer);
-#endif
+        if(enc624j600PacketPending())
+        {
+            INSIGHT(ENC624J600_PACKETS, enc624j600GetPacketCount(), enc624j600GetLinkStatus());
+            enc624j600RxFrame(frameBf, sizeof(frameBf));
+        }
+
     }
     while(1);
     return 0;

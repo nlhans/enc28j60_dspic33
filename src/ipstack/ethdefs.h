@@ -23,4 +23,8 @@ typedef void (*EthernetPacketHandler_t) (EthernetFrame_t* frame, bool_t* handled
 #define htonl(x) ( ((x & 0xFF000000) >> 24) | ((x & 0x00FF0000) >> 8) | ((x & 0x0000FF00) << 8) | ((x & 0x000000FF) << 24) )
 #define htons(x) ( (( x & 0xFF00) >> 8) | ((x & 0xFF) << 8))
 
+extern void macTxFrame(EthernetFrame_t* frame, UI16_t size);
+extern void macTxReplyFrame(EthernetFrame_t* frame, UI16_t size);
+extern void macRxFrame(UI08_t* buffer, UI16_t length);
+
 #endif

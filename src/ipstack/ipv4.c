@@ -1,4 +1,4 @@
-#include "enc28j60.h"
+#include "ethdefs.h"
 #include "ipv4.h"
 #include "uart.h"
 #include "arp.h"
@@ -15,7 +15,7 @@ Ipv4PacketHandlerInfo_t Ipv4Handlers[IPV4_MAXIMUM_PROTOCOL_HANDLERS];
 void ipv4Init()
 {
     UI08_t i = 0 ;
-    enc28j60RegisterTxHandler(ipv4HandlePacket);
+    //enc28j60RegisterTxHandler(ipv4HandlePacket);
     for (i = 0; i < IPV4_MAXIMUM_PROTOCOL_HANDLERS; i++)
     {
         Ipv4Handlers[i].used = FALSE;
@@ -150,7 +150,7 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
     uartTxString(debugBuffer);
 #endif
     // Push 1 layer further down
-    enc28j60TxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
+    macTxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
 }
 
 UI08_t gw[6] = {0xB0, 0x48, 0x7A, 0xDB, 0x5B, 0xEA };
@@ -183,5 +183,5 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI
     uartTxString(debugBuffer);
 #endif
 
-    enc28j60TxFrame((EthernetFrame_t*) ipv4Packet, sizeof(EthernetFrame_t) + size);
+    macTxFrame((EthernetFrame_t*) ipv4Packet, sizeof(EthernetFrame_t) + size);
 }
