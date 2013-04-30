@@ -86,9 +86,7 @@ void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled)
         INSIGHT(IPV4_RX, ipv4Header->header.length, ipv4Header->header.protocol, htons(ipv4Header->header.crc),
         ipv4Header->header.sourceIp[0],ipv4Header->header.sourceIp[1],ipv4Header->header.sourceIp[2],ipv4Header->header.sourceIp[3]);
 
-        
         ipv4FireHandlers(ipv4Header);
-        
     }
     
 }

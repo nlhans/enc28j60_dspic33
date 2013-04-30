@@ -55,6 +55,15 @@ UI08_t ntpServer[4] = {194, 171, 167, 130};
 
 UI08_t frameBf[0x5EE];
 
+void handleConnection(void* con)
+{
+    //
+    TcpConnection_t* connection = (TcpConnection_t*) con;
+
+    //
+
+}
+
 #ifdef ENC624J600_H
 int main()
 {
@@ -70,8 +79,9 @@ int main()
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
-    udpInit();
     tcpInit();
+    tcpListen(8089, handleConnection);
+    udpInit();
     icmpInit();
     ntpInit();
     ntpRequest(ntpServer);

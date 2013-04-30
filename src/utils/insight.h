@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 7 // 0 = nothing
+#define INSIGHT_LEVEL 11 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -36,6 +36,14 @@
     MSG(UDP_RX, 6, "[udp] UDP RX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(NTP_TIME, 6, "[ntp] Timestamp: {0}", 1, MSG_ARG(UI32_t)) \
     MSG(NTP_REQUEST, 6, "[ntp] Send request to ip {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(TCP_RX, 6, "[tcp] RX packet S{0}/D{1} F{2:X} Size {3} ACK {4}", 5, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(TCP_RX_FLAGS, 10, "[tcp] RX Flags: SYN: {0} ACK: {1} RST: {2} FIN: {3}", 4, MSG_ARG(bool_t) MSG_ARG(bool_t) MSG_ARG(bool_t) MSG_ARG(bool_t)) \
+    MSG(TCP_RX_CONNECTION, 10, "[tcp] RX connection {0} state {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(TCP_RX_RESERVING, 10, "[tcp] Reserving RX connection", 0, NULL) \
+    MSG(TCP_LISTEN, 6, "[tcp] Begin listening on port {0}", 1, MSG_ARG(UI16_t)) \
+    MSG(TCP_PICKED, 10, "[tcp] Picked connection {0}", 1, MSG_ARG(UI08_t)) \
+    MSG(TCP_MATCHED, 10, "[tcp] Matched connection type {0} at index {1}", 2, MSG_STRING() MSG_ARG(UI08_t)) \
+    MSG(TCP_NO_CONNECTION, 10, "[tcp] Could not match incoming TCP packet to a connection!", 0, NULL) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),
@@ -66,7 +74,7 @@ typedef struct insightFormats_s
     UI16_t msgId;
     UI16_t msgLvl;
     UI16_t msgCount;
-    UI16_t msgSizes[10];
+    UI16_t msgSizes[16];
 }insightFormats_t;
 
 void insight_init();
