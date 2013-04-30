@@ -146,7 +146,7 @@ typedef enum enc624j600CommandSet_e
 
 } enc624j600CommandSet_t;
 
-#define ENC624J600_RXBUF_START 0x5800
+#define ENC624J600_RXBUF_START 0x3000
 
 void enc624j600_delay(UI08_t d);
 void enc624j600SpiCommand(UI08_t cmd, UI08_t* bf, UI08_t size);

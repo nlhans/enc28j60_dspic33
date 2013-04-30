@@ -4,28 +4,30 @@
 #include "circularBuffer.h"
 #include "uart.h"
 
+#if INSIGHT_LEVEL > 0
 const insightFormats_t insightDictionary[INSIGHT_MESSAGES] = {
     INSIGHT_TABLE(INSIGHT_DICT, INSIGHT_DICT_ARGUMENT, INSIGHT_DICT_POINTER, INSIGHT_DICT_STRING)
 };
-
-const char* insightFileName = __FILE__;
-
 circularBuffer_t insightBuffer;
 UI08_t insightTextBuffer[256];
+#endif
 
 const char insightSOFBytes[4] = {'I','N','S','I'};
 const char insightEOFBytes[4] = {'G','H','T','!'};
 
 void insight_init()
 {
+#if INSIGHT_LEVEL > 0
     //
     circularBufferInit(&insightBuffer, insightTextBuffer, sizeof(insightTextBuffer));
 
     INSIGHT(INIT_INSIGHT, __DATE__, __TIME__);
+#endif
 }
 
 void insight_msg(UI16_t msgCode, UI16_t fileNumber, UI16_t line, ...)
 {
+#if INSIGHT_LEVEL > 0
     if(msgCode == 0) return;
     UI16_t msgSize;
     UI08_t nArgs = insightDictionary[msgCode].msgCount;
@@ -85,4 +87,5 @@ void insight_msg(UI16_t msgCode, UI16_t fileNumber, UI16_t line, ...)
 
     while(circularBufferAvailable(&insightBuffer))
         uartTxByte(circularBufferRead(&insightBuffer));
+#endif
 }

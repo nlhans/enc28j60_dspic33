@@ -60,57 +60,14 @@ void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled)
     {
         *handled = TRUE;
 
-#ifdef DEBUG_CONSOLE
-        uartTxString("[arp] ");
-#endif
-
         arp = (ArpPacket_t*) frame;
         // decode its data
         arp->htype = htons(arp->htype);
         arp->ptype = htons(arp->ptype);
         arp->oper  = htons(arp->oper);
-
-        /*sprintf(debugBuffer, "\r\nMy IP: %d.%d.%d.%d", thisIp[0], thisIp[1], thisIp[2], thisIp[3]);
-        uartTxString(debugBuffer);
-        sprintf(debugBuffer, "\r\nMy MAC: %X.%X.%X.%X.%X.%X", thisMac[0], thisMac[1], thisMac[2], thisMac[3], thisMac[4], thisMac[5]);
-        uartTxString(debugBuffer);
-        sprintf(debugBuffer, "\r\nTarget IP: %d.%d.%d.%d", arp->tpa[0], arp->tpa[1], arp->tpa[2], arp->tpa[3]);
-        uartTxString(debugBuffer);
-        sprintf(debugBuffer, "\r\nTarget MAC: %X.%X.%X.%X.%X.%X", arp->tha[0], arp->tha[1], arp->tha[2], arp->tha[3], arp->tha[4], arp->tha[5]);
-        uartTxString(debugBuffer);
-        sprintf(debugBuffer, "\r\nSender IP: %d.%d.%d.%d", arp->spa[0], arp->spa[1], arp->spa[2], arp->spa[3]);
-        uartTxString(debugBuffer);
-        sprintf(debugBuffer, "\r\nSender MAC: %X.%X.%X.%X.%X.%X", arp->sha[0], arp->sha[1], arp->sha[2], arp->sha[3], arp->sha[4], arp->sha[5]);
-        uartTxString(debugBuffer);
-
-        uartTxString("\r\n");*/
         
-        if (arp->oper == 2) // this is a reply
+        if (arp->oper != 2) // this is a request
         {
-#ifdef DEBUG_CONSOLE
-            uartTxString("reply");
-            if (memcmp(arp->tha, thisMac, 6) == 0 && memcmp(arp->tpa, thisIp, 4) == 0)
-            {
-                uartTxString(" ok");
-            }
-            else
-            {
-                uartTxString(" *** FAIL ***");
-            }
-#endif
-        }
-        else
-        {
-#ifdef DEBUG_CONSOLE
-            if (memcmp(arp->tha, zerosMac, 6) == 0)
-            {
-                // It's requesting the MAC for this IP
-                uartTxString("who-has ");
-                sprintf(debugBuffer, "%d.%d.%d.%d", arp->tpa[0], arp->tpa[1], arp->tpa[2], arp->tpa[3]);
-                uartTxString(debugBuffer);
-
-            }
-#endif
             INSIGHT(ARP_WHOHAS, arp->tpa[0],arp->tpa[1],arp->tpa[2],arp->tpa[3], (memcmp(arp->tpa, thisIp, 4) == 0)?1:0,
                                 arp->spa[0],arp->spa[1],arp->spa[2],arp->spa[3])
 
@@ -118,27 +75,13 @@ void arpProcessPacket(EthernetFrame_t* frame, bool_t* handled)
             {
                 // It's a match; meaning requesting a MAC address for this 'machine'
                 arpBuildPacket(thisMac, thisIp, arp->sha, arp->spa, TRUE);
-#ifdef DEBUG_CONSOLE
-                uartTxString("replied");
-#endif
-            }
-            else
-            {
-#ifdef DEBUG_CONSOLE
-                uartTxString("dunno");
-#endif
             }
         }
-
-#ifdef DEBUG_CONSOLE
-        uartTxString("\r\n");
-#endif
 
     }
 }
 
 UI08_t* arpResolve(UI08_t* ip)
 {
-    //
     return (UI08_t*) &(onesMac[0]);
 }

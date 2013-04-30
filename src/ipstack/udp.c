@@ -1,6 +1,7 @@
 #include "udp.h"
 #include "ipv4.h"
 #include "uart.h"
+#include "insight.h"
 
 typedef struct UDPSocketHandlerInfo_s
 {
@@ -68,10 +69,7 @@ void udpHandlePacket (EthernetIpv4_t* ipv4, bool_t* handled)
         packet->udp.portDestination = htons(packet->udp.portDestination);
         packet->udp.length = htons(packet->udp.length);
 
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[udp] RX packet @ port %d/%d, crc %04X length %02X\r\n", packet->udp.portSource, packet->udp.portDestination, packet->udp.crc, packet->udp.length);
-        uartTxString(debugBuffer);
-#endif
+        INSIGHT(UDP_RX, packet->udp.portSource, packet->udp.portDestination, packet->udp.crc, packet->udp.length);
         udpFirePacket(packet);
     }
     
@@ -85,9 +83,6 @@ void udpTxPacket(UDPPacket_t* packet, UI16_t size, UI08_t* ip, UI16_t port)
     packet->udp.portSource =  htons( port );
     packet->udp.crc = 0;
 
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[udp] TX packet @ port %d/%d, crc %04X length %02X/%02X\r\n", htons(packet->udp.portSource), htons(packet->udp.portDestination), packet->udp.crc, htons(packet->udp.length), size);
-        uartTxString(debugBuffer);
-#endif
+    INSIGHT(UDP_TX, port, port, 0, size);
     ipv4TxPacket(ip, Ipv4UDP, (EthernetIpv4_t*)packet, size);
 }

@@ -3,6 +3,7 @@
 #include "uart.h"
 #include "arp.h"
 #include "uart.h"
+#include "insight.h"
 
 typedef struct Ipv4PacketHandlerInfo_s
 {
@@ -15,7 +16,7 @@ Ipv4PacketHandlerInfo_t Ipv4Handlers[IPV4_MAXIMUM_PROTOCOL_HANDLERS];
 void ipv4Init()
 {
     UI08_t i = 0 ;
-    //enc28j60RegisterTxHandler(ipv4HandlePacket);
+
     for (i = 0; i < IPV4_MAXIMUM_PROTOCOL_HANDLERS; i++)
     {
         Ipv4Handlers[i].used = FALSE;
@@ -36,10 +37,6 @@ void ipv4RegisterHandler(Ipv4PacketHandler_t myHandler)
         }
         i++;
     }
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "[ipv4] Registering handler %d\r\n", i);
-    uartTxString(debugBuffer);
-#endif
 }
 
 void ipv4UnregisterHandler(Ipv4PacketHandler_t myHandler)
@@ -79,26 +76,16 @@ void ipv4HandlePacket(EthernetFrame_t* frame, bool_t* handled)
     
     if (frame->type == 0x0800)
     {
-        // mark as 'done'
         *handled = TRUE;
         
-        // IPV4 packet
         ipv4Header = (EthernetIpv4_t*) frame;
         ipv4Header->header.length = htons(ipv4Header->header.length);
 
-        //if (ipv4Header->version > 4)
-        //    return;
-
         headerSize = 4 * ipv4Header->header.ihl;
 
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[ipv4] RX Packet %d bytes, protocol %02X, length %02X, CRC %04X, src %d.%d.%d.%d\r\n", headerSize,
-        ipv4Header->header.protocol,
-        ipv4Header->header.length,
-        ipv4Header->header.crc,
-        ipv4Header->header.sourceIp[0], ipv4Header->header.sourceIp[1], ipv4Header->header.sourceIp[2], ipv4Header->header.sourceIp[3]);
-        uartTxString(debugBuffer);
-#endif
+        INSIGHT(IPV4_RX, ipv4Header->header.length, ipv4Header->header.protocol, htons(ipv4Header->header.crc),
+        ipv4Header->header.sourceIp[0],ipv4Header->header.sourceIp[1],ipv4Header->header.sourceIp[2],ipv4Header->header.sourceIp[3]);
+
         
         ipv4FireHandlers(ipv4Header);
         
@@ -144,11 +131,9 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
     ipv4Packet->header.length       = htons(ipv4Packet->header.length);
     ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
 
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "[ipv4] TX Packet %d bytes, protocol %02X, length %02X, CRC %04X, dst %d.%d.%d.%d\r\n", 4*ipv4Packet->header.ihl, ipv4Packet->header.protocol, htons(ipv4Packet->header.length), htons(ipv4Packet->header.crc),
-    ipv4Packet->header.destinationIp[0], ipv4Packet->header.destinationIp[1], ipv4Packet->header.destinationIp[2], ipv4Packet->header.destinationIp[3]);
-    uartTxString(debugBuffer);
-#endif
+    INSIGHT(IPV4_TX_REPLY, totalSize, ipv4Packet->header.protocol, htons(ipv4Packet->header.crc),
+    ipv4Packet->header.destinationIp[0],ipv4Packet->header.destinationIp[1],ipv4Packet->header.destinationIp[2],ipv4Packet->header.destinationIp[3]);
+    
     // Push 1 layer further down
     macTxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
 }
@@ -177,11 +162,8 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI
     ipv4Packet->header.crc          = 0;
     ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
 
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "[ipv4] TX Packet %d bytes, protocol %02X, length %02X, CRC %04X, dst %d.%d.%d.%d\r\n", 4*ipv4Packet->header.ihl, ipv4Packet->header.protocol, htons(ipv4Packet->header.length), htons(ipv4Packet->header.crc),
-    ipv4Packet->header.destinationIp[0], ipv4Packet->header.destinationIp[1], ipv4Packet->header.destinationIp[2], ipv4Packet->header.destinationIp[3]);
-    uartTxString(debugBuffer);
-#endif
+    INSIGHT(IPV4_TX, size, ipv4Packet->header.protocol, htons(ipv4Packet->header.crc),
+    ipv4Packet->header.destinationIp[0],ipv4Packet->header.destinationIp[1],ipv4Packet->header.destinationIp[2],ipv4Packet->header.destinationIp[3]);
 
     macTxFrame((EthernetFrame_t*) ipv4Packet, sizeof(EthernetFrame_t) + size);
 }

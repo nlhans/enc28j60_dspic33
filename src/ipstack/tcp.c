@@ -104,10 +104,5 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
     {
         packet->tcp.portSource          = htons(packet->tcp.portSource);
         packet->tcp.portDestination     = htons(packet->tcp.portDestination);
-
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[tcp] RX packet @ port %d/%d, crc %04X length %02X\r\n", packet->tcp.portSource, packet->tcp.portDestination, packet->tcp.crc, packet->tcp.length);
-        uartTxString(debugBuffer);
-#endif
     }
 }

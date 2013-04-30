@@ -44,10 +44,6 @@ UI08_t* sram_fault(UI16_t addr)
     UI16_t id = (0xAFFF-addr) & 0x3FF; // 1024 entries
     bool_t isVariable = (addr & 0x0400) != 0;
     memMngEntry_t* entry;
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Accessing %04X, ID %02X, isVar %d\r\n", addr, id, isVariable);
-    uartTxString(debugBuffer);
-#endif
 
     // outside table
     if (id > MEM_MNG_ENTRIES) return NULL;
@@ -60,10 +56,6 @@ UI08_t* sram_fault(UI16_t addr)
     }
     else
     {
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Entry size %04X, isArray %d, \r\n", entry->size, entry->isArray);
-    uartTxString(debugBuffer);
-#endif
         // Access to variable itself
         if(entry->isArray)
         {
@@ -78,15 +70,15 @@ UI08_t* sram_fault(UI16_t addr)
 
         if (sram_canAlloc(entry->size) == FALSE)
         {
-            uartTxString("Heap and payload will never fit\r\n");
+            //uartTxString("Heap and payload will never fit\r\n");
             return NULL;
         }
 
-        uartTxString("Attempting to allocate memory..\r\n");
+        //uartTxString("Attempting to allocate memory..\r\n");
 
         if (sram_tryAlloc(id, entry->size) == FALSE)
         {
-            uartTxString("Could not allocate memory, need to free\r\n");
+            //uartTxString("Could not allocate memory, need to free\r\n");
 
             do
             {
@@ -201,10 +193,7 @@ bool_t sram_tryAlloc(UI16_t id, UI16_t size)
         // next pos - my pos - my size - headerSize
         // e.g. 2048 - 1024 - 512 -8= 508 free.
         free = ((UI08_t)heapPtr->ptr) - ((UI08_t)heapPtr) - heapPtr->size - sizeof(sramHeapHeader_t);
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "@ %04X, free %04X, next %04X\r\n", heapPtr, free, heapPtr->ptr);
-        uartTxString(debugBuffer);
-#endif
+
         if (free > sizeof(heap)) return FALSE;
         if(free >= size)
         {
@@ -215,10 +204,6 @@ bool_t sram_tryAlloc(UI16_t id, UI16_t size)
 
             memMngOffsets[id].heapPtr = newHeapPtr + sizeof(sramHeapHeader_t);
 
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Allocating memory A @ %04X for %02X bytes\r\n", newHeapPtr, size);
-    uartTxString(debugBuffer);
-#endif
             return TRUE;
         }
     }
@@ -234,14 +219,10 @@ bool_t sram_tryAlloc(UI16_t id, UI16_t size)
 
         memMngOffsets[id].heapPtr = heapPtr + sizeof(sramHeapHeader_t);
 
-#ifdef DEBUG_CONSOLE
-    sprintf(debugBuffer, "Allocating memory B @ %04X for %02X bytes, total %02X, next %04X\r\n", heapPtr, size, (sizeof(sramHeapHeader_t)+size), newHeapPtr);
-    uartTxString(debugBuffer);
-#endif
         return TRUE;
     }
 
-    uartTxString("Failed to allocate\r\n");
+    //uartTxString("Failed to allocate\r\n");
     return FALSE;
 }
 

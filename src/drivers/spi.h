@@ -27,11 +27,6 @@ void SPI_Init();
 UI08_t SPI_hw_Read();
 void SPI_hw_Write(UI08_t d);
 
-
-void enc28j60_reset_stat();
-UI16_t enc28j60_get_statRx();
-UI16_t enc28j60_get_statTx();
-
 #define SOFT_SPI
 
 extern UI16_t volatile spiReadByte;

@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 16 // 0 = nothing
+#define INSIGHT_LEVEL 7 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -21,13 +21,21 @@
     MSG(ENC624J600_SPI, 17, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_REG, 16, "[enc624j600] SPI REG {0:X} = {1:X}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
     MSG(ENC624J600_MAC, 6, "[enc624j600] MAC is {0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5:X}", 6, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(ENC624J600_PACKETS, 7, "[enc624j600] {0} packets in queue; link status: {1}", 2, MSG_ARG(UI08_t) MSG_ARG(bool_t)) \
+    MSG(ENC624J600_PACKETS, 8, "[enc624j600] {0} packets in queue; link status: {1}", 2, MSG_ARG(UI08_t) MSG_ARG(bool_t)) \
     MSG(ENC624J600_RX, 13, "[enc624j600] RX packet size {0:X} from {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_RX_PKT, 15, "[enc624j600] RX packet @ {0:X} size {1:X} flags {2:X} | {3:X} | {4:X} | {5:X} | {6:X} | {7:X} | {8:X} | {9:X} ", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(ENC624J600_TX, 13, "[enc624j600] TX packet size {0:X} to {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_TX_PKT, 15, "[enc624j600] TX packet @ {0:X} size {1:X}", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(ARP_WHOHAS, 6, "[arp] Who has IP {0}.{1}.{2}.{3} asks {5}.{6}.{7}.{8}? {4}", 9, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(bool_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ARP_ANNOUNCE, 6, "[arp] Broadcast me with IP {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ICMP_PINGPONG, 6, "[icmp] Ping-pong!", 0, NULL) \
+    MSG(IPV4_TX_REPLY, 6, "[ipv4] TX-reply packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(IPV4_TX, 6, "[ipv4] TX packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(IPV4_RX, 6, "[ipv4] RX packet Size {0:X} Protocol {1:X} CRC {2:X} SrcIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(UDP_TX, 6, "[udp] UDP TX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(UDP_RX, 6, "[udp] UDP RX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(NTP_TIME, 6, "[ntp] Timestamp: {0}", 1, MSG_ARG(UI32_t)) \
+    MSG(NTP_REQUEST, 6, "[ntp] Send request to ip {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

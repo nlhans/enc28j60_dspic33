@@ -400,7 +400,7 @@ void enc624j600Initialize()
             enc624j600WriteRegister16(EUDAST, 0x1234);
         }
         while (enc624j600ReadRegister16(EUDAST) != 0x1234); // verify comms
-        while (enc624j600ReadRegister8(ESTAT, H) & (1<<4) == 0); // ESTAT.CLKRDY
+        while ((enc624j600ReadRegister8(ESTAT, H) & (1<<4)) == 0); // ESTAT.CLKRDY
         enc624j600BitSetRegister8(ECON2, L, (1<<4)); // set bit 4
         enc624j600_resetBank();
         enc624j600_delay(100); // wait 25us, but this ain't 25us though.

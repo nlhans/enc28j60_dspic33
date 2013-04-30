@@ -53,27 +53,7 @@ UI08_t gateway[4]       = {192, 168, 1, 1};
 UI08_t pc[4]       = {192, 168, 1, 147};
 UI08_t ntpServer[4] = {194, 171, 167, 130};
 
-void    delay1ms()
-{
-    volatile UI08_t i = 0;
-    volatile UI08_t j = 0;
-
-    for(i=0;i<200;i++)
-        for(j=0;j<100;j++);
-}
-
-UI08_t frameBf[1024];
-UI08_t sramBf[64];
-
-void dl()
-{
-    volatile UI16_t i = 0, j =0;
-
-    for(i=0;i<155; i++)
-    {
-        for(j = 0; j < 255; j++);
-    }
-}
+UI08_t frameBf[0x5EE];
 
 #ifdef ENC624J600_H
 int main()
@@ -82,18 +62,11 @@ int main()
     TRISB &= ~(1<<8);
 
     SPI_Init();
-    SPI_SetDebug(0);
     uartInit();
     insight_init();
 
-    LED_Low;
-    SPI_SetDebug(0);
     enc624j600Initialize(mac);
-    SPI_SetDebug(0);
-    LED_High;
-
-    sram_23lc1024_init();
-    sram_init();
+    //sram_23lc1024_init();
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
@@ -105,8 +78,6 @@ int main()
 
     while(1)
     {
-        enc624j600_delay(20);
-
         if(enc624j600PacketPending())
         {
             INSIGHT(ENC624J600_PACKETS, enc624j600GetPacketCount(), enc624j600GetLinkStatus());
@@ -126,18 +97,11 @@ int main()
     TRISB &= ~(1<<8);
     
     SPI_Init();
-    SPI_SetDebug(0);
     uartInit();
     insight_init();
 
-    LED_Low;
-    SPI_SetDebug(0);
     enc28j60Initialize(mac);
-    SPI_SetDebug(0);
-    LED_High;
-
     sram_23lc1024_init();
-    sram_init();
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
@@ -152,11 +116,6 @@ int main()
         while (!enc28j60PacketPending());
         enc28j60_reset_stat();
         enc28j60RxFrame(frameBf, sizeof(frameBf));
-        
-#ifdef DEBUG_CONSOLE
-        sprintf(debugBuffer, "[spi] RX: %04d, TX: %04d\r\n", enc28j60_get_statRx(), enc28j60_get_statTx());
-        uartTxString(debugBuffer);
-#endif
     }
     while(1);
     return 0;
