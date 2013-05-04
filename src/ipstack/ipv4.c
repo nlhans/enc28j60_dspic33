@@ -117,6 +117,7 @@ UI16_t ipv4Crc(UI08_t* data, UI16_t size)
 
 void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
 {
+    totalSize += sizeof(EthernetIpv4Header_t);
     UI08_t ipTmp[4];
     // Swap source/destination
     memcpy(ipTmp,                               ipv4Packet->header.destinationIp, 4);
@@ -125,6 +126,8 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
 
     // Recalculate crc
     ipv4Packet->header.crc          = 0;
+    ipv4Packet->header.flags        = 0;
+    ipv4Packet->header.length       = totalSize;
     ipv4Packet->frame.type          = htons(ipv4Packet->frame.type);
     ipv4Packet->header.length       = htons(ipv4Packet->header.length);
     ipv4Packet->header.crc          = htons(ipv4Crc((UI08_t*)(&ipv4Packet->header), 4*ipv4Packet->header.ihl ) );
@@ -132,8 +135,7 @@ void ipv4TxReplyPacket(EthernetIpv4_t* ipv4Packet, UI08_t totalSize)
     INSIGHT(IPV4_TX_REPLY, totalSize, ipv4Packet->header.protocol, htons(ipv4Packet->header.crc),
     ipv4Packet->header.destinationIp[0],ipv4Packet->header.destinationIp[1],ipv4Packet->header.destinationIp[2],ipv4Packet->header.destinationIp[3]);
     
-    // Push 1 layer further down
-    macTxReplyFrame((EthernetFrame_t*)ipv4Packet, sizeof(EthernetIpv4Header_t) + totalSize);
+    macTxReplyFrame((EthernetFrame_t*)ipv4Packet, totalSize);
 }
 
 UI08_t gw[6] = {0xB0, 0x48, 0x7A, 0xDB, 0x5B, 0xEA };
@@ -152,7 +154,7 @@ void ipv4TxPacket(UI08_t* dstIp, UI08_t protocol, EthernetIpv4_t *ipv4Packet, UI
     ipv4Packet->header.version      = 4;
     ipv4Packet->header.ihl          = 5;
     ipv4Packet->header.DSCP         = 0;
-    ipv4Packet->header.length       = htons(size);
+    ipv4Packet->header.length       = htons(size); // zeker?
     ipv4Packet->header.ID           = htons(0x1234);
     ipv4Packet->header.flags        = 0;
     ipv4Packet->header.timeToLive   = 0x80;

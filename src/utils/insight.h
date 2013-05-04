@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 11 // 0 = nothing
+#define INSIGHT_LEVEL 0 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -41,9 +41,12 @@
     MSG(TCP_RX_CONNECTION, 10, "[tcp] RX connection {0} state {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(TCP_RX_RESERVING, 10, "[tcp] Reserving RX connection", 0, NULL) \
     MSG(TCP_LISTEN, 6, "[tcp] Begin listening on port {0}", 1, MSG_ARG(UI16_t)) \
-    MSG(TCP_PICKED, 10, "[tcp] Picked connection {0}", 1, MSG_ARG(UI08_t)) \
-    MSG(TCP_MATCHED, 10, "[tcp] Matched connection type {0} at index {1}", 2, MSG_STRING() MSG_ARG(UI08_t)) \
+    MSG(TCP_PICKED, 8, "[tcp] Picked connection {0}", 1, MSG_ARG(UI08_t)) \
+    MSG(TCP_MATCHED, 8, "[tcp] Matched connection type {0} at index {1}", 2, MSG_STRING() MSG_ARG(UI08_t)) \
     MSG(TCP_NO_CONNECTION, 10, "[tcp] Could not match incoming TCP packet to a connection!", 0, NULL) \
+    MSG(TCP_RX_DATA, 10, "[tcp] RX Data {0} size {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
+    MSG(DATASIZE, 1, "Data Size: {0}", 1, MSG_ARG(UI16_t)) \
+    MSG(HTTP_RX_HEADERS, 1, "[HTTP] HTTP Request {0}", 1, MSG_STRING()) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

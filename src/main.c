@@ -55,12 +55,34 @@ UI08_t ntpServer[4] = {194, 171, 167, 130};
 
 UI08_t frameBf[0x5EE];
 
-void handleConnection(void* con)
+const char* response = "I SHIT YOU NOT";
+
+void handleData(void* con, bool_t push, UI08_t* d, UI16_t s)
+{
+    //
+    INSIGHT(HTTP_RX_HEADERS, d);
+
+    UI16_t getAddrOffset = strchr(d, "GET /");
+    if(getAddrOffset == NULL)
+    {
+        //
+    }
+    else
+    {
+        //TcpTx(con, response, strlen(response));
+        //TcpClose(con);
+    }
+}
+
+bool_t handleConnection(void* con)
 {
     //
     TcpConnection_t* connection = (TcpConnection_t*) con;
 
     //
+    connection->rxData = handleData;
+
+    return TRUE;
 
 }
 
@@ -80,7 +102,7 @@ int main()
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
     tcpInit();
-    tcpListen(8089, handleConnection);
+    tcpListen(1234, 32, handleConnection);
     udpInit();
     icmpInit();
     ntpInit();

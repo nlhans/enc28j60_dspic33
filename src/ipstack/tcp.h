@@ -16,7 +16,7 @@ extern "C" {
 #include "ipv4.h"
 
 #define TCP_MAX_LISTEN_PORTS 4
-#define TCP_MAX_CONNECTIONS 16
+#define TCP_MAX_CONNECTIONS 32
 
 typedef union TcpFlags_u
 {
@@ -91,27 +91,33 @@ typedef enum TcpState_e
     TcpLastAck
 } TcpState_t;
 
-typedef void (*TcpConnectedHandler_t) (void* connectionHandle);
+typedef bool_t (*TcpConnectedHandler_t) (void* connectionHandle);
+typedef void (*TcpRxDataHandler_t) (void* connectionHandle, UI08_t* data, UI16_t length);
 
 typedef struct TcpListener_s
 {
     bool_t InUse;
+    UI08_t maxConnections;
     UI16_t localPort;
     TcpConnectedHandler_t connectionHandler;
 } TcpListener_t;
 
 typedef struct TcpConnection_s
 {
+    UI32_t lastSequenceNumber;
+    UI32_t lastAcknowledgeNumber;
+    TcpListener_t* listener;
     TcpState_t state;
-    UI16_t remotePort;
     UI08_t remoteIp[4];
     UI08_t remoteMac[6];
-    TcpListener_t* listener;
+    UI16_t remotePort;
+    UI16_t timer;
+    TcpRxDataHandler_t rxData;
 } TcpConnection_t;
 
 
 void tcpInit();
-bool_t tcpListen(UI16_t port, TcpConnectedHandler_t connectHandler);
+bool_t tcpListen(UI16_t port, UI08_t maxConnections, TcpConnectedHandler_t connectHandler);
 void tcpTxPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConnection_t* connection);
 
 
