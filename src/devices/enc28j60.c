@@ -381,13 +381,9 @@ void enc28j60TxFrame(EthernetFrame_t* packet, UI16_t length)
     // Set tx pointer indicating the end
     enc28j60WriteRegisterUint16(ETXNDL, ENC28J60_TXBUF_START + length);
 
-    SPI_SetDebug(TRUE);
-
     // Control byte (0x00) + packet
     enc28j60WriteData(ENC28J60_TXBUF_START, &controlByte, 1);
     enc28j60WriteData(ENC28J60_TXBUF_START+1, (UI08_t*)packet, length);
-
-    SPI_SetDebug(FALSE);
 
     // Todo: ext interrupts
     enc28j60BitClrRegisterUint8(EIR,    0b00001010); // TX complete, TX error

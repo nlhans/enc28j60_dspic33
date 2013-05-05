@@ -76,170 +76,170 @@ ifeq ($(TYPE_IMAGE), DEBUG_RUN)
 ${OBJECTDIR}/_ext/1278887395/enc28j60.o: ../src/devices/enc28j60.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/enc28j60.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc28j60.c  -o ${OBJECTDIR}/_ext/1278887395/enc28j60.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=0
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc28j60.c  -o ${OBJECTDIR}/_ext/1278887395/enc28j60.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=0
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1278887395/23lc1024.o: ../src/devices/23lc1024.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/23lc1024.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=1
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=1
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1278887395/enc624j600.o: ../src/devices/enc624j600.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/enc624j600.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc624j600.c  -o ${OBJECTDIR}/_ext/1278887395/enc624j600.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=2
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc624j600.c  -o ${OBJECTDIR}/_ext/1278887395/enc624j600.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=2
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1639450193/spi.o: ../src/drivers/spi.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
 	@${RM} ${OBJECTDIR}/_ext/1639450193/spi.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/spi.c  -o ${OBJECTDIR}/_ext/1639450193/spi.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/spi.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=3
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/spi.c  -o ${OBJECTDIR}/_ext/1639450193/spi.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/spi.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=3
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/spi.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1639450193/uart.o: ../src/drivers/uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
 	@${RM} ${OBJECTDIR}/_ext/1639450193/uart.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/uart.c  -o ${OBJECTDIR}/_ext/1639450193/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/uart.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=4
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/uart.c  -o ${OBJECTDIR}/_ext/1639450193/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/uart.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=4
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/arp.o: ../src/ipstack/arp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/arp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/arp.c  -o ${OBJECTDIR}/_ext/1733914311/arp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/arp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=5
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/arp.c  -o ${OBJECTDIR}/_ext/1733914311/arp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/arp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=5
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/arp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/icmp.o: ../src/ipstack/icmp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/icmp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/icmp.c  -o ${OBJECTDIR}/_ext/1733914311/icmp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/icmp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=6
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/icmp.c  -o ${OBJECTDIR}/_ext/1733914311/icmp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/icmp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=6
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/icmp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/ipv4.o: ../src/ipstack/ipv4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/ipv4.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ipv4.c  -o ${OBJECTDIR}/_ext/1733914311/ipv4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ipv4.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=7
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ipv4.c  -o ${OBJECTDIR}/_ext/1733914311/ipv4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ipv4.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=7
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ipv4.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/ntp.o: ../src/ipstack/ntp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/ntp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=8
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=8
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ntp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/udp.o: ../src/ipstack/udp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/udp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=9
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=9
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/udp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/tcp.o: ../src/ipstack/tcp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/tcp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/tcp.c  -o ${OBJECTDIR}/_ext/1733914311/tcp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/tcp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=10
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/tcp.c  -o ${OBJECTDIR}/_ext/1733914311/tcp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/tcp.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=10
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/tcp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1519963337/insight.o: ../src/utils/insight.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1519963337 
 	@${RM} ${OBJECTDIR}/_ext/1519963337/insight.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/insight.c  -o ${OBJECTDIR}/_ext/1519963337/insight.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/insight.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=11
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/insight.c  -o ${OBJECTDIR}/_ext/1519963337/insight.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/insight.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=11
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1519963337/insight.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1519963337/circularBuffer.o: ../src/utils/circularBuffer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1519963337 
 	@${RM} ${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/circularBuffer.c  -o ${OBJECTDIR}/_ext/1519963337/circularBuffer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=12
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/circularBuffer.c  -o ${OBJECTDIR}/_ext/1519963337/circularBuffer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=12
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1360937237 
 	@${RM} ${OBJECTDIR}/_ext/1360937237/main.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=13
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -D__DEBUG -D__MPLAB_DEBUGGER_PICKIT2=1  -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=13
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 else
 ${OBJECTDIR}/_ext/1278887395/enc28j60.o: ../src/devices/enc28j60.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/enc28j60.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc28j60.c  -o ${OBJECTDIR}/_ext/1278887395/enc28j60.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=0
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc28j60.c  -o ${OBJECTDIR}/_ext/1278887395/enc28j60.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=0
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/enc28j60.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1278887395/23lc1024.o: ../src/devices/23lc1024.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/23lc1024.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=1
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/23lc1024.c  -o ${OBJECTDIR}/_ext/1278887395/23lc1024.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=1
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/23lc1024.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1278887395/enc624j600.o: ../src/devices/enc624j600.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1278887395 
 	@${RM} ${OBJECTDIR}/_ext/1278887395/enc624j600.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc624j600.c  -o ${OBJECTDIR}/_ext/1278887395/enc624j600.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=2
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/devices/enc624j600.c  -o ${OBJECTDIR}/_ext/1278887395/enc624j600.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=2
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1278887395/enc624j600.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1639450193/spi.o: ../src/drivers/spi.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
 	@${RM} ${OBJECTDIR}/_ext/1639450193/spi.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/spi.c  -o ${OBJECTDIR}/_ext/1639450193/spi.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/spi.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=3
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/spi.c  -o ${OBJECTDIR}/_ext/1639450193/spi.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/spi.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=3
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/spi.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1639450193/uart.o: ../src/drivers/uart.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1639450193 
 	@${RM} ${OBJECTDIR}/_ext/1639450193/uart.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/uart.c  -o ${OBJECTDIR}/_ext/1639450193/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/uart.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=4
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/drivers/uart.c  -o ${OBJECTDIR}/_ext/1639450193/uart.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1639450193/uart.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=4
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1639450193/uart.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/arp.o: ../src/ipstack/arp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/arp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/arp.c  -o ${OBJECTDIR}/_ext/1733914311/arp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/arp.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=5
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/arp.c  -o ${OBJECTDIR}/_ext/1733914311/arp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/arp.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=5
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/arp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/icmp.o: ../src/ipstack/icmp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/icmp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/icmp.c  -o ${OBJECTDIR}/_ext/1733914311/icmp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/icmp.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=6
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/icmp.c  -o ${OBJECTDIR}/_ext/1733914311/icmp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/icmp.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=6
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/icmp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/ipv4.o: ../src/ipstack/ipv4.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/ipv4.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ipv4.c  -o ${OBJECTDIR}/_ext/1733914311/ipv4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ipv4.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=7
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ipv4.c  -o ${OBJECTDIR}/_ext/1733914311/ipv4.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ipv4.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=7
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ipv4.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/ntp.o: ../src/ipstack/ntp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/ntp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=8
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/ntp.c  -o ${OBJECTDIR}/_ext/1733914311/ntp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/ntp.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=8
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/ntp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/udp.o: ../src/ipstack/udp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/udp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=9
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/udp.c  -o ${OBJECTDIR}/_ext/1733914311/udp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/udp.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=9
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/udp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1733914311/tcp.o: ../src/ipstack/tcp.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1733914311 
 	@${RM} ${OBJECTDIR}/_ext/1733914311/tcp.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/tcp.c  -o ${OBJECTDIR}/_ext/1733914311/tcp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/tcp.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=10
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/ipstack/tcp.c  -o ${OBJECTDIR}/_ext/1733914311/tcp.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1733914311/tcp.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=10
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1733914311/tcp.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1519963337/insight.o: ../src/utils/insight.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1519963337 
 	@${RM} ${OBJECTDIR}/_ext/1519963337/insight.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/insight.c  -o ${OBJECTDIR}/_ext/1519963337/insight.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/insight.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=11
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/insight.c  -o ${OBJECTDIR}/_ext/1519963337/insight.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/insight.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=11
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1519963337/insight.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1519963337/circularBuffer.o: ../src/utils/circularBuffer.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1519963337 
 	@${RM} ${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/circularBuffer.c  -o ${OBJECTDIR}/_ext/1519963337/circularBuffer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=12
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/utils/circularBuffer.c  -o ${OBJECTDIR}/_ext/1519963337/circularBuffer.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=12
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1519963337/circularBuffer.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} ${OBJECTDIR}/_ext/1360937237 
 	@${RM} ${OBJECTDIR}/_ext/1360937237/main.o.d 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -omf=elf -mlarge-data -O1 -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=13
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ../src/main.c  -o ${OBJECTDIR}/_ext/1360937237/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d"        -g -omf=elf -mlarge-data -Os -fomit-frame-pointer -mpa -falign-arrays -I"../src" -I"../src/devices" -I"../src/drivers" -I"../src/ipstack" -I"C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils" -msmart-io=1 -Wall -msfr-warn=off -DF_NUM=13
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT)  -rsi ${MP_CC_DIR}../ 
 	
 endif

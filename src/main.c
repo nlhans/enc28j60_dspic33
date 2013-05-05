@@ -16,8 +16,8 @@
 #include "insight.h"
 
 #include "sram_defs.h"
-#include "enc624j600.h"
 
+#ifdef ENC624J600_H
 void macRxFrame(UI08_t* packet, UI16_t length)
 { 
     enc624j600RxFrame(packet, length);
@@ -30,6 +30,20 @@ void macTxReplyFrame(EthernetFrame_t* packet, UI16_t length)
 {
     enc624j600TxReplyFrame(packet, length);
 }
+#else
+void macRxFrame(UI08_t* packet, UI16_t length)
+{
+    enc28j60RxFrame(packet, length);
+}
+void macTxFrame(EthernetFrame_t* packet, UI16_t length)
+{
+    enc28j60TxFrame(packet, length);
+}
+void macTxReplyFrame(EthernetFrame_t* packet, UI16_t length)
+{
+    enc28j60TxReplyFrame(packet, length);
+}
+#endif
 
 _FBS(BWRP_WRPROTECT_OFF & BSS_NO_FLASH & RBS_NO_RAM)
 _FSS(SWRP_WRPROTECT_OFF & SSS_NO_FLASH & RSS_NO_RAM)
@@ -86,43 +100,6 @@ bool_t handleConnection(void* con)
 
 }
 
-#ifdef ENC624J600_H
-int main()
-{
-    AD1PCFGL = 0xFFFF;
-    TRISB &= ~(1<<8);
-
-    SPI_Init();
-    uartInit();
-    insight_init();
-
-    enc624j600Initialize(mac);
-    //sram_23lc1024_init();
-    arpInit();
-    arpAnnounce(mac, ip, gateway);
-    ipv4Init();
-    tcpInit();
-    tcpListen(1234, 32, handleConnection);
-    udpInit();
-    icmpInit();
-    ntpInit();
-    ntpRequest(ntpServer);
-
-    while(1)
-    {
-        if(enc624j600PacketPending())
-        {
-            INSIGHT(ENC624J600_PACKETS, enc624j600GetPacketCount(), enc624j600GetLinkStatus());
-            enc624j600RxFrame(frameBf, sizeof(frameBf));
-        }
-
-    }
-    while(1);
-    return 0;
-}
-#endif
-
-#ifdef ENC28J60_H
 int main()
 {
     AD1PCFGL = 0xFFFF;
@@ -132,24 +109,37 @@ int main()
     uartInit();
     insight_init();
 
+#ifdef ENC28J60_H
     enc28j60Initialize(mac);
+#endif
+#ifdef ENC624J600_H
+    enc624j600Initialize(mac);
+#endif
     sram_23lc1024_init();
     arpInit();
     arpAnnounce(mac, ip, gateway);
     ipv4Init();
     udpInit();
     tcpInit();
+    tcpListen(1234, 32, handleConnection);
     icmpInit();
     ntpInit();
     ntpRequest(ntpServer);
 
     while(1)
     {
+#ifdef ENC28J60_H
         while (!enc28j60PacketPending());
-        enc28j60_reset_stat();
         enc28j60RxFrame(frameBf, sizeof(frameBf));
+#endif
+#ifdef ENC624J600_H
+        if(enc624j600PacketPending())
+        {
+            INSIGHT(ENC624J600_PACKETS, enc624j600GetPacketCount(), enc624j600GetLinkStatus());
+            enc624j600RxFrame(frameBf, sizeof(frameBf));
+        }
+#endif
     }
     while(1);
     return 0;
 }
-#endif
