@@ -55,14 +55,14 @@ UI08_t ntpServer[4] = {194, 171, 167, 130};
 
 UI08_t frameBf[0x5EE];
 
-const char* response = "I SHIT YOU NOT";
+const char* response = "Hello wonderful TCP world!";
 
 void handleData(void* con, bool_t push, UI08_t* d, UI16_t s)
 {
     //
     INSIGHT(HTTP_RX_HEADERS, d);
 
-    UI16_t getAddrOffset = strchr(d, "GET /");
+    UI16_t getAddrOffset = strchr((char*)d, "GET /");
     if(getAddrOffset == NULL)
     {
         //

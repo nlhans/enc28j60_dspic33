@@ -1,6 +1,7 @@
 
 #include "enc624j600.h"
 #include "uart.h"
+#include "spi.h"
 #include "insight.h"
 #include "ipv4.h"
 #include "arp.h"
@@ -32,7 +33,7 @@ static UI08_t currentBank = 0;
 /****                   ENC624J600 SPI Command functions                     ****/
 /****                                                                      ****/
 /******************************************************************************/
-UI08_t enc624j600_spi_write(UI08_t dat)
+UI08_t enc624j600_spi_TxRx(UI08_t dat)
 {
     UI08_t dat_ret = 0;
     short i = 0;
@@ -79,36 +80,66 @@ void enc624j600SpiCommand(UI08_t cmd, UI08_t* bf, UI08_t size)
     UI08_t tmp;
     //
     ENC624_CS_LowASM;
-    enc624j600_spi_write(cmd);
-    
+    enc624j600_spi_Tx(cmd);
+
     while(size > 0)
     {
-        tmp = enc624j600_spi_write(*bf);
+        tmp = enc624j600_spi_TxRx(*bf);
         *bf = tmp;
         bf++;
         size--;
     }
     ENC624_CS_HighASM;
-    
+
+}
+
+void enc624j600SpiCommandTxBf(UI08_t cmd, UI08_t* bf, UI08_t size)
+{
+    ENC624_CS_LowASM;
+    enc624j600_spi_Tx(cmd);
+
+    while(size > 0)
+    {
+        enc624j600_spi_Tx(*bf);
+        bf++;
+        size--;
+    }
+    ENC624_CS_HighASM;
+
+}
+
+void enc624j600SpiCommandRxBf(UI08_t cmd, UI08_t* bf, UI08_t size)
+{
+    ENC624_CS_LowASM;
+    enc624j600_spi_Tx(cmd);
+
+    while(size > 0)
+    {
+        *bf = enc624j600_spi_Rx();
+        bf++;
+        size--;
+    }
+    ENC624_CS_HighASM;
+
 }
 
 void enc624j600SpiReadRxData(UI16_t ptr, UI08_t* bf, UI16_t size)
 {
     enc624j600Command(WRXRDPT, (UI08_t*)&ptr, sizeof(UI16_t));
-    enc624j600Command(RRXDATA, bf, size);
+    enc624j600CommandRxBf(RRXDATA, bf, size);
 }
 
 
 void enc624j600SpiReadData(UI16_t ptr, UI08_t* bf, UI16_t size)
 {
     enc624j600Command(WGPRDPT, (UI08_t*)&ptr, sizeof(UI16_t));
-    enc624j600Command(RGPDATA, bf, size);
+    enc624j600CommandRxBf(RGPDATA, bf, size);
 }
 
 void enc624j600SpiWriteData(UI16_t ptr, UI08_t* bf, UI16_t size)
 {
     enc624j600Command(WGPWRPT, (UI08_t*)&ptr, sizeof(UI16_t));
-    enc624j600Command(WGPDATA, bf, size);
+    enc624j600CommandTxBf(WGPDATA, bf, size);
 }
 
 /******************************************************************************/
@@ -122,9 +153,9 @@ UI16_t enc624j600_readRegister(UI08_t addr)
     //
     ENC624_CS_LowASM;
 
-    enc624j600_spi_write((addr & 0b11111)); // 000a aaaa
-    UI16_t dat = enc624j600_spi_write(0x00);
-    dat |= (enc624j600_spi_write(0x00) << 8);
+    enc624j600_spi_Tx((addr & 0b11111)); // 000a aaaa
+    UI16_t dat = enc624j600_spi_Rx();
+    dat |= (enc624j600_spi_Rx() << 8);
     ENC624_CS_HighASM;
 
     return dat;
@@ -134,9 +165,9 @@ void enc624j600_writeRegister(UI16_t addr, UI16_t v)
 {
     //
     ENC624_CS_LowASM;
-    enc624j600_spi_write(0b01000000 | (addr & 0b11111)); // 000a aaaa
-    enc624j600_spi_write(v & 0xFF);
-    enc624j600_spi_write(v >> 8);
+    enc624j600_spi_Tx(0b01000000 | (addr & 0b11111)); // 000a aaaa
+    enc624j600_spi_Tx(v & 0xFF);
+    enc624j600_spi_Tx(v >> 8);
     ENC624_CS_HighASM;
 }
 
@@ -159,8 +190,8 @@ UI08_t enc624j600SpiReadRegister8(UI08_t addr)
     }
     
     ENC624_CS_LowASM;
-    enc624j600_spi_write((addr & 0b11111)); // 000a aaaa
-    dat = enc624j600_spi_write(0x00);
+    enc624j600_spi_Tx((addr & 0b11111)); // 000a aaaa
+    dat = enc624j600_spi_Rx();
     ENC624_CS_HighASM;
 
     return dat;
@@ -175,8 +206,8 @@ void enc624j600SpiWriteRegister8(UI08_t addr, UI08_t value)
     }
 
     ENC624_CS_LowASM;
-    enc624j600_spi_write((1<<6) | (addr & 0b11111)); // 010a aaaa
-    enc624j600_spi_write(value);
+    enc624j600_spi_Tx((1<<6) | (addr & 0b11111)); // 010a aaaa
+    enc624j600_spi_Tx(value);
     ENC624_CS_HighASM;
 }
 
@@ -195,8 +226,8 @@ void enc624j600SpiBSetRegister8(UI08_t addr, UI08_t value)
     }
 
     ENC624_CS_LowASM;
-    enc624j600_spi_write((1<<7) | (addr & 0b11111)); // 100a aaaa
-    enc624j600_spi_write(value);
+    enc624j600_spi_Tx((1<<7) | (addr & 0b11111)); // 100a aaaa
+    enc624j600_spi_Tx(value);
     ENC624_CS_HighASM;
 }
 
@@ -216,7 +247,7 @@ void enc624j600_setBank(UI08_t bank)
     if (bank != currentBank)
     {
         ENC624_CS_LowASM;
-        enc624j600_spi_write(0b11000000 | (bank<<1));
+        enc624j600_spi_Tx(0b11000000 | (bank<<1));
         ENC624_CS_HighASM;
               
         currentBank = bank;

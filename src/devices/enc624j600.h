@@ -151,7 +151,7 @@ typedef enum enc624j600CommandSet_e
 void enc624j600_delay(UI08_t d);
 void enc624j600SpiCommand(UI08_t cmd, UI08_t* bf, UI08_t size);
 void enc624j600_setBank(UI08_t bank);
-UI08_t enc624j600_spi_write(UI08_t d);
+UI08_t enc624j600_spi_TxRx(UI08_t d);
 void enc624j600Initialize();
 
 UI08_t enc624j600GetPacketCount();
@@ -176,9 +176,15 @@ void enc624j600SpiReadData(UI16_t ptr, UI08_t* bf, UI16_t size);
 void enc624j600SpiReadRxData(UI16_t ptr, UI08_t* bf, UI16_t size);
 void enc624j600SpiWriteData(UI16_t ptr, UI08_t* bf, UI16_t size);
 
+void enc624j600SpiCommandTxBf(UI08_t cmd, UI08_t* bf, UI08_t size);
+void enc624j600SpiCommandRxBf(UI08_t cmd, UI08_t* bf, UI08_t size);
+
 /******************* SPI ********************/
 #define L 0x55
 #define H 0xAA
+
+#define enc624j600CommandTxBf(CMD, BF, SIZE) enc624j600SpiCommandTxBf(CMD, BF, SIZE);
+#define enc624j600CommandRxBf(CMD, BF, SIZE) enc624j600SpiCommandRxBf(CMD, BF, SIZE);
 
 #define enc624j600Command(CMD, BF, SIZE) enc624j600SpiCommand(CMD, BF, SIZE);
 #define enc624j600ReadGpData(ADDR, BF, SIZE) enc624j600SpiReadData(ADDR, BF, SIZE);

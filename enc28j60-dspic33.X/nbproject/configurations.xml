@@ -42,6 +42,7 @@
         <itemPath>../src/drivers/uart.c</itemPath>
         <itemPath>../src/drivers/spiAsm.s</itemPath>
         <itemPath>../src/drivers/sram.c</itemPath>
+        <itemPath>../src/drivers/spiAsmENC624.s</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="ipstack" projectFiles="true">
         <itemPath>../src/ipstack/arp.c</itemPath>
@@ -98,6 +99,8 @@
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
+      <item path="../src/drivers/sram.c" ex="true" overriding="false">
+      </item>
       <C30>
         <property key="code-model" value="default"/>
         <property key="const-model" value="default"/>

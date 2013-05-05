@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 0 // 0 = nothing
+#define INSIGHT_LEVEL 2 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
