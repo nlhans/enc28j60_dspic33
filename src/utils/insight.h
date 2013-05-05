@@ -20,7 +20,7 @@
     MSG(ENC28J60_TX, 13, "[enc28j60] TX packet size {0:X} to {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_SPI, 17, "[enc624j600] SPI TxRx {0:X} TX | {1:X} RX", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_REG, 16, "[enc624j600] SPI REG {0:X} = {1:X}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
-    MSG(ENC624J600_MAC, 6, "[enc624j600] MAC is {0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5:X}", 6, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(ENC624J600_MAC, 2, "[enc624j600] MAC is {0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5:X}", 6, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_PACKETS, 8, "[enc624j600] {0} packets in queue; link status: {1}", 2, MSG_ARG(UI08_t) MSG_ARG(bool_t)) \
     MSG(ENC624J600_RX, 13, "[enc624j600] RX packet size {0:X} from {1:X}:{2:X}:{3:X}:{4:X}:{5:X}:{6:X}", 7, MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ENC624J600_RX_PKT, 15, "[enc624j600] RX packet @ {0:X} size {1:X} flags {2:X} | {3:X} | {4:X} | {5:X} | {6:X} | {7:X} | {8:X} | {9:X} ", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
@@ -28,15 +28,15 @@
     MSG(ENC624J600_TX_PKT, 15, "[enc624j600] TX packet @ {0:X} size {1:X}", 10, MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(ARP_WHOHAS, 6, "[arp] Who has IP {0}.{1}.{2}.{3} asks {5}.{6}.{7}.{8}? {4}", 9, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(bool_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(ARP_ANNOUNCE, 6, "[arp] Broadcast me with IP {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(ICMP_PINGPONG, 6, "[icmp] Ping-pong!", 0, NULL) \
-    MSG(IPV4_TX_REPLY, 6, "[ipv4] TX-reply packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(IPV4_TX, 6, "[ipv4] TX packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(IPV4_RX, 6, "[ipv4] RX packet Size {0:X} Protocol {1:X} CRC {2:X} SrcIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(UDP_TX, 6, "[udp] UDP TX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
-    MSG(UDP_RX, 6, "[udp] UDP RX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
-    MSG(NTP_TIME, 6, "[ntp] Timestamp: {0}", 1, MSG_ARG(UI32_t)) \
-    MSG(NTP_REQUEST, 6, "[ntp] Send request to ip {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
-    MSG(TCP_RX, 6, "[tcp] RX packet S{0}/D{1} F{2:X} Size {3} ACK {4}", 5, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(ICMP_PINGPONG, 4, "[icmp] Ping-pong!", 0, NULL) \
+    MSG(IPV4_TX_REPLY, 5, "[ipv4] TX-reply packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(IPV4_TX, 5, "[ipv4] TX packet Size {0:X} Protocol {1:X} CRC {2:X} DstIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(IPV4_RX, 5, "[ipv4] RX packet Size {0:X} Protocol {1:X} CRC {2:X} SrcIP: {3}.{4}.{5}.{6}", 7, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(UDP_TX, 4, "[udp] UDP TX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(UDP_RX, 4, "[udp] UDP RX packet port S{0}/D{1} crc {2} size {3:X}", 4, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(NTP_TIME, 4, "[ntp] Timestamp: {0}", 1, MSG_ARG(UI32_t)) \
+    MSG(NTP_REQUEST, 4, "[ntp] Send request to ip {0}.{1}.{2}.{3}", 4, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
+    MSG(TCP_RX, 4, "[tcp] RX packet S{0}/D{1} F{2:X} Size {3} ACK {4}", 5, MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
     MSG(TCP_RX_FLAGS, 10, "[tcp] RX Flags: SYN: {0} ACK: {1} RST: {2} FIN: {3}", 4, MSG_ARG(bool_t) MSG_ARG(bool_t) MSG_ARG(bool_t) MSG_ARG(bool_t)) \
     MSG(TCP_RX_CONNECTION, 10, "[tcp] RX connection {0} state {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI08_t)) \
     MSG(TCP_RX_RESERVING, 10, "[tcp] Reserving RX connection", 0, NULL) \
@@ -45,8 +45,8 @@
     MSG(TCP_MATCHED, 8, "[tcp] Matched connection type {0} at index {1}", 2, MSG_STRING() MSG_ARG(UI08_t)) \
     MSG(TCP_NO_CONNECTION, 10, "[tcp] Could not match incoming TCP packet to a connection!", 0, NULL) \
     MSG(TCP_RX_DATA, 10, "[tcp] RX Data {0} size {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
-    MSG(DATASIZE, 1, "Data Size: {0}", 1, MSG_ARG(UI16_t)) \
-    MSG(HTTP_RX_HEADERS, 1, "[HTTP] HTTP Request {0}", 1, MSG_STRING()) \
+    MSG(DATASIZE, 7, "Data Size: {0}", 1, MSG_ARG(UI16_t)) \
+    MSG(HTTP_RX_HEADERS, 7, "[HTTP] HTTP Request {0}", 1, MSG_STRING()) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

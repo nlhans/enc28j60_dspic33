@@ -327,11 +327,11 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 packet->tcp.acknowledgement = 0;
                 tcpTxPacket(0, flags, packet, connection);
 
-                connection->state = TcpLastAck;
+                connection->state = TcpClosed;
                 break;
 
             case TcpLastAck:
-                if ( packet->tcp.flags.bits.ack == 1)
+                if ( packet->tcp.flags.bits.ack == 1 || 1)
                 {
                     flags.bits.ack = 1;
                     tcpTxPacket(0, flags, packet, connection);
@@ -343,6 +343,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 connection->state = TcpListen;//TcpClosed;
                 break;
         }
+        INSIGHT(TCP_RX_CONNECTION, (UI08_t)(connection - tcpConnections), connection->state);
     }
 }
 
