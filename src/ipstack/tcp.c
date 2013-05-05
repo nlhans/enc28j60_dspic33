@@ -1,4 +1,5 @@
 #include "tcp.h"
+#include "arp.h"
 #include "ipv4.h"
 #include "uart.h"
 #include "insight.h"
@@ -196,7 +197,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 if (packet->tcp.flags.bits.fin == 1)
                 {
                     flags.bits.ack = 1;
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
                         
                     connection->state = TcpCloseWait;
                 }
@@ -235,7 +236,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                         connection->listener = NULL;
                     }
 
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
                         
                 }
                 break;
@@ -258,7 +259,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 if (packet->tcp.flags.bits.fin == 1)
                 {
                     flags.bits.ack = 1;
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
                     
                     connection->state = TcpCloseWait;
                 }
@@ -271,14 +272,19 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                     INSIGHT(DATASIZE, payloadSize);
                     UI32_t ackNumber = payloadSize + sequenceNumber;
                     INSIGHT(TCP_RX_DATA, 0);
-                    connection->rxData(connection, ((UI08_t*)(&packet->tcp)) + headerOffset, payloadSize);
 
                     flags.bits.ack = 1;
 
                     packet->tcp.sequenceNumber = acknowledgeNumber;
                     packet->tcp.acknowledgement = ackNumber;
 
-                    tcpTxPacket(0, flags, packet, connection);
+                    connection->lastAcknowledgeNumber = packet->tcp.acknowledgement;
+                    connection->lastSequenceNumber = packet->tcp.sequenceNumber;
+
+                    connection->rxData(connection, packet->tcp.flags.bits.psh, ((UI08_t*)(&packet->tcp)) + headerOffset, payloadSize);
+                    
+                    tcpTxReplyPacket(0, flags, packet, connection);
+
                 }
                 break;
 
@@ -292,7 +298,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                     else
                     {
                         flags.bits.ack = 1;
-                        tcpTxPacket(0, flags, packet, connection);
+                        tcpTxReplyPacket(0, flags, packet, connection);
                         
                         connection->state = TcpTimeWait;
                     }
@@ -302,7 +308,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                     flags.bits.ack = 1;
                     packet->tcp.acknowledgement = packet->tcp.sequenceNumber+1;
                     packet->tcp.sequenceNumber = 0xAA55AA55;
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
 
                     connection->state = TcpTimeWait;
                 }
@@ -312,7 +318,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 if ( packet->tcp.flags.bits.fin == 1)
                 {
                     flags.bits.ack = 1;
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
 
                     connection->state = TcpTimeWait;
                 }
@@ -325,7 +331,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
             case TcpCloseWait:
                 flags.bits.rst = 1;
                 packet->tcp.acknowledgement = 0;
-                tcpTxPacket(0, flags, packet, connection);
+                tcpTxReplyPacket(0, flags, packet, connection);
 
                 connection->state = TcpClosed;
                 break;
@@ -334,7 +340,7 @@ void tcpPacketHandler(EthernetIpv4_t* ipv4, bool_t* done)
                 if ( packet->tcp.flags.bits.ack == 1 || 1)
                 {
                     flags.bits.ack = 1;
-                    tcpTxPacket(0, flags, packet, connection);
+                    tcpTxReplyPacket(0, flags, packet, connection);
                     connection->state = TcpClosed;
                 }
                 break;
@@ -371,13 +377,13 @@ UI16_t tcpCrc(TcpPacket_t* packet, UI08_t* data, UI16_t size)
     return (UI16_t) crc;
 }
 
-void tcpTxPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConnection_t* connection)
+void tcpTxReplyPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConnection_t* connection)
 {
     dataSize += 4 * flags.bits.dataOffset;
 
     connection->lastAcknowledgeNumber = packet->tcp.acknowledgement;
     connection->lastSequenceNumber = packet->tcp.sequenceNumber;
-    
+
     packet->tcp.portDestination = htons(connection->remotePort);
     packet->tcp.portSource = htons(connection->listener->localPort);
     packet->tcp.sequenceNumber = htonl(packet->tcp.sequenceNumber);
@@ -385,11 +391,47 @@ void tcpTxPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConn
     packet->tcp.length = htons(packet->tcp.length);
     packet->tcp.flags.data = htons(flags.data);
     packet->tcp.crc = 0;
-    packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8) - dataSize - 6;
+    packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8) - dataSize - 6; // +8 for IP's
     packet->tcp.crc = htons(packet->tcp.crc);
 
     // hack ipv4 id
     packet->ipv4.header.ID = 0;
 
     ipv4TxReplyPacket((EthernetIpv4_t*)packet, dataSize);
+}
+
+UI08_t tcpPacketBf[1024];
+
+void tcpTxPacket(UI08_t* data, UI16_t dataSize, TcpFlags_t flags, TcpConnection_t* connection)
+{
+    TcpPacket_t * packet = (TcpPacket_t*) tcpPacketBf;
+    memcpy(((UI08_t*)&packet->tcp.urgPointer)+2, data, dataSize);
+
+    flags.bits.dataOffset = 5;
+
+    packet->tcp.acknowledgement = connection->lastAcknowledgeNumber;
+    packet->tcp.sequenceNumber = connection->lastSequenceNumber;
+
+    connection->lastSequenceNumber += dataSize;
+
+    dataSize += 4 * flags.bits.dataOffset;
+
+    memcpy(packet->ipv4.header.sourceIp, thisIp, 4);
+    memcpy(packet->ipv4.header.destinationIp, connection->remoteIp, 4);
+
+    packet->tcp.portDestination = htons(connection->remotePort);
+    packet->tcp.portSource = htons(connection->listener->localPort);
+    packet->tcp.sequenceNumber = htonl(packet->tcp.sequenceNumber);
+    packet->tcp.acknowledgement = htonl(packet->tcp.acknowledgement);
+    packet->tcp.length = htons(1400);
+    packet->tcp.flags.data = htons(flags.data);
+    packet->tcp.crc = 0;
+    packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8) - dataSize - 6; // +8 for IP's
+    packet->tcp.crc -= 0x2100;
+    packet->tcp.crc = htons(packet->tcp.crc);
+
+    // hack ipv4 id
+    packet->ipv4.header.ID = 0;
+
+    ipv4TxPacket(connection->remoteIp, Ipv4TCP, (EthernetIpv4_t*)packet, dataSize);
 }

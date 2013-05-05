@@ -92,7 +92,7 @@ typedef enum TcpState_e
 } TcpState_t;
 
 typedef bool_t (*TcpConnectedHandler_t) (void* connectionHandle);
-typedef void (*TcpRxDataHandler_t) (void* connectionHandle, UI08_t* data, UI16_t length);
+typedef void (*TcpRxDataHandler_t) (void* connectionHandle, bool_t push, UI08_t* data, UI16_t length);
 
 typedef struct TcpListener_s
 {
@@ -118,7 +118,8 @@ typedef struct TcpConnection_s
 
 void tcpInit();
 bool_t tcpListen(UI16_t port, UI08_t maxConnections, TcpConnectedHandler_t connectHandler);
-void tcpTxPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConnection_t* connection);
+void tcpTxReplyPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, TcpConnection_t* connection);
+void tcpTxPacket(UI08_t* data, UI16_t dataSize, TcpFlags_t flags, TcpConnection_t* connection);
 
 
 #ifdef	__cplusplus

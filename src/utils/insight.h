@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 0 // 0 = nothing
+#define INSIGHT_LEVEL 10 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -46,7 +46,7 @@
     MSG(TCP_NO_CONNECTION, 10, "[tcp] Could not match incoming TCP packet to a connection!", 0, NULL) \
     MSG(TCP_RX_DATA, 10, "[tcp] RX Data {0} size {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
     MSG(DATASIZE, 7, "Data Size: {0}", 1, MSG_ARG(UI16_t)) \
-    MSG(HTTP_RX_HEADERS, 7, "[HTTP] HTTP Request {0}", 1, MSG_STRING()) \
+    MSG(HTTP_RX_HEADERS, 7, "[HTTP] HTTP Request {1:X} is {0}", 2, MSG_STRING() MSG_ARG(UI16_t)) \
 
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),

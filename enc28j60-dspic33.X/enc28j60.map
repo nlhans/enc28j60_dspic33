@@ -1,4 +1,4 @@
-Microchip Technology Inc, vv1_00 (A) 7
+Microchip Technology Inc, vv1_00 (A) {
 
 Tool Name:
   c:\program files (x86)\microchip\xc16\v1.00\bin\bin\..\bin/elf-ld.exe
@@ -67,8 +67,12 @@ c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(dat
                               c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o) (__data_init_standard)
 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcmp.eo)
                               build/default/production/_ext/1733914311/arp.o (_memcmp)
+c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcpy.eo)
+                              build/default/production/_ext/1733914311/tcp.o (_memcpy)
 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memset.eo)
                               build/default/production/_ext/1733914311/ntp.o (_memset)
+c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(strlen.eo)
+                              build/default/production/_ext/1360937237/main.o (_strlen)
 
 
 Selected CodeGuard Options:
@@ -96,32 +100,31 @@ Program Memory  [Origin = 0x200, Length = 0x155fe]
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200                0xee           0x165  (357)
-.const                       0x2ee                0x28            0x3c  (60)
-.text                        0x316               0xe06          0x1509  (5385)
-../src/drivers/spiAsm.s.scn2    0x111c                0x6a            0x9f  (159)
-../src/drivers/spiAsmENC624.s.scn2    0x1186                0x6a            0x9f  (159)
-.dinit                      0x11f0                0x64            0x96  (150)
-.text                       0x1254                0xfa           0x177  (375)
-../src/drivers/spiAsm.s.scn1    0x134e                0x4c            0x72  (114)
-../src/drivers/spiAsmENC624.s.scn1    0x139a                0x4c            0x72  (114)
-.text                       0x13e6                 0x8             0xc  (12)
+.text                        0x200               0x10a           0x18f  (399)
+.const                       0x30a               0x658           0x984  (2436)
+.text                        0x962              0x159e          0x206d  (8301)
+../src/drivers/spiAsm.s.scn2    0x1f00                0x6a            0x9f  (159)
+../src/drivers/spiAsmENC624.s.scn2    0x1f6a                0x6a            0x9f  (159)
+.dinit                      0x1fd4                0x6a            0x9f  (159)
+.text                       0x203e                0xb2           0x10b  (267)
+../src/drivers/spiAsm.s.scn1    0x20f0                0x4c            0x72  (114)
+../src/drivers/spiAsmENC624.s.scn1    0x213c                0x4c            0x72  (114)
 
-                     Total program memory used (bytes):         0x1ae5  (6885) 5%
+                     Total program memory used (bytes):         0x2f4c  (12108) 9%
 
 
 Data Memory  [Origin = 0x800, Length = 0x4000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.bss                         0x800                   0           0xa42  (2626)
-.data                       0x1242                   0            0x18  (24)
-.bss                        0x125a                   0            0x1c  (28)
-.data                       0x1276                   0             0x6  (6)
-.bss                        0x127c                   0             0x4  (4)
-.data                       0x1280                   0             0x6  (6)
+.bss                         0x800                   0           0xf4c  (3916)
+.data                       0x174c                   0            0x18  (24)
+.bss                        0x1764                   0            0x1c  (28)
+.data                       0x1780                   0             0x6  (6)
+.bss                        0x1786                   0             0x4  (4)
+.data                       0x178a                   0             0x6  (6)
 
-                        Total data memory used (bytes):          0xa86  (2694) 16%
+                        Total data memory used (bytes):          0xf90  (3984) 24%
 
 
 Dynamic Memory Usage
@@ -129,56 +132,62 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                       0x1286                              0x357a  (13690)
+stack                       0x1790                              0x3070  (12400)
 
-                        Maximum dynamic memory (bytes):         0x357a  (13690)
+                        Maximum dynamic memory (bytes):         0x3070  (12400)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _frameBf
-                    0x0dee                  _tcpListeners
-                    0x0e06                  _tcpConnections
-                    0x1186                  _ntpRequestPacket
-                    0x11e0                  _bf
-                    0x1222                  _handlers
-                    0x1242                  _mac
-                    0x1248                  _ip
-                    0x124c                  _gateway
-                    0x1250                  _pc
-                    0x1254                  _ntpServer
-                    0x1258                  _response
-                    0x125a                  _thisIp
-                    0x125e                  _thisMac
-                    0x1264                  _gatewayMac
-                    0x126a                  _Ipv4Handlers
-                    0x1276                  _gw
-                    0x127c                  _spiReadByte
-                    0x127e                  _spiWriteByte
-                    0x1280                  _ntpTimestamp
+                    0x0800                  _tcpListeners
+                    0x0818                  _tcpConnections
+                    0x0b98                  _tcpPacketBf
+                    0x0f98                  _frameBf
+                    0x1586                  _insightBuffer
+                    0x1590                  _insightTextBuffer
+                    0x1690                  _ntpRequestPacket
+                    0x16ea                  _bf
+                    0x172c                  _handlers
+                    0x174c                  _mac
+                    0x1752                  _ip
+                    0x1756                  _gateway
+                    0x175a                  _pc
+                    0x175e                  _ntpServer
+                    0x1762                  _response
+                    0x1764                  _thisIp
+                    0x1768                  _thisMac
+                    0x176e                  _gatewayMac
+                    0x1774                  _Ipv4Handlers
+                    0x1780                  _gw
+                    0x1786                  _spiReadByte
+                    0x1788                  _spiWriteByte
+                    0x178a                  _ntpTimestamp
 
 External Symbols in Data Memory (by name):
 
-                    0x126a                  _Ipv4Handlers
-                    0x11e0                  _bf
-                    0x0800                  _frameBf
-                    0x124c                  _gateway
-                    0x1264                  _gatewayMac
-                    0x1276                  _gw
-                    0x1222                  _handlers
-                    0x1248                  _ip
-                    0x1242                  _mac
-                    0x1186                  _ntpRequestPacket
-                    0x1254                  _ntpServer
-                    0x1280                  _ntpTimestamp
-                    0x1250                  _pc
-                    0x1258                  _response
-                    0x127c                  _spiReadByte
-                    0x127e                  _spiWriteByte
-                    0x0e06                  _tcpConnections
-                    0x0dee                  _tcpListeners
-                    0x125a                  _thisIp
-                    0x125e                  _thisMac
+                    0x1774                  _Ipv4Handlers
+                    0x16ea                  _bf
+                    0x0f98                  _frameBf
+                    0x1756                  _gateway
+                    0x176e                  _gatewayMac
+                    0x1780                  _gw
+                    0x172c                  _handlers
+                    0x1586                  _insightBuffer
+                    0x1590                  _insightTextBuffer
+                    0x1752                  _ip
+                    0x174c                  _mac
+                    0x1690                  _ntpRequestPacket
+                    0x175e                  _ntpServer
+                    0x178a                  _ntpTimestamp
+                    0x175a                  _pc
+                    0x1762                  _response
+                    0x1786                  _spiReadByte
+                    0x1788                  _spiWriteByte
+                    0x0818                  _tcpConnections
+                    0x0800                  _tcpListeners
+                    0x0b98                  _tcpPacketBf
+                    0x1764                  _thisIp
+                    0x1768                  _thisMac
 
 External Symbols in Program Memory (by address):
 
@@ -188,109 +197,124 @@ External Symbols in Program Memory (by address):
                   0x000232                  __data_init
                   0x0002a8                  __DefaultInterrupt
                   0x0002ac                  _memcmp
-                  0x0002e0                  _memset
-                  0x00030a                  _onesMac
-                  0x000310                  _zerosMac
-                  0x000316                  _tcpInit
-                  0x00033a                  _tcpPickFreeConnection
-                  0x00035a                  _tcpMatchConnection
-                  0x0003aa                  _tcpMatchPort
-                  0x0003d4                  _tcpListenMore
-                  0x000408                  _tcpListen
-                  0x00046c                  _tcpCrc
-                  0x0004de                  _tcpTxPacket
-                  0x0005b2                  _tcpPacketHandler
-                  0x0007ca                  _enc624j600_spi_TxRx
-                  0x0007f6                  _enc624j600_delay
-                  0x00082c                  _enc624j600SpiCommand
-                  0x00084a                  _enc624j600SpiCommandTxBf
-                  0x000866                  _enc624j600SpiCommandRxBf
-                  0x000882                  _enc624j600SpiReadRxData
-                  0x0008a2                  _enc624j600SpiReadData
-                  0x0008c2                  _enc624j600SpiWriteData
-                  0x0008e2                  _enc624j600_readRegister
-                  0x0008fa                  _enc624j600_writeRegister
-                  0x000914                  _enc624j600_resetBank
-                  0x00091a                  _enc624j600_setBank
-                  0x000936                  _enc624j600SpiBSetRegister8
-                  0x000958                  _enc624j600SpiBSetRegister16
-                  0x00096e                  _enc624j600SpiWriteRegister8
-                  0x000990                  _enc624j600SpiWriteRegister16
-                  0x0009a6                  _enc624j600SpiReadRegister8
-                  0x0009c2                  _enc624j600SpiReadRegister16
-                  0x0009da                  _enc624j600GetPacketCount
-                  0x0009e0                  _enc624j600PacketPending
-                  0x0009ea                  _enc624j600GetLinkStatus
-                  0x0009f2                  _enc624j600GetTxBusyStatus
-                  0x0009fc                  _enc624j600TxFrame
-                  0x000a5a                  _enc624j600TxReplyFrame
-                  0x000a82                  _enc624j600RxFrame
-                  0x000b0a                  _enc624j600Initialize
-                  0x000b70                  _ipv4Init
-                  0x000b80                  _ipv4RegisterHandler
-                  0x000bac                  _ipv4UnregisterHandler
-                  0x000bcc                  _ipv4FireHandlers
-                  0x000c00                  _ipv4HandlePacket
-                  0x000c1a                  _ipv4Crc
-                  0x000c8a                  _ipv4TxReplyPacket
-                  0x000cec                  _ipv4TxPacket
-                  0x000d74                  _enc624j600_spi_Rx
-                  0x000d7c                  _enc624j600_spi_Tx
-                  0x000d86                  _enc28j60_spi_read
-                  0x000d8e                  _enc28j60_spi_write
-                  0x000d98                  _SPI_Read
-                  0x000db6                  _SPI_ReadWrite
-                  0x000de2                  _enc28j60_spi_transfer
-                  0x000de6                  _enc28j60_spi_transferBytes
-                  0x000e52                  _SPI_Init
-                  0x000e6e                  _SPI_hw_Read
-                  0x000e7a                  _SPI_hw_Write
-                  0x000e92                  _arpInit
-                  0x000e94                  _arpBuildPacket
-                  0x000f00                  _arpAnnounce
-                  0x000f1a                  _arpProcessPacket
-                  0x000f6a                  _arpResolve
-                  0x000f6e                  _udpInit
-                  0x000f86                  _udpFirePacket
-                  0x000fbe                  _udpHandlePacket
-                  0x000fea                  _udpRegisterHandler
-                  0x00100a                  _udpTxPacket
-                  0x00102e                  _ntpHandlePacket
-                  0x00107a                  _ntpInit
-                  0x001082                  _ntpRequest
-                  0x0010b2                  _sram_23lc1024_init
-                  0x0010b8                  _sram_23lc1024_read
-                  0x0010ea                  _sram_23lc1024_write
-                  0x00111c                  spiWriteByteS
-                  0x001186                  spiENC624WriteByteS
-                  0x001254                  _uartInit
-                  0x00128a                  _uartTxByte
-                  0x001296                  _uartTxString
-                  0x0012a8                  _handleData
-                  0x0012aa                  _handleConnection
-                  0x0012b2                  _macRxFrame
-                  0x0012b6                  _macTxFrame
-                  0x0012ba                  _macTxReplyFrame
-                  0x0012be                  _main
-                  0x0012fc                  _icmpHandlePacket
-                  0x001344                  _icmpInit
-                  0x00134a                  _icmpPing
-                  0x00134c                  _icmpTxPacket
-                  0x00134e                  spiReadByteS
-                  0x00139a                  spiENC624ReadByteS
-                  0x0013e6                  _insight_init
-                  0x0013e8                  _insight_msg
+                  0x0002e0                  _memcpy
+                  0x0002ee                  _memset
+                  0x0002fc                  _strlen
+                  0x000320                  _insightDictionary
+                  0x000910                  _insightSOFBytes
+                  0x000914                  _insightEOFBytes
+                  0x000956                  _onesMac
+                  0x00095c                  _zerosMac
+                  0x000962                  _tcpInit
+                  0x000986                  _tcpPickFreeConnection
+                  0x0009be                  _tcpMatchConnection
+                  0x000a22                  _tcpMatchPort
+                  0x000a66                  _tcpListenMore
+                  0x000aa8                  _tcpListen
+                  0x000b1c                  _tcpCrc
+                  0x000b8e                  _tcpTxReplyPacket
+                  0x000c62                  _tcpPacketHandler
+                  0x000f6c                  _tcpTxPacket
+                  0x00107e                  _enc624j600_spi_TxRx
+                  0x0010c0                  _enc624j600_delay
+                  0x0010f6                  _enc624j600SpiCommand
+                  0x001114                  _enc624j600SpiCommandTxBf
+                  0x001130                  _enc624j600SpiCommandRxBf
+                  0x00114c                  _enc624j600SpiReadRxData
+                  0x00116c                  _enc624j600SpiReadData
+                  0x00118c                  _enc624j600SpiWriteData
+                  0x0011ac                  _enc624j600_readRegister
+                  0x0011c4                  _enc624j600_writeRegister
+                  0x0011de                  _enc624j600_resetBank
+                  0x0011e4                  _enc624j600_setBank
+                  0x001200                  _enc624j600SpiBSetRegister8
+                  0x001222                  _enc624j600SpiBSetRegister16
+                  0x001238                  _enc624j600SpiWriteRegister8
+                  0x00125a                  _enc624j600SpiWriteRegister16
+                  0x001270                  _enc624j600SpiReadRegister8
+                  0x00128c                  _enc624j600SpiReadRegister16
+                  0x0012a4                  _enc624j600GetPacketCount
+                  0x0012aa                  _enc624j600PacketPending
+                  0x0012b4                  _enc624j600GetLinkStatus
+                  0x0012bc                  _enc624j600GetTxBusyStatus
+                  0x0012c6                  _enc624j600TxFrame
+                  0x001366                  _enc624j600TxReplyFrame
+                  0x00138e                  _enc624j600RxFrame
+                  0x001486                  _enc624j600Initialize
+                  0x00153c                  _ipv4Init
+                  0x00154c                  _ipv4RegisterHandler
+                  0x001578                  _ipv4UnregisterHandler
+                  0x001598                  _ipv4FireHandlers
+                  0x0015cc                  _ipv4HandlePacket
+                  0x001624                  _ipv4Crc
+                  0x001694                  _ipv4TxReplyPacket
+                  0x00172a                  _ipv4TxPacket
+                  0x0017e8                  _arpInit
+                  0x0017ea                  _arpBuildPacket
+                  0x001856                  _arpAnnounce
+                  0x00189c                  _arpProcessPacket
+                  0x00193e                  _arpResolve
+                  0x001942                  _enc624j600_spi_Rx
+                  0x00194a                  _enc624j600_spi_Tx
+                  0x001954                  _enc28j60_spi_read
+                  0x00195c                  _enc28j60_spi_write
+                  0x001966                  _SPI_Read
+                  0x001984                  _SPI_ReadWrite
+                  0x0019b0                  _enc28j60_spi_transfer
+                  0x0019b4                  _enc28j60_spi_transferBytes
+                  0x001a20                  _SPI_Init
+                  0x001a3c                  _SPI_hw_Read
+                  0x001a48                  _SPI_hw_Write
+                  0x001a60                  _udpInit
+                  0x001a78                  _udpFirePacket
+                  0x001ab0                  _udpHandlePacket
+                  0x001afa                  _udpRegisterHandler
+                  0x001b1a                  _udpTxPacket
+                  0x001b62                  _insight_msg
+                  0x001c30                  _insight_init
+                  0x001c4e                  _circularBufferInit
+                  0x001c5c                  _circularBufferWrite
+                  0x001c7e                  _circularBufferWriteBytes
+                  0x001c9e                  _circularBufferWriteInt16
+                  0x001cac                  _circularBufferWriteInt32
+                  0x001cbc                  _circularBufferWriteDouble
+                  0x001ccc                  _circularBufferWriteString
+                  0x001cf6                  _circularBufferRead
+                  0x001d1a                  _circularBufferAvailable
+                  0x001d24                  _ntpHandlePacket
+                  0x001d80                  _ntpInit
+                  0x001d88                  _ntpRequest
+                  0x001ddc                  _handleConnection
+                  0x001de4                  _handleData
+                  0x001e0c                  _macRxFrame
+                  0x001e10                  _macTxFrame
+                  0x001e14                  _macTxReplyFrame
+                  0x001e18                  _main
+                  0x001e72                  _sram_23lc1024_init
+                  0x001e84                  _sram_23lc1024_read
+                  0x001ec2                  _sram_23lc1024_write
+                  0x001f00                  spiWriteByteS
+                  0x001f6a                  spiENC624WriteByteS
+                  0x00203e                  _icmpHandlePacket
+                  0x002092                  _icmpInit
+                  0x002098                  _icmpPing
+                  0x00209a                  _icmpTxPacket
+                  0x00209c                  _uartInit
+                  0x0020d2                  _uartTxByte
+                  0x0020de                  _uartTxString
+                  0x0020f0                  spiReadByteS
+                  0x00213c                  spiENC624ReadByteS
                   0xf80000                  __FBS.sec
                   0xf80002                  __FSS.sec
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x000e52                  _SPI_Init
-                  0x000d98                  _SPI_Read
-                  0x000db6                  _SPI_ReadWrite
-                  0x000e6e                  _SPI_hw_Read
-                  0x000e7a                  _SPI_hw_Write
+                  0x001a20                  _SPI_Init
+                  0x001966                  _SPI_Read
+                  0x001984                  _SPI_ReadWrite
+                  0x001a3c                  _SPI_hw_Read
+                  0x001a48                  _SPI_hw_Write
                   0x0002a8                  __DefaultInterrupt
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
@@ -299,94 +323,109 @@ External Symbols in Program Memory (by name):
                   0x000232                  __data_init_standard
                   0x000222                  __psv_init
                   0x000200                  __resetPRI
-                  0x000f00                  _arpAnnounce
-                  0x000e94                  _arpBuildPacket
-                  0x000e92                  _arpInit
-                  0x000f1a                  _arpProcessPacket
-                  0x000f6a                  _arpResolve
-                  0x000d86                  _enc28j60_spi_read
-                  0x000de2                  _enc28j60_spi_transfer
-                  0x000de6                  _enc28j60_spi_transferBytes
-                  0x000d8e                  _enc28j60_spi_write
-                  0x0009ea                  _enc624j600GetLinkStatus
-                  0x0009da                  _enc624j600GetPacketCount
-                  0x0009f2                  _enc624j600GetTxBusyStatus
-                  0x000b0a                  _enc624j600Initialize
-                  0x0009e0                  _enc624j600PacketPending
-                  0x000a82                  _enc624j600RxFrame
-                  0x000958                  _enc624j600SpiBSetRegister16
-                  0x000936                  _enc624j600SpiBSetRegister8
-                  0x00082c                  _enc624j600SpiCommand
-                  0x000866                  _enc624j600SpiCommandRxBf
-                  0x00084a                  _enc624j600SpiCommandTxBf
-                  0x0008a2                  _enc624j600SpiReadData
-                  0x0009c2                  _enc624j600SpiReadRegister16
-                  0x0009a6                  _enc624j600SpiReadRegister8
-                  0x000882                  _enc624j600SpiReadRxData
-                  0x0008c2                  _enc624j600SpiWriteData
-                  0x000990                  _enc624j600SpiWriteRegister16
-                  0x00096e                  _enc624j600SpiWriteRegister8
-                  0x0009fc                  _enc624j600TxFrame
-                  0x000a5a                  _enc624j600TxReplyFrame
-                  0x0007f6                  _enc624j600_delay
-                  0x0008e2                  _enc624j600_readRegister
-                  0x000914                  _enc624j600_resetBank
-                  0x00091a                  _enc624j600_setBank
-                  0x000d74                  _enc624j600_spi_Rx
-                  0x000d7c                  _enc624j600_spi_Tx
-                  0x0007ca                  _enc624j600_spi_TxRx
-                  0x0008fa                  _enc624j600_writeRegister
-                  0x0012aa                  _handleConnection
-                  0x0012a8                  _handleData
-                  0x0012fc                  _icmpHandlePacket
-                  0x001344                  _icmpInit
-                  0x00134a                  _icmpPing
-                  0x00134c                  _icmpTxPacket
-                  0x0013e6                  _insight_init
-                  0x0013e8                  _insight_msg
-                  0x000c1a                  _ipv4Crc
-                  0x000bcc                  _ipv4FireHandlers
-                  0x000c00                  _ipv4HandlePacket
-                  0x000b70                  _ipv4Init
-                  0x000b80                  _ipv4RegisterHandler
-                  0x000cec                  _ipv4TxPacket
-                  0x000c8a                  _ipv4TxReplyPacket
-                  0x000bac                  _ipv4UnregisterHandler
-                  0x0012b2                  _macRxFrame
-                  0x0012b6                  _macTxFrame
-                  0x0012ba                  _macTxReplyFrame
-                  0x0012be                  _main
+                  0x001856                  _arpAnnounce
+                  0x0017ea                  _arpBuildPacket
+                  0x0017e8                  _arpInit
+                  0x00189c                  _arpProcessPacket
+                  0x00193e                  _arpResolve
+                  0x001d1a                  _circularBufferAvailable
+                  0x001c4e                  _circularBufferInit
+                  0x001cf6                  _circularBufferRead
+                  0x001c5c                  _circularBufferWrite
+                  0x001c7e                  _circularBufferWriteBytes
+                  0x001cbc                  _circularBufferWriteDouble
+                  0x001c9e                  _circularBufferWriteInt16
+                  0x001cac                  _circularBufferWriteInt32
+                  0x001ccc                  _circularBufferWriteString
+                  0x001954                  _enc28j60_spi_read
+                  0x0019b0                  _enc28j60_spi_transfer
+                  0x0019b4                  _enc28j60_spi_transferBytes
+                  0x00195c                  _enc28j60_spi_write
+                  0x0012b4                  _enc624j600GetLinkStatus
+                  0x0012a4                  _enc624j600GetPacketCount
+                  0x0012bc                  _enc624j600GetTxBusyStatus
+                  0x001486                  _enc624j600Initialize
+                  0x0012aa                  _enc624j600PacketPending
+                  0x00138e                  _enc624j600RxFrame
+                  0x001222                  _enc624j600SpiBSetRegister16
+                  0x001200                  _enc624j600SpiBSetRegister8
+                  0x0010f6                  _enc624j600SpiCommand
+                  0x001130                  _enc624j600SpiCommandRxBf
+                  0x001114                  _enc624j600SpiCommandTxBf
+                  0x00116c                  _enc624j600SpiReadData
+                  0x00128c                  _enc624j600SpiReadRegister16
+                  0x001270                  _enc624j600SpiReadRegister8
+                  0x00114c                  _enc624j600SpiReadRxData
+                  0x00118c                  _enc624j600SpiWriteData
+                  0x00125a                  _enc624j600SpiWriteRegister16
+                  0x001238                  _enc624j600SpiWriteRegister8
+                  0x0012c6                  _enc624j600TxFrame
+                  0x001366                  _enc624j600TxReplyFrame
+                  0x0010c0                  _enc624j600_delay
+                  0x0011ac                  _enc624j600_readRegister
+                  0x0011de                  _enc624j600_resetBank
+                  0x0011e4                  _enc624j600_setBank
+                  0x001942                  _enc624j600_spi_Rx
+                  0x00194a                  _enc624j600_spi_Tx
+                  0x00107e                  _enc624j600_spi_TxRx
+                  0x0011c4                  _enc624j600_writeRegister
+                  0x001ddc                  _handleConnection
+                  0x001de4                  _handleData
+                  0x00203e                  _icmpHandlePacket
+                  0x002092                  _icmpInit
+                  0x002098                  _icmpPing
+                  0x00209a                  _icmpTxPacket
+                  0x000320                  _insightDictionary
+                  0x000914                  _insightEOFBytes
+                  0x000910                  _insightSOFBytes
+                  0x001c30                  _insight_init
+                  0x001b62                  _insight_msg
+                  0x001624                  _ipv4Crc
+                  0x001598                  _ipv4FireHandlers
+                  0x0015cc                  _ipv4HandlePacket
+                  0x00153c                  _ipv4Init
+                  0x00154c                  _ipv4RegisterHandler
+                  0x00172a                  _ipv4TxPacket
+                  0x001694                  _ipv4TxReplyPacket
+                  0x001578                  _ipv4UnregisterHandler
+                  0x001e0c                  _macRxFrame
+                  0x001e10                  _macTxFrame
+                  0x001e14                  _macTxReplyFrame
+                  0x001e18                  _main
                   0x0002ac                  _memcmp
-                  0x0002e0                  _memset
-                  0x00102e                  _ntpHandlePacket
-                  0x00107a                  _ntpInit
-                  0x001082                  _ntpRequest
-                  0x00030a                  _onesMac
-                  0x0010b2                  _sram_23lc1024_init
-                  0x0010b8                  _sram_23lc1024_read
-                  0x0010ea                  _sram_23lc1024_write
-                  0x00046c                  _tcpCrc
-                  0x000316                  _tcpInit
-                  0x000408                  _tcpListen
-                  0x0003d4                  _tcpListenMore
-                  0x00035a                  _tcpMatchConnection
-                  0x0003aa                  _tcpMatchPort
-                  0x0005b2                  _tcpPacketHandler
-                  0x00033a                  _tcpPickFreeConnection
-                  0x0004de                  _tcpTxPacket
-                  0x001254                  _uartInit
-                  0x00128a                  _uartTxByte
-                  0x001296                  _uartTxString
-                  0x000f86                  _udpFirePacket
-                  0x000fbe                  _udpHandlePacket
-                  0x000f6e                  _udpInit
-                  0x000fea                  _udpRegisterHandler
-                  0x00100a                  _udpTxPacket
-                  0x000310                  _zerosMac
-                  0x00139a                  spiENC624ReadByteS
-                  0x001186                  spiENC624WriteByteS
-                  0x00134e                  spiReadByteS
-                  0x00111c                  spiWriteByteS
+                  0x0002e0                  _memcpy
+                  0x0002ee                  _memset
+                  0x001d24                  _ntpHandlePacket
+                  0x001d80                  _ntpInit
+                  0x001d88                  _ntpRequest
+                  0x000956                  _onesMac
+                  0x001e72                  _sram_23lc1024_init
+                  0x001e84                  _sram_23lc1024_read
+                  0x001ec2                  _sram_23lc1024_write
+                  0x0002fc                  _strlen
+                  0x000b1c                  _tcpCrc
+                  0x000962                  _tcpInit
+                  0x000aa8                  _tcpListen
+                  0x000a66                  _tcpListenMore
+                  0x0009be                  _tcpMatchConnection
+                  0x000a22                  _tcpMatchPort
+                  0x000c62                  _tcpPacketHandler
+                  0x000986                  _tcpPickFreeConnection
+                  0x000f6c                  _tcpTxPacket
+                  0x000b8e                  _tcpTxReplyPacket
+                  0x00209c                  _uartInit
+                  0x0020d2                  _uartTxByte
+                  0x0020de                  _uartTxString
+                  0x001a78                  _udpFirePacket
+                  0x001ab0                  _udpHandlePacket
+                  0x001a60                  _udpInit
+                  0x001afa                  _udpRegisterHandler
+                  0x001b1a                  _udpTxPacket
+                  0x00095c                  _zerosMac
+                  0x00213c                  spiENC624ReadByteS
+                  0x001f6a                  spiENC624WriteByteS
+                  0x0020f0                  spiReadByteS
+                  0x001f00                  spiWriteByteS
 
 Memory Configuration
 
@@ -460,7 +499,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib/dsPIC33F\libp
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200         0xee
+.text             0x000200        0x10a
  *(.init)
  .init            0x000200         0x32 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
                   0x000200                  __resetPRI
@@ -482,9 +521,15 @@ LOAD c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib/dsPIC33F\libp
  .libc.memcmp.memcmp
                   0x0002ac         0x34 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcmp.eo)
                   0x0002ac                  _memcmp
+ .libc.memcpy.memcpy
+                  0x0002e0          0xe c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcpy.eo)
+                  0x0002e0                  _memcpy
  .libc.memset.memset
-                  0x0002e0          0xe c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memset.eo)
-                  0x0002e0                  _memset
+                  0x0002ee          0xe c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memset.eo)
+                  0x0002ee                  _memset
+ .libc.strlen.strlen
+                  0x0002fc          0xe c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(strlen.eo)
+                  0x0002fc                  _strlen
 
 usercode
  *(usercode)
@@ -539,28 +584,28 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x6699
+.debug_info       0x000000       0x94fc
  *(.debug_info)
- .debug_info      0x000000       0x102b build/default/production/_ext/1278887395/enc28j60.o
- .debug_info      0x00102b        0x2d2 build/default/production/_ext/1278887395/23lc1024.o
- .debug_info      0x0012fd        0xe43 build/default/production/_ext/1278887395/enc624j600.o
- .debug_info      0x002140        0x550 build/default/production/_ext/1639450193/spi.o
- .debug_info      0x002690        0x5a8 build/default/production/_ext/1639450193/uart.o
- .debug_info      0x002c38         0xa0 build/default/production/_ext/1639450193/spiAsm.o
- .debug_info      0x002cd8        0x50d build/default/production/_ext/1733914311/arp.o
- .debug_info      0x0031e5        0x4c4 build/default/production/_ext/1733914311/icmp.o
- .debug_info      0x0036a9        0x736 build/default/production/_ext/1733914311/ipv4.o
- .debug_info      0x003ddf        0x630 build/default/production/_ext/1733914311/ntp.o
- .debug_info      0x00440f        0x65d build/default/production/_ext/1733914311/udp.o
- .debug_info      0x004a6c        0xc05 build/default/production/_ext/1733914311/tcp.o
- .debug_info      0x005671        0x1fc build/default/production/_ext/1519963337/insight.o
- .debug_info      0x00586d        0x4a6 build/default/production/_ext/1519963337/circularBuffer.o
- .debug_info      0x005d13         0xa6 build/default/production/_ext/1360937237/addrErrLoc.s.o
- .debug_info      0x005db9        0x83a build/default/production/_ext/1360937237/main.o
- .debug_info      0x0065f3         0xa6 build/default/production/_ext/1639450193/spiAsmENC624.o
+ .debug_info      0x000000       0x1405 build/default/production/_ext/1278887395/enc28j60.o
+ .debug_info      0x001405        0x6ac build/default/production/_ext/1278887395/23lc1024.o
+ .debug_info      0x001ab1       0x121f build/default/production/_ext/1278887395/enc624j600.o
+ .debug_info      0x002cd0        0x550 build/default/production/_ext/1639450193/spi.o
+ .debug_info      0x003220        0x5a8 build/default/production/_ext/1639450193/uart.o
+ .debug_info      0x0037c8         0xa0 build/default/production/_ext/1639450193/spiAsm.o
+ .debug_info      0x003868        0x8e7 build/default/production/_ext/1733914311/arp.o
+ .debug_info      0x00414f        0x89e build/default/production/_ext/1733914311/icmp.o
+ .debug_info      0x0049ed        0xb10 build/default/production/_ext/1733914311/ipv4.o
+ .debug_info      0x0054fd        0xa0a build/default/production/_ext/1733914311/ntp.o
+ .debug_info      0x005f07        0xa37 build/default/production/_ext/1733914311/udp.o
+ .debug_info      0x00693e       0x10ad build/default/production/_ext/1733914311/tcp.o
+ .debug_info      0x0079eb        0x7e0 build/default/production/_ext/1519963337/insight.o
+ .debug_info      0x0081cb        0x4a6 build/default/production/_ext/1519963337/circularBuffer.o
+ .debug_info      0x008671         0xa6 build/default/production/_ext/1360937237/addrErrLoc.s.o
+ .debug_info      0x008717        0xd3f build/default/production/_ext/1360937237/main.o
+ .debug_info      0x009456         0xa6 build/default/production/_ext/1639450193/spiAsmENC624.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000       0x120d
+.debug_abbrev     0x000000       0x1335
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x20a build/default/production/_ext/1278887395/enc28j60.o
  .debug_abbrev    0x00020a         0x9e build/default/production/_ext/1278887395/23lc1024.o
@@ -569,55 +614,55 @@ __FUID3
  .debug_abbrev    0x000603         0xf2 build/default/production/_ext/1639450193/uart.o
  .debug_abbrev    0x0006f5         0x10 build/default/production/_ext/1639450193/spiAsm.o
  .debug_abbrev    0x000705        0x136 build/default/production/_ext/1733914311/arp.o
- .debug_abbrev    0x00083b         0xdc build/default/production/_ext/1733914311/icmp.o
- .debug_abbrev    0x000917        0x17b build/default/production/_ext/1733914311/ipv4.o
- .debug_abbrev    0x000a92         0xdc build/default/production/_ext/1733914311/ntp.o
- .debug_abbrev    0x000b6e        0x13e build/default/production/_ext/1733914311/udp.o
- .debug_abbrev    0x000cac        0x23a build/default/production/_ext/1733914311/tcp.o
- .debug_abbrev    0x000ee6         0x94 build/default/production/_ext/1519963337/insight.o
- .debug_abbrev    0x000f7a         0xc5 build/default/production/_ext/1519963337/circularBuffer.o
- .debug_abbrev    0x00103f         0x14 build/default/production/_ext/1360937237/addrErrLoc.s.o
- .debug_abbrev    0x001053        0x1aa build/default/production/_ext/1360937237/main.o
- .debug_abbrev    0x0011fd         0x10 build/default/production/_ext/1639450193/spiAsmENC624.o
+ .debug_abbrev    0x00083b         0xf4 build/default/production/_ext/1733914311/icmp.o
+ .debug_abbrev    0x00092f        0x17b build/default/production/_ext/1733914311/ipv4.o
+ .debug_abbrev    0x000aaa         0xf4 build/default/production/_ext/1733914311/ntp.o
+ .debug_abbrev    0x000b9e        0x13e build/default/production/_ext/1733914311/udp.o
+ .debug_abbrev    0x000cdc        0x285 build/default/production/_ext/1733914311/tcp.o
+ .debug_abbrev    0x000f61         0xfa build/default/production/_ext/1519963337/insight.o
+ .debug_abbrev    0x00105b         0xc5 build/default/production/_ext/1519963337/circularBuffer.o
+ .debug_abbrev    0x001120         0x14 build/default/production/_ext/1360937237/addrErrLoc.s.o
+ .debug_abbrev    0x001134        0x1f1 build/default/production/_ext/1360937237/main.o
+ .debug_abbrev    0x001325         0x10 build/default/production/_ext/1639450193/spiAsmENC624.o
 
-.debug_line       0x000000       0x2ea0
+.debug_line       0x000000       0x3593
  *(.debug_line)
- .debug_line      0x000000        0x9ba build/default/production/_ext/1278887395/enc28j60.o
- .debug_line      0x0009ba        0x18b build/default/production/_ext/1278887395/23lc1024.o
- .debug_line      0x000b45        0x8b8 build/default/production/_ext/1278887395/enc624j600.o
- .debug_line      0x0013fd        0x3dd build/default/production/_ext/1639450193/spi.o
- .debug_line      0x0017da        0x167 build/default/production/_ext/1639450193/uart.o
- .debug_line      0x001941         0xab build/default/production/_ext/1639450193/spiAsm.o
- .debug_line      0x0019ec        0x1a8 build/default/production/_ext/1733914311/arp.o
- .debug_line      0x001b94        0x11a build/default/production/_ext/1733914311/icmp.o
- .debug_line      0x001cae        0x309 build/default/production/_ext/1733914311/ipv4.o
- .debug_line      0x001fb7        0x107 build/default/production/_ext/1733914311/ntp.o
- .debug_line      0x0020be        0x1a9 build/default/production/_ext/1733914311/udp.o
- .debug_line      0x002267        0x617 build/default/production/_ext/1733914311/tcp.o
- .debug_line      0x00287e         0x8c build/default/production/_ext/1519963337/insight.o
- .debug_line      0x00290a        0x263 build/default/production/_ext/1519963337/circularBuffer.o
- .debug_line      0x002b6d         0x46 build/default/production/_ext/1360937237/addrErrLoc.s.o
- .debug_line      0x002bb3        0x23c build/default/production/_ext/1360937237/main.o
- .debug_line      0x002def         0xb1 build/default/production/_ext/1639450193/spiAsmENC624.o
+ .debug_line      0x000000        0xa49 build/default/production/_ext/1278887395/enc28j60.o
+ .debug_line      0x000a49        0x1ea build/default/production/_ext/1278887395/23lc1024.o
+ .debug_line      0x000c33        0x92f build/default/production/_ext/1278887395/enc624j600.o
+ .debug_line      0x001562        0x3dd build/default/production/_ext/1639450193/spi.o
+ .debug_line      0x00193f        0x167 build/default/production/_ext/1639450193/uart.o
+ .debug_line      0x001aa6         0xab build/default/production/_ext/1639450193/spiAsm.o
+ .debug_line      0x001b51        0x1ff build/default/production/_ext/1733914311/arp.o
+ .debug_line      0x001d50        0x169 build/default/production/_ext/1733914311/icmp.o
+ .debug_line      0x001eb9        0x370 build/default/production/_ext/1733914311/ipv4.o
+ .debug_line      0x002229        0x15e build/default/production/_ext/1733914311/ntp.o
+ .debug_line      0x002387        0x208 build/default/production/_ext/1733914311/udp.o
+ .debug_line      0x00258f        0x7f6 build/default/production/_ext/1733914311/tcp.o
+ .debug_line      0x002d85        0x211 build/default/production/_ext/1519963337/insight.o
+ .debug_line      0x002f96        0x263 build/default/production/_ext/1519963337/circularBuffer.o
+ .debug_line      0x0031f9         0x46 build/default/production/_ext/1360937237/addrErrLoc.s.o
+ .debug_line      0x00323f        0x2a3 build/default/production/_ext/1360937237/main.o
+ .debug_line      0x0034e2         0xb1 build/default/production/_ext/1639450193/spiAsmENC624.o
 
-.debug_frame      0x000000        0x8b8
+.debug_frame      0x000000       0x1098
  *(.debug_frame)
- .debug_frame     0x000000        0x1d4 build/default/production/_ext/1278887395/enc28j60.o
- .debug_frame     0x0001d4         0x44 build/default/production/_ext/1278887395/23lc1024.o
- .debug_frame     0x000218        0x1b4 build/default/production/_ext/1278887395/enc624j600.o
- .debug_frame     0x0003cc         0xc4 build/default/production/_ext/1639450193/spi.o
- .debug_frame     0x000490         0x44 build/default/production/_ext/1639450193/uart.o
- .debug_frame     0x0004d4         0x64 build/default/production/_ext/1733914311/arp.o
- .debug_frame     0x000538         0x54 build/default/production/_ext/1733914311/icmp.o
- .debug_frame     0x00058c         0x94 build/default/production/_ext/1733914311/ipv4.o
- .debug_frame     0x000620         0x44 build/default/production/_ext/1733914311/ntp.o
- .debug_frame     0x000664         0x64 build/default/production/_ext/1733914311/udp.o
- .debug_frame     0x0006c8         0xa4 build/default/production/_ext/1733914311/tcp.o
- .debug_frame     0x00076c         0x34 build/default/production/_ext/1519963337/insight.o
- .debug_frame     0x0007a0         0xa4 build/default/production/_ext/1519963337/circularBuffer.o
- .debug_frame     0x000844         0x74 build/default/production/_ext/1360937237/main.o
+ .debug_frame     0x000000        0x340 build/default/production/_ext/1278887395/enc28j60.o
+ .debug_frame     0x000340         0xa4 build/default/production/_ext/1278887395/23lc1024.o
+ .debug_frame     0x0003e4        0x334 build/default/production/_ext/1278887395/enc624j600.o
+ .debug_frame     0x000718         0xc4 build/default/production/_ext/1639450193/spi.o
+ .debug_frame     0x0007dc         0x44 build/default/production/_ext/1639450193/uart.o
+ .debug_frame     0x000820         0xf4 build/default/production/_ext/1733914311/arp.o
+ .debug_frame     0x000914         0x6c build/default/production/_ext/1733914311/icmp.o
+ .debug_frame     0x000980        0x168 build/default/production/_ext/1733914311/ipv4.o
+ .debug_frame     0x000ae8         0x94 build/default/production/_ext/1733914311/ntp.o
+ .debug_frame     0x000b7c         0xc8 build/default/production/_ext/1733914311/udp.o
+ .debug_frame     0x000c44        0x29c build/default/production/_ext/1733914311/tcp.o
+ .debug_frame     0x000ee0         0x58 build/default/production/_ext/1519963337/insight.o
+ .debug_frame     0x000f38         0xa4 build/default/production/_ext/1519963337/circularBuffer.o
+ .debug_frame     0x000fdc         0xbc build/default/production/_ext/1360937237/main.o
 
-.debug_str        0x000000        0x16c
+.debug_str        0x000000        0x1dc
  *(.debug_str)
  .debug_str       0x000000         0x28 build/default/production/_ext/1278887395/enc28j60.o
  .debug_str       0x000028         0x17 build/default/production/_ext/1278887395/enc624j600.o
@@ -627,8 +672,9 @@ __FUID3
  .debug_str       0x000082         0x2b build/default/production/_ext/1733914311/ipv4.o
  .debug_str       0x0000ad         0x1e build/default/production/_ext/1733914311/ntp.o
  .debug_str       0x0000cb         0x10 build/default/production/_ext/1733914311/udp.o
- .debug_str       0x0000db         0x70 build/default/production/_ext/1733914311/tcp.o
- .debug_str       0x00014b         0x21 build/default/production/_ext/1360937237/main.o
+ .debug_str       0x0000db         0x85 build/default/production/_ext/1733914311/tcp.o
+ .debug_str       0x000160         0x52 build/default/production/_ext/1519963337/insight.o
+ .debug_str       0x0001b2         0x2a build/default/production/_ext/1360937237/main.o
 
 .debug_loc
  *(.debug_loc)
@@ -637,7 +683,7 @@ __FUID3
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0xd68
+                  0x000000        0xdcb
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000        0x2ff build/default/production/_ext/1278887395/enc28j60.o
@@ -660,13 +706,13 @@ __FUID3
  .debug_pubnames
                   0x0009b0         0x78 build/default/production/_ext/1733914311/udp.o
  .debug_pubnames
-                  0x000a28         0xd4 build/default/production/_ext/1733914311/tcp.o
+                  0x000a28         0xf9 build/default/production/_ext/1733914311/tcp.o
  .debug_pubnames
-                  0x000afc         0x5b build/default/production/_ext/1519963337/insight.o
+                  0x000b21         0x99 build/default/production/_ext/1519963337/insight.o
  .debug_pubnames
-                  0x000b57        0x107 build/default/production/_ext/1519963337/circularBuffer.o
+                  0x000bba        0x107 build/default/production/_ext/1519963337/circularBuffer.o
  .debug_pubnames
-                  0x000c5e        0x10a build/default/production/_ext/1360937237/main.o
+                  0x000cc1        0x10a build/default/production/_ext/1360937237/main.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -1969,251 +2015,273 @@ LOAD default_isr
 LOAD data_init
 
 .debug_pubtypes
-                  0x0001a8        0xb7c
+                  0x0001a8        0xd02
  .debug_pubtypes
-                  0x0001a8        0x131 build/default/production/_ext/1278887395/enc28j60.o
+                  0x0001a8        0x147 build/default/production/_ext/1278887395/enc28j60.o
  .debug_pubtypes
-                  0x0002d9         0x40 build/default/production/_ext/1278887395/23lc1024.o
+                  0x0002ef         0x56 build/default/production/_ext/1278887395/23lc1024.o
  .debug_pubtypes
-                  0x000319         0x93 build/default/production/_ext/1278887395/enc624j600.o
+                  0x000345         0xa9 build/default/production/_ext/1278887395/enc624j600.o
  .debug_pubtypes
-                  0x0003ac         0x4d build/default/production/_ext/1639450193/spi.o
+                  0x0003ee         0x4d build/default/production/_ext/1639450193/spi.o
  .debug_pubtypes
-                  0x0003f9         0x5b build/default/production/_ext/1639450193/uart.o
+                  0x00043b         0x5b build/default/production/_ext/1639450193/uart.o
  .debug_pubtypes
-                  0x000454         0x92 build/default/production/_ext/1733914311/arp.o
+                  0x000496         0xa8 build/default/production/_ext/1733914311/arp.o
  .debug_pubtypes
-                  0x0004e6        0x101 build/default/production/_ext/1733914311/icmp.o
+                  0x00053e        0x117 build/default/production/_ext/1733914311/icmp.o
  .debug_pubtypes
-                  0x0005e7        0x125 build/default/production/_ext/1733914311/ipv4.o
+                  0x000655        0x13b build/default/production/_ext/1733914311/ipv4.o
  .debug_pubtypes
-                  0x00070c        0x158 build/default/production/_ext/1733914311/ntp.o
+                  0x000790        0x16e build/default/production/_ext/1733914311/ntp.o
  .debug_pubtypes
-                  0x000864        0x167 build/default/production/_ext/1733914311/udp.o
+                  0x0008fe        0x17d build/default/production/_ext/1733914311/udp.o
  .debug_pubtypes
-                  0x0009cb        0x1de build/default/production/_ext/1733914311/tcp.o
+                  0x000a7b        0x1f4 build/default/production/_ext/1733914311/tcp.o
  .debug_pubtypes
-                  0x000ba9         0x1d build/default/production/_ext/1519963337/insight.o
+                  0x000c6f         0xa9 build/default/production/_ext/1519963337/insight.o
  .debug_pubtypes
-                  0x000bc6         0x5d build/default/production/_ext/1519963337/circularBuffer.o
+                  0x000d18         0x5d build/default/production/_ext/1519963337/circularBuffer.o
  .debug_pubtypes
-                  0x000c23        0x101 build/default/production/_ext/1360937237/main.o
+                  0x000d75        0x135 build/default/production/_ext/1360937237/main.o
 
 __c30_signature
-                  0x000d24         0x6c
+                  0x000eaa         0x78
  __c30_signature
-                  0x000d24          0x6 build/default/production/_ext/1278887395/enc28j60.o
+                  0x000eaa          0x6 build/default/production/_ext/1278887395/enc28j60.o
  __c30_signature
-                  0x000d2a          0x6 build/default/production/_ext/1278887395/23lc1024.o
+                  0x000eb0          0x6 build/default/production/_ext/1278887395/23lc1024.o
  __c30_signature
-                  0x000d30          0x6 build/default/production/_ext/1278887395/enc624j600.o
+                  0x000eb6          0x6 build/default/production/_ext/1278887395/enc624j600.o
  __c30_signature
-                  0x000d36          0x6 build/default/production/_ext/1639450193/spi.o
+                  0x000ebc          0x6 build/default/production/_ext/1639450193/spi.o
  __c30_signature
-                  0x000d3c          0x6 build/default/production/_ext/1639450193/uart.o
+                  0x000ec2          0x6 build/default/production/_ext/1639450193/uart.o
  __c30_signature
-                  0x000d42          0x6 build/default/production/_ext/1733914311/arp.o
+                  0x000ec8          0x6 build/default/production/_ext/1733914311/arp.o
  __c30_signature
-                  0x000d48          0x6 build/default/production/_ext/1733914311/icmp.o
+                  0x000ece          0x6 build/default/production/_ext/1733914311/icmp.o
  __c30_signature
-                  0x000d4e          0x6 build/default/production/_ext/1733914311/ipv4.o
+                  0x000ed4          0x6 build/default/production/_ext/1733914311/ipv4.o
  __c30_signature
-                  0x000d54          0x6 build/default/production/_ext/1733914311/ntp.o
+                  0x000eda          0x6 build/default/production/_ext/1733914311/ntp.o
  __c30_signature
-                  0x000d5a          0x6 build/default/production/_ext/1733914311/udp.o
+                  0x000ee0          0x6 build/default/production/_ext/1733914311/udp.o
  __c30_signature
-                  0x000d60          0x6 build/default/production/_ext/1733914311/tcp.o
+                  0x000ee6          0x6 build/default/production/_ext/1733914311/tcp.o
  __c30_signature
-                  0x000d66          0x6 build/default/production/_ext/1519963337/insight.o
+                  0x000eec          0x6 build/default/production/_ext/1519963337/insight.o
  __c30_signature
-                  0x000d6c          0x6 build/default/production/_ext/1519963337/circularBuffer.o
+                  0x000ef2          0x6 build/default/production/_ext/1519963337/circularBuffer.o
  __c30_signature
-                  0x000d72          0x6 build/default/production/_ext/1360937237/main.o
+                  0x000ef8          0x6 build/default/production/_ext/1360937237/main.o
  __c30_signature
-                  0x000d78          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
+                  0x000efe          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x000d7e          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(data_init_standard.o)
+                  0x000f04          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libpic30-elf.a(data_init_standard.o)
  __c30_signature
-                  0x000d84          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcmp.eo)
+                  0x000f0a          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcmp.eo)
  __c30_signature
-                  0x000d8a          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memset.eo)
+                  0x000f10          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memcpy.eo)
+ __c30_signature
+                  0x000f16          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(memset.eo)
+ __c30_signature
+                  0x000f1c          0x6 c:/program files (x86)/microchip/xc16/v1.00/bin/bin/../../lib\libc-elf.a(strlen.eo)
 
-.bss                0x0800        0xa42
- .bss               0x0800        0x5ee build/default/production/_ext/1360937237/main.o
-                    0x0800                  _frameBf
- .bss               0x0dee        0x398 build/default/production/_ext/1733914311/tcp.o
-                    0x0dee                  _tcpListeners
-                    0x0e06                  _tcpConnections
- .bss               0x1186         0x5a build/default/production/_ext/1733914311/ntp.o
-                    0x1186                  _ntpRequestPacket
- .bss               0x11e0         0x42 build/default/production/_ext/1278887395/enc624j600.o
-                    0x11e0                  _bf
- .bss               0x1222         0x20 build/default/production/_ext/1733914311/udp.o
-                    0x1222                  _handlers
+.bss                0x0800        0xf4c
+ .bss               0x0800        0x798 build/default/production/_ext/1733914311/tcp.o
+                    0x0800                  _tcpListeners
+                    0x0818                  _tcpConnections
+                    0x0b98                  _tcpPacketBf
+ .bss               0x0f98        0x5ee build/default/production/_ext/1360937237/main.o
+                    0x0f98                  _frameBf
+ .bss               0x1586        0x10a build/default/production/_ext/1519963337/insight.o
+                    0x1586                  _insightBuffer
+                    0x1590                  _insightTextBuffer
+ .bss               0x1690         0x5a build/default/production/_ext/1733914311/ntp.o
+                    0x1690                  _ntpRequestPacket
+ .bss               0x16ea         0x42 build/default/production/_ext/1278887395/enc624j600.o
+                    0x16ea                  _bf
+ .bss               0x172c         0x20 build/default/production/_ext/1733914311/udp.o
+                    0x172c                  _handlers
 
-.data               0x1242         0x18
- .data              0x1242         0x18 build/default/production/_ext/1360937237/main.o
-                    0x1242                  _mac
-                    0x1248                  _ip
-                    0x124c                  _gateway
-                    0x1250                  _pc
-                    0x1254                  _ntpServer
-                    0x1258                  _response
+.data               0x174c         0x18
+ .data              0x174c         0x18 build/default/production/_ext/1360937237/main.o
+                    0x174c                  _mac
+                    0x1752                  _ip
+                    0x1756                  _gateway
+                    0x175a                  _pc
+                    0x175e                  _ntpServer
+                    0x1762                  _response
 
-.bss                0x125a         0x1c
- .bss               0x125a         0x10 build/default/production/_ext/1733914311/arp.o
-                    0x125a                  _thisIp
-                    0x125e                  _thisMac
-                    0x1264                  _gatewayMac
- .bss               0x126a          0xc build/default/production/_ext/1733914311/ipv4.o
-                    0x126a                  _Ipv4Handlers
+.bss                0x1764         0x1c
+ .bss               0x1764         0x10 build/default/production/_ext/1733914311/arp.o
+                    0x1764                  _thisIp
+                    0x1768                  _thisMac
+                    0x176e                  _gatewayMac
+ .bss               0x1774          0xc build/default/production/_ext/1733914311/ipv4.o
+                    0x1774                  _Ipv4Handlers
 
-.data               0x1276          0x6
- .data              0x1276          0x6 build/default/production/_ext/1733914311/ipv4.o
-                    0x1276                  _gw
+.data               0x1780          0x6
+ .data              0x1780          0x6 build/default/production/_ext/1733914311/ipv4.o
+                    0x1780                  _gw
 
-.bss                0x127c          0x4
- .bss               0x127c          0x4 build/default/production/_ext/1639450193/spi.o
-                    0x127c                  _spiReadByte
-                    0x127e                  _spiWriteByte
+.bss                0x1786          0x4
+ .bss               0x1786          0x4 build/default/production/_ext/1639450193/spi.o
+                    0x1786                  _spiReadByte
+                    0x1788                  _spiWriteByte
 
-.data               0x1280          0x6
- .data              0x1280          0x4 build/default/production/_ext/1733914311/ntp.o
-                    0x1280                  _ntpTimestamp
- .data              0x1284          0x2 build/default/production/_ext/1278887395/enc624j600.o
+.data               0x178a          0x6
+ .data              0x178a          0x4 build/default/production/_ext/1733914311/ntp.o
+                    0x178a                  _ntpTimestamp
+ .data              0x178e          0x2 build/default/production/_ext/1278887395/enc624j600.o
 
-.const              0x82ee         0x28 load address 0x0002ee  
- .const             0x82ee         0x1c build/default/production/_ext/1360937237/main.o
- .const             0x830a          0xc build/default/production/_ext/1733914311/arp.o
-                    0x830a                  _onesMac
-                    0x8310                  _zerosMac
+.const              0x830a        0x658 load address 0x00030a  
+ .const             0x830a        0x60e build/default/production/_ext/1519963337/insight.o
+                    0x8320                  _insightDictionary
+                    0x8910                  _insightSOFBytes
+                    0x8914                  _insightEOFBytes
+ .const             0x8918         0x2e build/default/production/_ext/1360937237/main.o
+ .const             0x8946         0x10 build/default/production/_ext/1733914311/tcp.o
+ .const             0x8956          0xc build/default/production/_ext/1733914311/arp.o
+                    0x8956                  _onesMac
+                    0x895c                  _zerosMac
 
-.text             0x000316        0xe06
- .text            0x000316        0x4b4 build/default/production/_ext/1733914311/tcp.o
-                  0x000316                  _tcpInit
-                  0x00033a                  _tcpPickFreeConnection
-                  0x00035a                  _tcpMatchConnection
-                  0x0003aa                  _tcpMatchPort
-                  0x0003d4                  _tcpListenMore
-                  0x000408                  _tcpListen
-                  0x00046c                  _tcpCrc
-                  0x0004de                  _tcpTxPacket
-                  0x0005b2                  _tcpPacketHandler
- .text            0x0007ca        0x3a6 build/default/production/_ext/1278887395/enc624j600.o
-                  0x0007ca                  _enc624j600_spi_TxRx
-                  0x0007f6                  _enc624j600_delay
-                  0x00082c                  _enc624j600SpiCommand
-                  0x00084a                  _enc624j600SpiCommandTxBf
-                  0x000866                  _enc624j600SpiCommandRxBf
-                  0x000882                  _enc624j600SpiReadRxData
-                  0x0008a2                  _enc624j600SpiReadData
-                  0x0008c2                  _enc624j600SpiWriteData
-                  0x0008e2                  _enc624j600_readRegister
-                  0x0008fa                  _enc624j600_writeRegister
-                  0x000914                  _enc624j600_resetBank
-                  0x00091a                  _enc624j600_setBank
-                  0x000936                  _enc624j600SpiBSetRegister8
-                  0x000958                  _enc624j600SpiBSetRegister16
-                  0x00096e                  _enc624j600SpiWriteRegister8
-                  0x000990                  _enc624j600SpiWriteRegister16
-                  0x0009a6                  _enc624j600SpiReadRegister8
-                  0x0009c2                  _enc624j600SpiReadRegister16
-                  0x0009da                  _enc624j600GetPacketCount
-                  0x0009e0                  _enc624j600PacketPending
-                  0x0009ea                  _enc624j600GetLinkStatus
-                  0x0009f2                  _enc624j600GetTxBusyStatus
-                  0x0009fc                  _enc624j600TxFrame
-                  0x000a5a                  _enc624j600TxReplyFrame
-                  0x000a82                  _enc624j600RxFrame
-                  0x000b0a                  _enc624j600Initialize
- .text            0x000b70        0x204 build/default/production/_ext/1733914311/ipv4.o
-                  0x000b70                  _ipv4Init
-                  0x000b80                  _ipv4RegisterHandler
-                  0x000bac                  _ipv4UnregisterHandler
-                  0x000bcc                  _ipv4FireHandlers
-                  0x000c00                  _ipv4HandlePacket
-                  0x000c1a                  _ipv4Crc
-                  0x000c8a                  _ipv4TxReplyPacket
-                  0x000cec                  _ipv4TxPacket
- .text            0x000d74        0x11e build/default/production/_ext/1639450193/spi.o
-                  0x000d74                  _enc624j600_spi_Rx
-                  0x000d7c                  _enc624j600_spi_Tx
-                  0x000d86                  _enc28j60_spi_read
-                  0x000d8e                  _enc28j60_spi_write
-                  0x000d98                  _SPI_Read
-                  0x000db6                  _SPI_ReadWrite
-                  0x000de2                  _enc28j60_spi_transfer
-                  0x000de6                  _enc28j60_spi_transferBytes
-                  0x000e52                  _SPI_Init
-                  0x000e6e                  _SPI_hw_Read
-                  0x000e7a                  _SPI_hw_Write
- .text            0x000e92         0xdc build/default/production/_ext/1733914311/arp.o
-                  0x000e92                  _arpInit
-                  0x000e94                  _arpBuildPacket
-                  0x000f00                  _arpAnnounce
-                  0x000f1a                  _arpProcessPacket
-                  0x000f6a                  _arpResolve
- .text            0x000f6e         0xc0 build/default/production/_ext/1733914311/udp.o
-                  0x000f6e                  _udpInit
-                  0x000f86                  _udpFirePacket
-                  0x000fbe                  _udpHandlePacket
-                  0x000fea                  _udpRegisterHandler
-                  0x00100a                  _udpTxPacket
- .text            0x00102e         0x84 build/default/production/_ext/1733914311/ntp.o
-                  0x00102e                  _ntpHandlePacket
-                  0x00107a                  _ntpInit
-                  0x001082                  _ntpRequest
- .text            0x0010b2         0x6a build/default/production/_ext/1278887395/23lc1024.o
-                  0x0010b2                  _sram_23lc1024_init
-                  0x0010b8                  _sram_23lc1024_read
-                  0x0010ea                  _sram_23lc1024_write
+.text             0x000962       0x159e
+ .text            0x000962        0x71c build/default/production/_ext/1733914311/tcp.o
+                  0x000962                  _tcpInit
+                  0x000986                  _tcpPickFreeConnection
+                  0x0009be                  _tcpMatchConnection
+                  0x000a22                  _tcpMatchPort
+                  0x000a66                  _tcpListenMore
+                  0x000aa8                  _tcpListen
+                  0x000b1c                  _tcpCrc
+                  0x000b8e                  _tcpTxReplyPacket
+                  0x000c62                  _tcpPacketHandler
+                  0x000f6c                  _tcpTxPacket
+ .text            0x00107e        0x4be build/default/production/_ext/1278887395/enc624j600.o
+                  0x00107e                  _enc624j600_spi_TxRx
+                  0x0010c0                  _enc624j600_delay
+                  0x0010f6                  _enc624j600SpiCommand
+                  0x001114                  _enc624j600SpiCommandTxBf
+                  0x001130                  _enc624j600SpiCommandRxBf
+                  0x00114c                  _enc624j600SpiReadRxData
+                  0x00116c                  _enc624j600SpiReadData
+                  0x00118c                  _enc624j600SpiWriteData
+                  0x0011ac                  _enc624j600_readRegister
+                  0x0011c4                  _enc624j600_writeRegister
+                  0x0011de                  _enc624j600_resetBank
+                  0x0011e4                  _enc624j600_setBank
+                  0x001200                  _enc624j600SpiBSetRegister8
+                  0x001222                  _enc624j600SpiBSetRegister16
+                  0x001238                  _enc624j600SpiWriteRegister8
+                  0x00125a                  _enc624j600SpiWriteRegister16
+                  0x001270                  _enc624j600SpiReadRegister8
+                  0x00128c                  _enc624j600SpiReadRegister16
+                  0x0012a4                  _enc624j600GetPacketCount
+                  0x0012aa                  _enc624j600PacketPending
+                  0x0012b4                  _enc624j600GetLinkStatus
+                  0x0012bc                  _enc624j600GetTxBusyStatus
+                  0x0012c6                  _enc624j600TxFrame
+                  0x001366                  _enc624j600TxReplyFrame
+                  0x00138e                  _enc624j600RxFrame
+                  0x001486                  _enc624j600Initialize
+ .text            0x00153c        0x2ac build/default/production/_ext/1733914311/ipv4.o
+                  0x00153c                  _ipv4Init
+                  0x00154c                  _ipv4RegisterHandler
+                  0x001578                  _ipv4UnregisterHandler
+                  0x001598                  _ipv4FireHandlers
+                  0x0015cc                  _ipv4HandlePacket
+                  0x001624                  _ipv4Crc
+                  0x001694                  _ipv4TxReplyPacket
+                  0x00172a                  _ipv4TxPacket
+ .text            0x0017e8        0x15a build/default/production/_ext/1733914311/arp.o
+                  0x0017e8                  _arpInit
+                  0x0017ea                  _arpBuildPacket
+                  0x001856                  _arpAnnounce
+                  0x00189c                  _arpProcessPacket
+                  0x00193e                  _arpResolve
+ .text            0x001942        0x11e build/default/production/_ext/1639450193/spi.o
+                  0x001942                  _enc624j600_spi_Rx
+                  0x00194a                  _enc624j600_spi_Tx
+                  0x001954                  _enc28j60_spi_read
+                  0x00195c                  _enc28j60_spi_write
+                  0x001966                  _SPI_Read
+                  0x001984                  _SPI_ReadWrite
+                  0x0019b0                  _enc28j60_spi_transfer
+                  0x0019b4                  _enc28j60_spi_transferBytes
+                  0x001a20                  _SPI_Init
+                  0x001a3c                  _SPI_hw_Read
+                  0x001a48                  _SPI_hw_Write
+ .text            0x001a60        0x102 build/default/production/_ext/1733914311/udp.o
+                  0x001a60                  _udpInit
+                  0x001a78                  _udpFirePacket
+                  0x001ab0                  _udpHandlePacket
+                  0x001afa                  _udpRegisterHandler
+                  0x001b1a                  _udpTxPacket
+ .text            0x001b62         0xec build/default/production/_ext/1519963337/insight.o
+                  0x001b62                  _insight_msg
+                  0x001c30                  _insight_init
+ .text            0x001c4e         0xd6 build/default/production/_ext/1519963337/circularBuffer.o
+                  0x001c4e                  _circularBufferInit
+                  0x001c5c                  _circularBufferWrite
+                  0x001c7e                  _circularBufferWriteBytes
+                  0x001c9e                  _circularBufferWriteInt16
+                  0x001cac                  _circularBufferWriteInt32
+                  0x001cbc                  _circularBufferWriteDouble
+                  0x001ccc                  _circularBufferWriteString
+                  0x001cf6                  _circularBufferRead
+                  0x001d1a                  _circularBufferAvailable
+ .text            0x001d24         0xb8 build/default/production/_ext/1733914311/ntp.o
+                  0x001d24                  _ntpHandlePacket
+                  0x001d80                  _ntpInit
+                  0x001d88                  _ntpRequest
+ .text            0x001ddc         0x96 build/default/production/_ext/1360937237/main.o
+                  0x001ddc                  _handleConnection
+                  0x001de4                  _handleData
+                  0x001e0c                  _macRxFrame
+                  0x001e10                  _macTxFrame
+                  0x001e14                  _macTxReplyFrame
+                  0x001e18                  _main
+ .text            0x001e72         0x8e build/default/production/_ext/1278887395/23lc1024.o
+                  0x001e72                  _sram_23lc1024_init
+                  0x001e84                  _sram_23lc1024_read
+                  0x001ec2                  _sram_23lc1024_write
 
 ../src/drivers/spiAsm.s.scn2
-                  0x00111c         0x6a
+                  0x001f00         0x6a
  ../src/drivers/spiAsm.s.scn2
-                  0x00111c         0x6a build/default/production/_ext/1639450193/spiAsm.o
-                  0x00111c                  spiWriteByteS
+                  0x001f00         0x6a build/default/production/_ext/1639450193/spiAsm.o
+                  0x001f00                  spiWriteByteS
 
 ../src/drivers/spiAsmENC624.s.scn2
-                  0x001186         0x6a
+                  0x001f6a         0x6a
  ../src/drivers/spiAsmENC624.s.scn2
-                  0x001186         0x6a build/default/production/_ext/1639450193/spiAsmENC624.o
-                  0x001186                  spiENC624WriteByteS
+                  0x001f6a         0x6a build/default/production/_ext/1639450193/spiAsmENC624.o
+                  0x001f6a                  spiENC624WriteByteS
 
-.dinit            0x0011f0         0x64
- .dinit           0x0011f0         0x64 data_init
+.dinit            0x001fd4         0x6a
+ .dinit           0x001fd4         0x6a data_init
 
-.text             0x001254         0xfa
- .text            0x001254         0x54 build/default/production/_ext/1639450193/uart.o
-                  0x001254                  _uartInit
-                  0x00128a                  _uartTxByte
-                  0x001296                  _uartTxString
- .text            0x0012a8         0x54 build/default/production/_ext/1360937237/main.o
-                  0x0012a8                  _handleData
-                  0x0012aa                  _handleConnection
-                  0x0012b2                  _macRxFrame
-                  0x0012b6                  _macTxFrame
-                  0x0012ba                  _macTxReplyFrame
-                  0x0012be                  _main
- .text            0x0012fc         0x52 build/default/production/_ext/1733914311/icmp.o
-                  0x0012fc                  _icmpHandlePacket
-                  0x001344                  _icmpInit
-                  0x00134a                  _icmpPing
-                  0x00134c                  _icmpTxPacket
+.text             0x00203e         0xb2
+ .text            0x00203e         0x5e build/default/production/_ext/1733914311/icmp.o
+                  0x00203e                  _icmpHandlePacket
+                  0x002092                  _icmpInit
+                  0x002098                  _icmpPing
+                  0x00209a                  _icmpTxPacket
+ .text            0x00209c         0x54 build/default/production/_ext/1639450193/uart.o
+                  0x00209c                  _uartInit
+                  0x0020d2                  _uartTxByte
+                  0x0020de                  _uartTxString
 
 ../src/drivers/spiAsm.s.scn1
-                  0x00134e         0x4c
+                  0x0020f0         0x4c
  ../src/drivers/spiAsm.s.scn1
-                  0x00134e         0x4c build/default/production/_ext/1639450193/spiAsm.o
-                  0x00134e                  spiReadByteS
+                  0x0020f0         0x4c build/default/production/_ext/1639450193/spiAsm.o
+                  0x0020f0                  spiReadByteS
 
 ../src/drivers/spiAsmENC624.s.scn1
-                  0x00139a         0x4c
+                  0x00213c         0x4c
  ../src/drivers/spiAsmENC624.s.scn1
-                  0x00139a         0x4c build/default/production/_ext/1639450193/spiAsmENC624.o
-                  0x00139a                  spiENC624ReadByteS
-
-.text             0x0013e6          0x8
- .text            0x0013e6          0x8 build/default/production/_ext/1519963337/insight.o
-                  0x0013e6                  _insight_init
-                  0x0013e8                  _insight_msg
+                  0x00213c         0x4c build/default/production/_ext/1639450193/spiAsmENC624.o
+                  0x00213c                  spiENC624ReadByteS

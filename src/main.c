@@ -69,20 +69,26 @@ UI08_t ntpServer[4] = {194, 171, 167, 130};
 
 UI08_t frameBf[0x5EE];
 
-const char* response = "Hello wonderful TCP world!";
+const char* response = "HTTP/1.1 200 OK\r\n\r\nHello wonderful TCP world!";
 
 void handleData(void* con, bool_t push, UI08_t* d, UI16_t s)
 {
     //
-    INSIGHT(HTTP_RX_HEADERS, d);
+    INSIGHT(HTTP_RX_HEADERS, d, s);
 
     UI16_t getAddrOffset = strchr((char*)d, "GET /");
     if(getAddrOffset == NULL)
     {
         //
     }
-    else
+    if (1)
     {
+        TcpFlags_t fl ;
+        fl.bits.ack = 1;
+        fl.bits.fin = 1;
+        fl.bits.psh = 1;
+        
+        tcpTxPacket(response, strlen(response), fl, ((TcpConnection_t*) con));
         //TcpTx(con, response, strlen(response));
         //TcpClose(con);
     }
