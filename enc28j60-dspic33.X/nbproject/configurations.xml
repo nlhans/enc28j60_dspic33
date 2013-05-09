@@ -22,6 +22,9 @@
         <itemPath>../src/ipstack/tcp.h</itemPath>
         <itemPath>../src/ipstack/ethdefs.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f4" displayName="rtos" projectFiles="true">
+        <itemPath>../src/rtos/task.h</itemPath>
+      </logicalFolder>
       <itemPath>../src/sram_defs.h</itemPath>
       <itemPath>../src/stddefs.h</itemPath>
     </logicalFolder>
@@ -51,6 +54,11 @@
         <itemPath>../src/ipstack/ntp.c</itemPath>
         <itemPath>../src/ipstack/udp.c</itemPath>
         <itemPath>../src/ipstack/tcp.c</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f5" displayName="rtos" projectFiles="true">
+        <itemPath>../src/rtos/task.c</itemPath>
+        <itemPath>../src/rtos/ports/dspic33/contextswitch.s</itemPath>
+        <itemPath>../src/rtos/ports/dspic33/dspic33.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="utils" projectFiles="true">
         <itemPath>../src/utils/insight.c</itemPath>
@@ -100,6 +108,14 @@
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
       </makeCustomizationType>
       <item path="../src/drivers/sram.c" ex="true" overriding="false">
+        <C30>
+        </C30>
+        <C30-AS>
+        </C30-AS>
+        <C30-LD>
+        </C30-LD>
+        <C30Global>
+        </C30Global>
       </item>
       <C30>
         <property key="code-model" value="default"/>
@@ -116,7 +132,7 @@
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="extra-include-directories"
-                  value="..\src;..\src\devices;..\src\drivers;..\src\ipstack;C:\Users\Hans\Documents\GitHub\enc28j60-dspic33\src\utils"/>
+                  value="..\src;..\src\devices;..\src\drivers;..\src\ipstack;..\src\utils;..\src\rtos"/>
         <property key="isolate-each-function" value="false"/>
         <property key="keep-inline" value="false"/>
         <property key="oXC16gcc-align-arr" value="true"/>

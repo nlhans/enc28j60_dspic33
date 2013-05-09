@@ -5,7 +5,7 @@ build/default/production/_ext/1278887395/enc624j600.o:  \
  ../src/ipstack/ethdefs.h  \
 ../src/drivers/spi.h  \
 ../src/drivers/uart.h  \
- C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h  \
- ../src/ipstack/ipv4.h  \
+ ../src/utils/insight.h  \
+../src/ipstack/ipv4.h  \
 ../src/ipstack/ethdefs.h  \
-../src/ipstack/arp.h 
+ ../src/ipstack/arp.h 

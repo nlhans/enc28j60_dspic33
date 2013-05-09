@@ -9,4 +9,4 @@ build/default/production/_ext/1278887395/enc28j60.o:  \
 ../src/ipstack/ipv4.h  \
 ../src/ipstack/ethdefs.h  \
  ../src/ipstack/arp.h  \
- C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h 
+../src/utils/insight.h 

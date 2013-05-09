@@ -6,4 +6,4 @@ build/default/production/_ext/1733914311/icmp.o:  \
  ../src/ipstack/ethdefs.h  \
 ../src/drivers/spi.h  \
 ../src/drivers/uart.h  \
- C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h 
+ ../src/utils/insight.h 

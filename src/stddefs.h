@@ -10,6 +10,8 @@ extern "C" {
 #include <stdio.h>
 #include <string.h>
 
+#define strConcat(a,b) a##b
+
 typedef unsigned char UI08_t;
 typedef unsigned int UI16_t;
 typedef unsigned long UI32_t;

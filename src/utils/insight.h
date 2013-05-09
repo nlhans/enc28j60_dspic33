@@ -51,7 +51,7 @@
     MSG(TCP_TX_REPLY, 4, "[tcp] TX reply packet to {0}.{1}.{2}.{3} size {4:X} CRC {5:X} flags {6:X}", 7, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
 
     //INSIGHT(TCP_TX, connection->remoteIp[0], connection->remoteIp[1], connection->remoteIp[2], connection->remoteIp[3], dataSize, packet->tcp.crc, flags.data);
-#define strConcat(a,b) a##b
+
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),
 #define INSIGHT_MESSAGE_ARGUMENT
 

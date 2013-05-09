@@ -3,4 +3,4 @@ build/default/production/_ext/1278887395/23lc1024.o:  \
 ../src/stddefs.h  \
 ../src/devices/23lc1024.h  \
  ../src/drivers/spi.h  \
- C:/Users/Hans/Documents/GitHub/enc28j60-dspic33/src/utils/insight.h 
+../src/utils/insight.h 
