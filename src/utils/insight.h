@@ -3,7 +3,7 @@
 
 #include "stddefs.h"
 
-#define INSIGHT_LEVEL 10 // 0 = nothing
+#define INSIGHT_LEVEL 11 // 0 = nothing
 
 // Define all of your messages here:
 #define INSIGHT_TABLE(MSG, MSG_ARG, MSG_PTR, MSG_STRING) \
@@ -47,7 +47,10 @@
     MSG(TCP_RX_DATA, 10, "[tcp] RX Data {0} size {1}", 2, MSG_ARG(UI08_t) MSG_ARG(UI16_t)) \
     MSG(DATASIZE, 7, "Data Size: {0}", 1, MSG_ARG(UI16_t)) \
     MSG(HTTP_RX_HEADERS, 7, "[HTTP] HTTP Request {1:X} is {0}", 2, MSG_STRING() MSG_ARG(UI16_t)) \
+    MSG(TCP_TX, 4, "[tcp] TX packet to {0}.{1}.{2}.{3} size {4:X} CRC {5:X} flags {6:X}", 7, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
+    MSG(TCP_TX_REPLY, 4, "[tcp] TX reply packet to {0}.{1}.{2}.{3} size {4:X} CRC {5:X} flags {6:X}", 7, MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI08_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t) MSG_ARG(UI16_t)) \
 
+    //INSIGHT(TCP_TX, connection->remoteIp[0], connection->remoteIp[1], connection->remoteIp[2], connection->remoteIp[3], dataSize, packet->tcp.crc, flags.data);
 #define strConcat(a,b) a##b
 #define INSIGHT_MESSAGE(cn, lvl, sn, argCount, args) strConcat(INSIGHT_, cn),
 #define INSIGHT_MESSAGE_ARGUMENT

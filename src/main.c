@@ -69,7 +69,9 @@ UI08_t ntpServer[4] = {194, 171, 167, 130};
 
 UI08_t frameBf[0x5EE];
 
-const char* response = "HTTP/1.1 200 OK\r\n\r\nHello wonderful TCP world!";
+char* response = "HTTP/1.1 200 OK\r\n\r\nHello wonderful TCP world!\r\nCounter: %d";
+char* bfResponse[80];
+UI16_t counter = 0;
 
 void handleData(void* con, bool_t push, UI08_t* d, UI16_t s)
 {
@@ -81,14 +83,17 @@ void handleData(void* con, bool_t push, UI08_t* d, UI16_t s)
     {
         //
     }
-    if (1)
+    if (push)
     {
         TcpFlags_t fl ;
         fl.bits.ack = 1;
         fl.bits.fin = 1;
         fl.bits.psh = 1;
+
+        counter++;
+        sprintf(bfResponse, response, counter);
         
-        tcpTxPacket(response, strlen(response), fl, ((TcpConnection_t*) con));
+        tcpTxPacket(bfResponse, strlen(bfResponse), fl, ((TcpConnection_t*) con));
         //TcpTx(con, response, strlen(response));
         //TcpClose(con);
     }

@@ -392,6 +392,7 @@ void tcpTxReplyPacket(UI16_t dataSize, TcpFlags_t flags, TcpPacket_t* packet, Tc
     packet->tcp.flags.data = htons(flags.data);
     packet->tcp.crc = 0;
     packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8) - dataSize - 6; // +8 for IP's
+    INSIGHT(TCP_TX_REPLY, connection->remoteIp[0], connection->remoteIp[1], connection->remoteIp[2], connection->remoteIp[3], dataSize, packet->tcp.crc, flags.data);
     packet->tcp.crc = htons(packet->tcp.crc);
 
     // hack ipv4 id
@@ -426,12 +427,13 @@ void tcpTxPacket(UI08_t* data, UI16_t dataSize, TcpFlags_t flags, TcpConnection_
     packet->tcp.length = htons(1400);
     packet->tcp.flags.data = htons(flags.data);
     packet->tcp.crc = 0;
-    packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8) - dataSize - 6; // +8 for IP's
-    packet->tcp.crc -= 0x2100;
+    packet->tcp.crc = ipv4Crc((UI08_t*)&(packet->ipv4.header.sourceIp), dataSize + 8+1) - dataSize - 6; // +8 for IP's
+
+    INSIGHT(TCP_TX, connection->remoteIp[0], connection->remoteIp[1], connection->remoteIp[2], connection->remoteIp[3], dataSize, packet->tcp.crc, flags.data);
+    
     packet->tcp.crc = htons(packet->tcp.crc);
 
     // hack ipv4 id
     packet->ipv4.header.ID = 0;
-
     ipv4TxPacket(connection->remoteIp, Ipv4TCP, (EthernetIpv4_t*)packet, dataSize);
 }
